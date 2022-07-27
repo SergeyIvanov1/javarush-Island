@@ -1,23 +1,26 @@
 package ru.javarush.sergeyivanov.island.ContentOfIsland.Field;
 
+import ru.javarush.sergeyivanov.island.Main.InitParameters;
+
 public class Island {
     private static Island instance;
-    private static final int DEFAULT_WIDTH = 100;
-    private static final int DEFAULT_HEIGHT = 20 ;
+    private static final Location[][] FIELD;
 
-    private static final Location[][] FIELD = new Location[DEFAULT_WIDTH][DEFAULT_HEIGHT];;
+    static {
+        FIELD = new Location[InitParameters.getHeightSize()][InitParameters.getWidthSize()];
+    }
 
     private Island() {
     }
 
-    private static Island getInstance(){
+    public static Island getInstance(){
         if (instance == null){
             instance = new Island();
         }
         return instance;
     }
 
-    public Location[][] getLocationOfField() {
+    public Location[][] getField() {
         return FIELD;
     }
 }

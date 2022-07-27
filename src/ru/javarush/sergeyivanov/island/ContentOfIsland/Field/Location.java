@@ -13,4 +13,15 @@ public class Location {
     private BlockingQueue<Herbivore> herbivores = new LinkedBlockingQueue<>();
     private BlockingQueue<Plant> plants = new LinkedBlockingQueue<>();
 
+    public BlockingQueue<Predator> getPredators() {
+        return predators;
+    }
+
+    public BlockingQueue<Herbivore> getHerbivores() {
+        return herbivores;
+    }
+
+    public BlockingQueue<Plant> getPlants() {
+        return plants;
+    }
 }
