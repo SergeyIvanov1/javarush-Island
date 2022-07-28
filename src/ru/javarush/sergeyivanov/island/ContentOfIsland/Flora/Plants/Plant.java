@@ -1,4 +1,6 @@
 package ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants;
 
-public class Plant {
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
+
+public class Plant extends Nature {
 }

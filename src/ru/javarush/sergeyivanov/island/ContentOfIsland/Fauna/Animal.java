@@ -1,6 +1,8 @@
 package ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna;
 
-public abstract class Animal {
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
+
+public abstract class Animal extends Nature {
     private double weight;
     private int maxCountIntoCell;
     private int speedMove;

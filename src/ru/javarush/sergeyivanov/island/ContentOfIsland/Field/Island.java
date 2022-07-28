@@ -1,6 +1,6 @@
 package ru.javarush.sergeyivanov.island.ContentOfIsland.Field;
 
-import ru.javarush.sergeyivanov.island.Main.InitParameters;
+import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 
 public class Island {
     private static Island instance;
@@ -20,7 +20,7 @@ public class Island {
         return instance;
     }
 
-    public Location[][] getField() {
+    public  Location[][] getField() {
         return FIELD;
     }
 }

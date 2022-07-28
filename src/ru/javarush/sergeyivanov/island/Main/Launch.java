@@ -1,8 +1,7 @@
 package ru.javarush.sergeyivanov.island.Main;
 
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
+import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Launch {
