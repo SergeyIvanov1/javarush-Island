@@ -2,37 +2,24 @@ package ru.javarush.sergeyivanov.island.Inicialization;
 
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ParamHerbivores {
 
-    private static final BlockingQueue<Buffalo> buffaloes = new LinkedBlockingQueue<>();
-
-    private static int buffaloAmount  = 300;
-    private int caterpillarAmount = 30_000;
-    private int deerAmount  = 600;
-    private int duckAmount  = 6_000;
-    private int goatAmount  = 4200;
-    private int horseAmount = 600;
-    private int mouseAmount = 15_000;
-    private int rabbitAmount = 4500;
-    private int sheepAmount = 4200;
-    private int wildBoarAmount = 1500;
-
-    public static BlockingQueue<Buffalo> getBuffaloes() {
-        return buffaloes;
-    }
-
-   static  {
-        for (int i = 0; i < buffaloAmount; i++) {
-            try {
-                buffaloes.put(new Buffalo());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-
+    Map<Class, Integer> map = new HashMap<>();
+    {
+        map.put(Buffalo.class, 300);
+        map.put(Caterpillar.class, 30_000);
+        map.put(Deer.class, 600);
+        map.put(Duck.class, 6_000);
+        map.put(Goat.class, 4200);
+        map.put(Horse.class, 600);
+        map.put(Mouse.class, 15_000);
+        map.put(Rabbit.class, 4500);
+        map.put(Sheep.class, 4200);
+        map.put(WildBoar.class, 1500);
     }
 }

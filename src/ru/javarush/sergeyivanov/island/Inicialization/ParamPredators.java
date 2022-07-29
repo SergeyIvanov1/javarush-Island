@@ -3,17 +3,19 @@ package ru.javarush.sergeyivanov.island.Inicialization;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.*;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Plant;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ParamPredators {
-
-    private int bearAmount = 150;
-    private int boaAmount = 900;
-    private int eagleAmount = 600;
-    private int foxAmount = 900;
-    private int wolfAmount = 900;
-
-
+    Map<Class, Integer> map = new HashMap<>();
+    {
+        map.put(Bear.class, 150);
+        map.put(Boa.class, 900);
+        map.put(Eagle.class, 600);
+        map.put(Fox.class, 900);
+        map.put(Wolf.class, 900);
+    }
 
 }

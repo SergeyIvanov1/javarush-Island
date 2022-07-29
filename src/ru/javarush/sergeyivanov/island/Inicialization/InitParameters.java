@@ -46,9 +46,6 @@ public class InitParameters {
                 System.out.println(Island.getInstance().getField()[i][j].getHerbivores());
             }
         }
-//        System.out.println(randomLocation);
-        ExecutorService service = Executors.newWorkStealingPool();
-
     }
 
     public static int getWidthSize() {

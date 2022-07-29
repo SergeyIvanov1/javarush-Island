@@ -5,13 +5,20 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ParamProcessor {
 
-    private static <T> BlockingQueue<T> sendObjToQueue(Class<T> obj, int amountAnimals) throws InstantiationException, IllegalAccessException {
+//    private void fillQueueByObjects(Map<Class, Integer> map) {
+//        for (Map.Entry<Class, Integer> entry: map.entrySet()) {
+//
+//        }
+//    }
+
+    private static <T> BlockingQueue<T> transferObjectsToQueue(Class<T> obj, int amountAnimals) throws InstantiationException, IllegalAccessException {
         BlockingQueue<T> queue = new LinkedBlockingQueue<>();
 
         for (int i = 0; i < amountAnimals; i++) {
