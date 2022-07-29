@@ -9,7 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class ParamHerbivores {
 
-    Map<Class, Integer> map = new HashMap<>();
+    private static Map<Class, Integer> map = new HashMap<>();
     {
         map.put(Buffalo.class, 300);
         map.put(Caterpillar.class, 30_000);
@@ -21,5 +21,9 @@ public class ParamHerbivores {
         map.put(Rabbit.class, 4500);
         map.put(Sheep.class, 4200);
         map.put(WildBoar.class, 1500);
+    }
+
+    public static Map<Class, Integer> getMap() {
+        return map;
     }
 }

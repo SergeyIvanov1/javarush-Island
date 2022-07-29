@@ -7,7 +7,7 @@ public class Island {
     private static final Location[][] FIELD;
 
     static {
-        FIELD = new Location[InitParameters.getHeightSize()][InitParameters.getWidthSize()];
+        FIELD = new Location[InitParameters.getHeightField()][InitParameters.getWidthField()];
     }
 
     private Island() {

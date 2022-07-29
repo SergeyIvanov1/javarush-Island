@@ -1,14 +1,12 @@
 package ru.javarush.sergeyivanov.island.Inicialization;
 
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.*;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.*;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Plant;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
-import java.util.concurrent.*;
 
 public class InitParameters {
 
@@ -22,37 +20,20 @@ public class InitParameters {
     private boolean termForStopping;
     private int startAmountChildren;
 
+    List<Map<Class, Integer>> parameters = new ArrayList<>();
     {
-        for (int i = 0; i < widthSize; i++) {
-            for (int j = 0; j < heightSize; j++) {
-                Island.getInstance().getField()[i][j] = new Location();
-            }
-        }
+        parameters.add(ParamHerbivores.getMap());
+        parameters.add(ParamPredators.getMap());
 
-        ThreadLocalRandom random = ThreadLocalRandom.current();
+        initField();
 
-        for (int i = 0; i < ParamHerbivores.getBuffaloes().size(); i++) {
-            Location randomLocation = Island.getInstance().
-                    getField()[random.nextInt(0, widthSize)][random.nextInt(0, heightSize)];
-            try {
-                randomLocation.getHerbivores().put(ParamHerbivores.getBuffaloes().poll());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (int i = 0; i < widthSize; i++) {
-            for (int j = 0; j < heightSize; j++) {
-                System.out.println(Island.getInstance().getField()[i][j].getHerbivores());
-            }
-        }
     }
 
-    public static int getWidthSize() {
+    public static int getWidthField() {
         return widthSize;
     }
 
-    public static int getHeightSize() {
+    public static int getHeightField() {
         return heightSize;
     }
 
@@ -62,6 +43,26 @@ public class InitParameters {
             System.out.println("Enter the width of the field");
 
         }
+    }
+
+    private void initField() {
+        for (int i = 0; i < widthSize; i++) {
+            for (int j = 0; j < heightSize; j++) {
+                Island.getInstance().getField()[i][j] = new Location();
+            }
+        }
+    }
+
+    public void printParametersOfField(){
+        for (int i = 0; i < widthSize; i++) {
+            for (int j = 0; j < heightSize; j++) {
+                System.out.println(Island.getInstance().getField()[i][j].getHerbivores());
+            }
+        }
+    }
+
+    public static class Dialogue{
+
     }
 
 }
