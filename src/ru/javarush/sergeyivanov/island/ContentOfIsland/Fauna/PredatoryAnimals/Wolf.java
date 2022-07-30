@@ -6,10 +6,7 @@ public class Wolf extends Predator {
         super(50, 30, 3, 8);
     }
 
-    @Override
-    public void eat() {
 
-    }
 
     @Override
     public void multiply() {

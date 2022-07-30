@@ -1,5 +1,6 @@
 package ru.javarush.sergeyivanov.island.Main;
 
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Buffalo;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Herbivore;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Predator;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Wolf;
@@ -19,13 +20,15 @@ public class Launch {
 
 //        System.out.println("Does to run the program manually?");
 //        boolean answer = scanner.nextBoolean();
-        new InitParameters(false);
-        Statistic.printParametersOfField();
+//        new InitParameters(false);
+//        Statistic.printParametersOfField();
 //        System.out.println(Arrays.deepToString(Island.getInstance().getField()));
 
 //        Location location = new Location();
-//        System.out.println(location.getTargetQueue(Predator.class));
-//        System.out.println(location.getTargetQueue(Herbivore.class));
-//        System.out.println(location.getTargetQueue(Plant.class));
+
+        Wolf wolf = new Wolf();
+        wolf.eat();
+        Buffalo buffalo = new Buffalo();
+        buffalo.eat();
     }
 }

@@ -1,5 +1,7 @@
 package ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna;
 
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Herbivore;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Predator;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 
 public abstract class Animal extends Nature {
@@ -15,7 +17,13 @@ public abstract class Animal extends Nature {
         this.amountNeedFood = amountNeedFood;
     }
 
-    public abstract void eat();
+    public void eat(){
+        if (this instanceof Predator){
+            System.out.println(this.getClass().getSimpleName());
+        } else if (this instanceof Herbivore) {
+            System.out.println(this.getClass().getSimpleName());
+        }
+    }
     public abstract void multiply();
     public abstract void move();
     public abstract void die();
