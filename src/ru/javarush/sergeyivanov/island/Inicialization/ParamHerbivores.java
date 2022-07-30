@@ -4,13 +4,11 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class ParamHerbivores {
 
-    private static Map<Class, Integer> map = new HashMap<>();
-    {
+    private static final Map<Class, Integer> map = new HashMap<>();
+    static {
         map.put(Buffalo.class, 300);
         map.put(Caterpillar.class, 30_000);
         map.put(Deer.class, 600);

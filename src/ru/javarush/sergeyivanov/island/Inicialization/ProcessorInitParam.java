@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ProcessorInitParam {
 
-    private <T> List<BlockingQueue<T>> createListQueuesByObjects(Map<Class, Integer> map) {
+    static <T> List<BlockingQueue<T>> createListQueuesByObjects(Map<Class, Integer> map) {
         List<BlockingQueue<T>> listQueue = new ArrayList<>();
 
         for (Map.Entry<Class, Integer> pair : map.entrySet()) {
@@ -31,6 +31,28 @@ public class ProcessorInitParam {
         return listQueue;
     }
 
+    static <T> void allocateObjIntoField(List<BlockingQueue<T>> listQueue) {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+
+        for (BlockingQueue<T> queue : listQueue) {
+            if (queue != null) {
+                Class getClass = queue.peek().getClass();
+
+                for (int i = 0; i < queue.size(); i++) {
+                    int randomLine = random.nextInt(0, InitParameters.getWidthField());
+                    int randomColumn = random.nextInt(0, InitParameters.getHeightField());
+
+                    Location randomLocation = Island.getInstance().getField()[randomLine][randomColumn];
+                    try {
+                        randomLocation.getTargetQueue(getClass).put(queue.poll());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
     private static <T> BlockingQueue<T> fillQueueObjectsAndGet(
             BlockingQueue<T> queue, Class<T> obj, int amountAnimals)
             throws InstantiationException, IllegalAccessException {
@@ -44,27 +66,5 @@ public class ProcessorInitParam {
             }
         }
         return queue;
-    }
-
-    //метод не проверен
-    public <T> void allocateObjIntoField(BlockingQueue<T> queue) {
-        ThreadLocalRandom random = ThreadLocalRandom.current();
-
-        if (queue != null) {
-            Class getClass = queue.peek().getClass();
-
-
-            for (int i = 0; i < queue.size(); i++) {
-                int randomLine = random.nextInt(0, InitParameters.getWidthField());
-                int randomColumn = random.nextInt(0, InitParameters.getHeightField());
-
-                Location randomLocation = Island.getInstance().getField()[randomLine][randomColumn];
-                try {
-                    randomLocation.getTargetQueue(getClass).put(queue.poll());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 }

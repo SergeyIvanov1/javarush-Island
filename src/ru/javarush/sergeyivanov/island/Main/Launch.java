@@ -19,8 +19,10 @@ public class Launch {
 
 //        System.out.println("Does to run the program manually?");
 //        boolean answer = scanner.nextBoolean();
-//        new InitParameters(false);
+        new InitParameters(false);
+        Statistic.printParametersOfField();
 //        System.out.println(Arrays.deepToString(Island.getInstance().getField()));
+
 //        Location location = new Location();
 //        System.out.println(location.getTargetQueue(Predator.class));
 //        System.out.println(location.getTargetQueue(Herbivore.class));

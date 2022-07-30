@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
 
 public class InitParameters {
 
@@ -24,9 +25,14 @@ public class InitParameters {
     {
         parameters.add(ParamHerbivores.getMap());
         parameters.add(ParamPredators.getMap());
+        parameters.add(ParamPlants.getMap());
 
         initField();
 
+        for (Map<Class, Integer> map: parameters) {
+            List<BlockingQueue<Object>> listQueuesByObjects = ProcessorInitParam.createListQueuesByObjects(map);
+            ProcessorInitParam.allocateObjIntoField(listQueuesByObjects);
+        }
     }
 
     public static int getWidthField() {
@@ -41,7 +47,6 @@ public class InitParameters {
         if (manual) {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the width of the field");
-
         }
     }
 
@@ -53,17 +58,8 @@ public class InitParameters {
         }
     }
 
-    public void printParametersOfField(){
-        for (int i = 0; i < widthSize; i++) {
-            for (int j = 0; j < heightSize; j++) {
-                System.out.println(Island.getInstance().getField()[i][j].getHerbivores());
-            }
-        }
-    }
-
     public static class Dialogue{
 
     }
-
 }
 
