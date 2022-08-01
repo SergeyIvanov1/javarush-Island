@@ -17,7 +17,7 @@ public abstract class Animal extends Nature {
         this.amountNeedFood = amountNeedFood;
     }
 
-    public void eat(){
+     public void eat(){
         if (this instanceof Predator){
             System.out.println(this.getClass().getSimpleName());
         } else if (this instanceof Herbivore) {
