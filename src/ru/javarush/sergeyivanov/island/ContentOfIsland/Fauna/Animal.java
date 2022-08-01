@@ -4,7 +4,11 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.He
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Predator;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 
+import java.util.List;
+
 public abstract class Animal extends Nature {
+
+    List<Nature> ration;
     private double weight;
     private int maxCountIntoCell;
     private int speedMove;
@@ -18,13 +22,10 @@ public abstract class Animal extends Nature {
     }
 
      public void eat(){
-        if (this instanceof Predator){
-            System.out.println(this.getClass().getSimpleName());
-        } else if (this instanceof Herbivore) {
-            System.out.println(this.getClass().getSimpleName());
-        }
+         System.out.println(this.getClass().getSimpleName());
     }
     public abstract void multiply();
     public abstract void move();
     public abstract void die();
+//    public abstract void findFood();
 }

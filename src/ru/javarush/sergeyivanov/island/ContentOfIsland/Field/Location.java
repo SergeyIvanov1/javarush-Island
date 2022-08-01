@@ -40,7 +40,7 @@ public class Location {
     public void feedAnimals(){
         for (Animal predator: predators) {
             for (Animal herbivore: herbivores) {
-                herbivores.contains()
+//                herbivores.contains()
             }
         }
 
