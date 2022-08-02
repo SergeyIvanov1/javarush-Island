@@ -4,7 +4,6 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 
 public class Statistic {
-
     public static void printParametersOfField(){
         for (int i = 0; i < InitParameters.getWidthField(); i++) {
             for (int j = 0; j < InitParameters.getHeightField(); j++) {
