@@ -4,6 +4,7 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Herbivore;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Predator;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Plant;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -26,13 +27,13 @@ public class Location {
         return plants;
     }
 
-    public <T> BlockingQueue<T> getTargetQueue(Class<T> t) {
+    public BlockingQueue<? extends Nature> getTargetQueue(Class<? extends Nature> t) {
         if (Predator.class.isAssignableFrom(t)) {
-            return (BlockingQueue<T>) getPredators();
+            return predators;
         } else if (Herbivore.class.isAssignableFrom(t)) {
-            return (BlockingQueue<T>) getHerbivores();
+            return herbivores;
         } else if (Plant.class.isAssignableFrom(t)) {
-            return (BlockingQueue<T>) getPlants();
+            return plants;
         }
         return new LinkedBlockingQueue<>();
     }

@@ -2,28 +2,26 @@ package ru.javarush.sergeyivanov.island.Inicialization;
 
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ProcessorInitParam {
 
-    static <T> List<BlockingQueue<T>> createListQueuesByObjects(Map<Class, Integer> map) {
-        List<BlockingQueue<T>> listQueue = new ArrayList<>();
+    static List<Queue<? extends Nature>> createListQueuesByObjects(Map<Class<? extends Nature>, Integer> map) {
+        List<Queue<? extends Nature>> listQueue = new ArrayList<>();
 
-        for (Map.Entry<Class, Integer> pair : map.entrySet()) {
-            BlockingQueue<T> queue = new LinkedBlockingQueue<>();
+        for (Map.Entry<Class<? extends Nature>, Integer> pair : map.entrySet()) {
+           Queue<Nature> queue = new LinkedList<>();
 
             var aClass = pair.getKey();
             Integer amount = pair.getValue();
             try {
-                listQueue.add(fillQueueObjectsAndGet(queue, aClass, amount));
+                listQueue.add(fillQueueAndGet(queue, aClass, amount));
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -31,12 +29,12 @@ public class ProcessorInitParam {
         return listQueue;
     }
 
-    static <T> void allocateObjIntoField(List<BlockingQueue<T>> listQueue) {
+    static void allocateObjsIntoField(List<Queue<? extends Nature>> listQueue) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
 
-        for (BlockingQueue<T> queue : listQueue) {
+        for (Queue<? extends Nature> queue : listQueue) {
             if (queue != null) {
-                Class getClass = queue.peek().getClass();
+                Class<? extends Nature> gotClass = queue.peek().getClass();
 
                 for (int i = 0; i < queue.size(); i++) {
                     int randomLine = random.nextInt(0, InitParameters.getWidthField());
@@ -44,7 +42,12 @@ public class ProcessorInitParam {
 
                     Location randomLocation = Island.getInstance().getField()[randomLine][randomColumn];
                     try {
-                        randomLocation.getTargetQueue(getClass).put(queue.poll());
+                        BlockingQueue<Nature> locationQueue = (BlockingQueue<Nature>) randomLocation.getTargetQueue(gotClass);
+                        Nature object = queue.poll();
+                        if (object != null) {
+                            object.setLocation(randomLocation);
+                            locationQueue.put(object);
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -53,15 +56,16 @@ public class ProcessorInitParam {
         }
     }
 
-    private static <T> BlockingQueue<T> fillQueueObjectsAndGet(
-            BlockingQueue<T> queue, Class<T> obj, int amountAnimals)
-            throws InstantiationException, IllegalAccessException {
-
+    private static Queue<? extends Nature> fillQueueAndGet(
+            Queue<Nature> queue, Class<? extends Nature> obj, int amountAnimals)
+            throws InstantiationException, IllegalAccessException
+    {
         for (int i = 0; i < amountAnimals; i++) {
             try {
-                Constructor<T> constructor = obj.getConstructor();
-                queue.put(constructor.newInstance());
-            } catch (NoSuchMethodException | InterruptedException | InvocationTargetException e) {
+                Constructor<? extends Nature> constructor = obj.getConstructor();
+                Nature natureObj = constructor.newInstance();
+                queue.add(natureObj);
+            } catch (NoSuchMethodException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }

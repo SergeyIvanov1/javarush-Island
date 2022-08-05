@@ -1,12 +1,13 @@
 package ru.javarush.sergeyivanov.island.Inicialization;
 
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.*;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ParamPredators {
-    private static final Map<Class, Integer> map = new HashMap<>();
+    private static final Map<Class<? extends Nature>, Integer> map = new HashMap<>();
     static  {
         map.put(Bear.class, 150);
         map.put(Boa.class, 900);
@@ -15,7 +16,7 @@ public class ParamPredators {
         map.put(Wolf.class, 900);
     }
 
-    public static Map<Class, Integer> getMap() {
+    public static Map<Class<? extends Nature>, Integer> getMap() {
         return map;
     }
 }

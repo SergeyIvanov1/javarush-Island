@@ -1,13 +1,14 @@
 package ru.javarush.sergeyivanov.island.Inicialization;
 
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.*;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ParamHerbivores {
 
-    private static final Map<Class, Integer> map = new HashMap<>();
+    private static final Map<Class<? extends Nature>, Integer> map = new HashMap<>();
     static {
         map.put(Buffalo.class, 300);
         map.put(Caterpillar.class, 30_000);
@@ -21,7 +22,7 @@ public class ParamHerbivores {
         map.put(WildBoar.class, 1500);
     }
 
-    public static Map<Class, Integer> getMap() {
+    public static Map<Class<? extends Nature>, Integer> getMap() {
         return map;
     }
 }

@@ -2,26 +2,23 @@ package ru.javarush.sergeyivanov.island.Inicialization;
 
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
+import java.util.*;
 
 public class InitParameters {
 
     private static int widthSize = 5;
     private static int heightSize = 5;
 
-    private Long durationCycle = 3_000L;
-    private int amountCycles = 3;
+    private final Long durationCycle = 3_000L;
+    private final int amountCycles = 3;
     private int startAmountAnimals;
 
     private boolean termForStopping;
     private int startAmountChildren;
 
-    List<Map<Class, Integer>> parameters = new ArrayList<>();
+    List<Map<Class<? extends Nature>, Integer>> parameters = new ArrayList<>();
     {
         parameters.add(ParamHerbivores.getMap());
         parameters.add(ParamPredators.getMap());
@@ -29,9 +26,9 @@ public class InitParameters {
 
         initField();
 
-        for (Map<Class, Integer> map: parameters) {
-            List<BlockingQueue<Object>> listQueuesByObjects = ProcessorInitParam.createListQueuesByObjects(map);
-            ProcessorInitParam.allocateObjIntoField(listQueuesByObjects);
+        for (Map<Class<? extends Nature>, Integer> map: parameters) {
+            List<Queue<? extends Nature>> listQueuesByObjects = ProcessorInitParam.createListQueuesByObjects(map);
+            ProcessorInitParam.allocateObjsIntoField(listQueuesByObjects);
         }
     }
 
