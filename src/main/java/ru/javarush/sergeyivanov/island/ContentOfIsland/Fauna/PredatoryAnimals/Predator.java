@@ -1,8 +1,6 @@
 package ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals;
 
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Herbivore;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 
 import java.util.Optional;
 import java.util.Random;
@@ -15,13 +13,16 @@ public abstract class Predator extends Animal {
 
     @Override
     public void eat() {
-//        food.getWeight()
-
+        while (satiety < amountNeedFood) {
+            Optional<Double> optional = findFood(getLocation().getHerbivores());
+            if (optional.isPresent()) {
+                double food = optional.get();
+            }
+        }
     }
 
     @Override
     public Optional<Double> findFood(BlockingQueue<? extends Animal> animals) {
-
         for (Animal food: animals) {
             if (ration.containsKey(food.getClass())){
                 int probability = ration.get(food.getClass());
