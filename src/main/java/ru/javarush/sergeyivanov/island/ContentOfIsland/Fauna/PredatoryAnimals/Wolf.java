@@ -2,6 +2,9 @@ package ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals;
 
 public class Wolf extends Predator {
 
+    {
+//        ration.
+    }
     public Wolf() {
         super(50, 30, 3, 8);
     }
