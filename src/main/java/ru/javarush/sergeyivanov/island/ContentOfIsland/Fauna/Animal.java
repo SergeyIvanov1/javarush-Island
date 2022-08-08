@@ -8,17 +8,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animal extends Nature {
 
-    protected Map<Class<Nature>, Integer> ration;
+    protected Map<Class<? extends Nature>, Integer> ration;
     protected double satiety;
     protected boolean isMale;
     protected boolean isNotMultiplied = true;
     private static final int BOUND = 100;
 
     {
-        Random random = new Random();
+        ThreadLocalRandom random = ThreadLocalRandom.current();
         isMale = random.nextBoolean();
         if (amountNeedFood != 0){
             satiety = random.nextDouble(amountNeedFood/2, amountNeedFood);
@@ -54,7 +55,7 @@ public abstract class Animal extends Nature {
         for (Animal food: animals) {
             if (ration.containsKey(food.getClass())){
                 int probability = ration.get(food.getClass());
-                boolean catchFood = new Random().nextInt(BOUND) < probability;
+                boolean catchFood = ThreadLocalRandom.current().nextInt(BOUND) < probability;
                 double foodWeight = food.getWeight();
                 if (catchFood && animals.remove(food)) return Optional.of(foodWeight);
             }
