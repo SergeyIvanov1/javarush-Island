@@ -22,12 +22,12 @@ public class Launch {
 //        System.out.println("Does to run the program manually?");
 //        boolean answer = scanner.nextBoolean();
         new InitParameters(false);
-//        Statistic.printParametersOfField();
+        Statistic.printParametersOfField();
 
-        BlockingQueue<Predator> predators = Island.getInstance().getField()[2][3].getPredators();
-        for (Predator predator: predators) {
-            System.out.println(predator.getLocation());
-        }
+//        BlockingQueue<Predator> predators = Island.getInstance().getField()[2][3].getPredators();
+//        for (Predator predator: predators) {
+//            System.out.println(predator.getLocation());
+//        }
 
 //        System.out.println(Arrays.deepToString(Island.getInstance().getField()));
 

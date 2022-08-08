@@ -7,16 +7,6 @@ public class Deer extends Herbivore{
     }
 
     @Override
-    public void eat() {
-
-    }
-
-    @Override
-    public void multiply() {
-
-    }
-
-    @Override
     public void move() {
 
     }

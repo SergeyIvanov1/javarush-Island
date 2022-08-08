@@ -6,17 +6,7 @@ package ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals;
             super(0.01, 1000, 0, 0);
         }
 
-        @Override
-    public void eat() {
-
-    }
-
-    @Override
-    public void multiply() {
-
-    }
-
-    @Override
+     @Override
     public void move() {
 
     }
