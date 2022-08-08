@@ -42,7 +42,8 @@ public class ProcessorInitParam {
 
                     Location randomLocation = Island.getInstance().getField()[randomLine][randomColumn];
                     try {
-                        BlockingQueue<Nature> locationQueue = (BlockingQueue<Nature>) randomLocation.getTargetQueue(gotClass);
+                        BlockingQueue<Nature> locationQueue =
+                                (BlockingQueue<Nature>) randomLocation.getTargetQueue(gotClass);
                         Nature object = queue.poll();
                         if (object != null) {
                             object.setLocation(randomLocation);
