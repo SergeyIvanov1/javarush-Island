@@ -12,6 +12,22 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ProcessorInitParam {
 
+    public static void transferObjToNewLocation(int newIndexLine, int newIndexColumn, Nature object){
+        Location newLocation = Island.getInstance().getField()[newIndexLine][newIndexColumn];
+        try {
+            BlockingQueue<Nature> locationQueue =
+                    (BlockingQueue<Nature>) newLocation.getTargetQueue(object.getClass());
+
+                object.setLocation(newLocation);
+                object.setIndexLineLocation(newIndexLine);
+                object.setIndexColumnLocation(newIndexColumn);
+
+                locationQueue.put(object);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     static List<Queue<? extends Nature>> createListQueuesByObjects(Map<Class<? extends Nature>, Integer> map) {
         List<Queue<? extends Nature>> listQueue = new ArrayList<>();
 
@@ -40,21 +56,23 @@ public class ProcessorInitParam {
                     int randomLine = random.nextInt(0, InitParameters.getWidthField());
                     int randomColumn = random.nextInt(0, InitParameters.getHeightField());
 
-                    Location randomLocation = Island.getInstance().getField()[randomLine][randomColumn];
-                    try {
-                        BlockingQueue<Nature> locationQueue =
-                                (BlockingQueue<Nature>) randomLocation.getTargetQueue(gotClass);
-                        Nature object = queue.poll();
-                        if (object != null) {
-                            object.setLocation(randomLocation);
-                            object.setIndexLineLocation(randomLine);
-                            object.setIndexColumnLocation(randomColumn);
-
-                            locationQueue.put(object);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    Nature object = queue.poll();
+                    transferObjToNewLocation(randomLine, randomColumn, object);
+//                    Location randomLocation = Island.getInstance().getField()[randomLine][randomColumn];
+//                    try {
+//                        BlockingQueue<Nature> locationQueue =
+//                                (BlockingQueue<Nature>) randomLocation.getTargetQueue(gotClass);
+//
+//                        if (object != null) {
+//                            object.setLocation(randomLocation);
+//                            object.setIndexLineLocation(randomLine);
+//                            object.setIndexColumnLocation(randomColumn);
+//
+//                            locationQueue.put(object);
+//                        }
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
         }

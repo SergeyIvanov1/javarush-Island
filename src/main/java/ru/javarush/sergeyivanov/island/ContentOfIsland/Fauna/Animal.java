@@ -4,17 +4,19 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
+import ru.javarush.sergeyivanov.island.Inicialization.ProcessorInitParam;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animal extends Nature {
 
-    protected Map<Class<? extends Nature>, Integer> ration;
+    protected Map<Class<? extends Nature>, Integer> ration = new ConcurrentHashMap<>();
     protected double satiety;
     protected boolean isMale;
     protected boolean isNotMultiplied = true;
@@ -33,10 +35,10 @@ public abstract class Animal extends Nature {
         }
     }
 
-    public Animal(double weight, int maxCountIntoCell, int speedMove, double amountNeedFood) {
+    public Animal(double weight, int maxCountIntoCell, int rangeMove, double amountNeedFood) {
         this.weight = weight;
         this.maxCountInsideCell = maxCountIntoCell;
-        this.rangeMove = speedMove;
+        this.rangeMove = rangeMove;
         this.amountNeedFood = amountNeedFood;
     }
 
@@ -128,7 +130,7 @@ public abstract class Animal extends Nature {
             newIndexColumn = getIndexColumnLocation();
         }
 
-        transferObjToNewLocation(newIndexLine, newIndexColumn);
+        ProcessorInitParam.transferObjToNewLocation(newIndexLine, newIndexColumn, this);
     }
 
     private int calculateNewIndex(int oldIndex, int length, ThreadLocalRandom random,  int movesCount) {
@@ -144,24 +146,6 @@ public abstract class Animal extends Nature {
             newIndex = newIndex >= length ? length - 1 : newIndex;
         }
         return newIndex;
-    }
-
-    private void transferObjToNewLocation(int newIndexLine, int newIndexColumn){
-        Location newLocation = Island.getInstance().getField()[newIndexLine][newIndexColumn];
-        try {
-            BlockingQueue<Nature> locationQueue =
-                    (BlockingQueue<Nature>) newLocation.getTargetQueue(this.getClass());
-            Nature object = queue.poll();
-            if (object != null) {
-                object.setLocation(newLocation);
-                object.setIndexLineLocation(newIndexLine);
-                object.setIndexColumnLocation(newIndexColumn);
-
-                locationQueue.put(object);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public abstract void die();
