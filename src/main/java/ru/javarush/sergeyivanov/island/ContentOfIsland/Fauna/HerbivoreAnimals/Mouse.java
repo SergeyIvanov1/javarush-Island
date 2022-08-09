@@ -16,11 +16,6 @@ public class Mouse extends Herbivore {
     }
 
     @Override
-    public void move() {
-
-    }
-
-    @Override
     public void die() {
 
     }

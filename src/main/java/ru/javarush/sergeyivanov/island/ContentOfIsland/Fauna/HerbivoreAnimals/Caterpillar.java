@@ -14,11 +14,6 @@ public class Caterpillar extends Herbivore{
             super(0.01, 1000, 0, 0);
         }
 
-     @Override
-    public void move() {
-
-    }
-
     @Override
     public void die() {
 

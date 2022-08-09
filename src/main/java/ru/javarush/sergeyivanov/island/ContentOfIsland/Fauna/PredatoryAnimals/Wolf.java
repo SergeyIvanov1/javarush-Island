@@ -20,12 +20,6 @@ public class Wolf extends Predator {
         super(50, 30, 3, 8);
     }
 
-
-    @Override
-    public void move() {
-
-    }
-
     @Override
     public void die() {
 

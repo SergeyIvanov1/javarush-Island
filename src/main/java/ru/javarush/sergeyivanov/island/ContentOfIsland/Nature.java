@@ -4,11 +4,15 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
 
 public abstract class Nature {
     Location location;
+
+    int IndexLineLocation;
+    int IndexColumnLocation;
+
     public static final int ALL_OBJECT = 0;
 
     protected double weight;
-    protected int maxCountIntoCell;
-    protected int speedMove;
+    protected int maxCountInsideCell;
+    protected int rangeMove;
     protected double amountNeedFood;
 
     public void setLocation(Location location) {
@@ -23,7 +27,20 @@ public abstract class Nature {
         return weight;
     }
 
-    public double getAmountNeedFood() {
-        return amountNeedFood;
+    public int getIndexLineLocation() {
+        return IndexLineLocation;
     }
+
+    public void setIndexLineLocation(int indexLineLocation) {
+        this.IndexLineLocation = indexLineLocation;
+    }
+
+    public int getIndexColumnLocation() {
+        return IndexColumnLocation;
+    }
+
+    public void setIndexColumnLocation(int indexColumnLocation) {
+        this.IndexColumnLocation = indexColumnLocation;
+    }
+
 }

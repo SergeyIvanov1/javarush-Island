@@ -29,10 +29,10 @@ public class ProcessorInitParam {
         return listQueue;
     }
 
-    static void allocateObjsIntoField(List<Queue<? extends Nature>> listQueue) {
+    static void allocateObjsIntoField(List<Queue<? extends Nature>> listQueues) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
 
-        for (Queue<? extends Nature> queue : listQueue) {
+        for (Queue<? extends Nature> queue : listQueues) {
             if (queue != null) {
                 Class<? extends Nature> gotClass = queue.peek().getClass();
 
@@ -47,6 +47,9 @@ public class ProcessorInitParam {
                         Nature object = queue.poll();
                         if (object != null) {
                             object.setLocation(randomLocation);
+                            object.setIndexLineLocation(randomLine);
+                            object.setIndexColumnLocation(randomColumn);
+
                             locationQueue.put(object);
                         }
                     } catch (InterruptedException e) {

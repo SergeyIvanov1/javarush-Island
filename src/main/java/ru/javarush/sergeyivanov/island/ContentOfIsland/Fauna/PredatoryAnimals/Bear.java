@@ -22,11 +22,6 @@ public class Bear extends Predator {
     }
 
     @Override
-    public void move() {
-
-    }
-
-    @Override
     public void die() {
 
     }

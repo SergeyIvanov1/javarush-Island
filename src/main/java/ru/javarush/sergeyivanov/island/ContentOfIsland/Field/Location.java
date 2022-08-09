@@ -27,12 +27,12 @@ public class Location {
         return plants;
     }
 
-    public BlockingQueue<? extends Nature> getTargetQueue(Class<? extends Nature> t) {
-        if (Predator.class.isAssignableFrom(t)) {
+    public BlockingQueue<? extends Nature> getTargetQueue(Class<? extends Nature> aClass) {
+        if (Predator.class.isAssignableFrom(aClass)) {
             return getPredators();
-        } else if (Herbivore.class.isAssignableFrom(t)) {
+        } else if (Herbivore.class.isAssignableFrom(aClass)) {
             return getHerbivores();
-        } else if (Plant.class.isAssignableFrom(t)) {
+        } else if (Plant.class.isAssignableFrom(aClass)) {
             return getPlants();
         }
         return new LinkedBlockingQueue<>();
