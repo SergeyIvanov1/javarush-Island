@@ -72,7 +72,7 @@ public abstract class Animal extends Nature {
 
     public void multiply() throws InstantiationException, IllegalAccessException {
         if (this.isNotMultiplied) {
-            BlockingQueue<? extends Nature> storageAnimals = processor.getStorageNature(getLocation(), this.getClass());
+            BlockingQueue<Animal> storageAnimals = (BlockingQueue<Animal>) getLocation().getStorageNature(this.getClass());
 
             Optional<Animal> pair = findPair(this, storageAnimals);
             if (pair.isPresent()) {
@@ -128,7 +128,8 @@ public abstract class Animal extends Nature {
         } else {
             newIndexColumn = getIndexColumnField();
         }
-        BlockingQueue<Animal> storageCurrentAnimal = (BlockingQueue<Animal>) processor.getStorageNature(getLocation(), this.getClass());
+        BlockingQueue<? extends Animal> storageCurrentAnimal = (BlockingQueue<? extends Animal>) getLocation().getStorageNature(this.getClass());
+
         if (storageCurrentAnimal.remove(this)) {
             processor.transferObjToNewLocation(newIndexLine, newIndexColumn, this);
         }
@@ -149,5 +150,7 @@ public abstract class Animal extends Nature {
         return newIndex;
     }
 
-    public abstract void die();
+    public boolean die(){
+        return getLocation().getStorageNature(this.getClass()).remove(this);
+    }
 }

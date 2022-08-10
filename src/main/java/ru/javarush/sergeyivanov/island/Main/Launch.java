@@ -1,5 +1,6 @@
 package ru.javarush.sergeyivanov.island.Main;
 
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Buffalo;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Herbivore;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Predator;
@@ -23,6 +24,5 @@ public class Launch {
 //        boolean answer = scanner.nextBoolean();
         new InitParameters(false);
         Statistic.printParametersOfField();
-
     }
 }

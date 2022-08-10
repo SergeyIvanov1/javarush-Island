@@ -1,8 +1,11 @@
 package ru.javarush.sergeyivanov.island.Inicialization;
 
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Herbivore;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Predator;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Plant;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 
 import java.lang.reflect.Constructor;
@@ -13,16 +16,16 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ProcessorParam {
 
-    public void transferObjToNewLocation(int newIndexLine, int newIndexColumn, Animal object) {
-        Location newLocation = Island.getInstance().getField()[newIndexLine][newIndexColumn];
+    public void transferObjToNewLocation(int newIndexLine, int newIndexColumn, Nature object) {
+        Location nextLocation = Island.getInstance().getField()[newIndexLine][newIndexColumn];
         try {
-            BlockingQueue<Animal> storageAnimals = getStorageNature(newLocation, object.getClass());
+            BlockingQueue<Nature> nextStorageObj = (BlockingQueue<Nature>) nextLocation.getStorageNature(object.getClass());
 
-            object.setLocation(newLocation);
+            object.setLocation(nextLocation);
             object.setIndexLineField(newIndexLine);
             object.setIndexColumnField(newIndexColumn);
 
-            storageAnimals.put(object);
+            nextStorageObj.put(object);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -73,9 +76,5 @@ public class ProcessorParam {
             }
         }
         return queue;
-    }
-
-    public BlockingQueue<? extends Nature> getStorageNature(Location location, Class<Nature> classObj){
-        return location.getStorageNature(classObj);
     }
 }
