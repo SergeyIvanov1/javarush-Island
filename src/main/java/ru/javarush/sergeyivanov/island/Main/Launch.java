@@ -24,18 +24,5 @@ public class Launch {
         new InitParameters(false);
         Statistic.printParametersOfField();
 
-//        BlockingQueue<Predator> predators = Island.getInstance().getField()[2][3].getPredators();
-//        for (Predator predator: predators) {
-//            System.out.println(predator.getLocation());
-//        }
-
-//        System.out.println(Arrays.deepToString(Island.getInstance().getField()));
-
-//        Location location = new Location();
-
-//        Wolf wolf = new Wolf();
-//        wolf.eat();
-//        Buffalo buffalo = new Buffalo();
-//        buffalo.eat();
     }
 }

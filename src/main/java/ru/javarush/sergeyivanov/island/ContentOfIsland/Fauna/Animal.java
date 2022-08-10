@@ -1,10 +1,8 @@
 package ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna;
 
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
-import ru.javarush.sergeyivanov.island.Inicialization.ProcessorInitParam;
+import ru.javarush.sergeyivanov.island.Inicialization.ProcessorParam;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -20,13 +18,15 @@ public abstract class Animal extends Nature {
     protected double satiety;
     protected boolean isMale;
     protected boolean isNotMultiplied = true;
+    protected ThreadLocalRandom random;
+    ProcessorParam processor = new ProcessorParam();
     private static final int BOUND = 100;
-    private static final int MIN_RANDOM_BOUND = 2;
     private static final int MIN_INDEX = 0;
     private static final int INCLUDING_NUMBER = 1;
+    private static final int OUT_BOUND = 1;
 
     {
-        ThreadLocalRandom random = ThreadLocalRandom.current();
+        random = ThreadLocalRandom.current();
         isMale = random.nextBoolean();
         if (amountNeedFood != 0) {
             satiety = random.nextDouble(amountNeedFood / 2, amountNeedFood);
@@ -62,7 +62,7 @@ public abstract class Animal extends Nature {
         for (Animal food : animals) {
             if (ration.containsKey(food.getClass())) {
                 int probability = ration.get(food.getClass());
-                boolean catchFood = ThreadLocalRandom.current().nextInt(BOUND) < probability;
+                boolean catchFood = random.nextInt(BOUND) < probability;
                 double foodWeight = food.getWeight();
                 if (catchFood && animals.remove(food)) return Optional.of(foodWeight);
             }
@@ -72,9 +72,9 @@ public abstract class Animal extends Nature {
 
     public void multiply() throws InstantiationException, IllegalAccessException {
         if (this.isNotMultiplied) {
-            BlockingQueue<Animal> animals = (BlockingQueue<Animal>) getLocation().getTargetQueue(this.getClass());
+            BlockingQueue<? extends Nature> storageAnimals = processor.getStorageNature(getLocation(), this.getClass());
 
-            Optional<Animal> pair = findPair(this, animals);
+            Optional<Animal> pair = findPair(this, storageAnimals);
             if (pair.isPresent()) {
                 Animal partner = pair.get();
                 try {
@@ -82,10 +82,10 @@ public abstract class Animal extends Nature {
                     Animal child = constructor.newInstance();
 
                     child.setLocation(getLocation());
-                    child.setIndexLineLocation(getIndexLineLocation());
-                    child.setIndexColumnLocation(getIndexColumnLocation());
+                    child.setIndexLineField(getIndexLineField());
+                    child.setIndexColumnField(getIndexColumnField());
 
-                    animals.add(child);
+                    storageAnimals.add(child);
                 } catch (NoSuchMethodException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
@@ -117,23 +117,24 @@ public abstract class Animal extends Nature {
         int width = InitParameters.getWidthField();
         int height = InitParameters.getHeightField();
 
-        ThreadLocalRandom random = ThreadLocalRandom.current();
-        int bound = rangeMove + INCLUDING_NUMBER;
-        int movesCountLine = random.nextInt(MIN_INDEX, bound);
-        int movesCountColumn = rangeMove - movesCountLine;
+        int boundField = rangeMove + INCLUDING_NUMBER;
+        int movesCountInLine = random.nextInt(MIN_INDEX, boundField);
+        int movesCountInColumn = rangeMove - movesCountInLine;
 
-        int newIndexLine = calculateNewIndex(getIndexLineLocation(), width, random, movesCountLine);
+        int newIndexLine = calculateNewIndex(getIndexLineField(), width, movesCountInLine);
         int newIndexColumn;
-        if (movesCountColumn > 0) {
-            newIndexColumn = calculateNewIndex(getIndexColumnLocation(), height, random, movesCountColumn);
+        if (movesCountInColumn > 0) {
+            newIndexColumn = calculateNewIndex(getIndexColumnField(), height, movesCountInColumn);
         } else {
-            newIndexColumn = getIndexColumnLocation();
+            newIndexColumn = getIndexColumnField();
         }
-
-        ProcessorInitParam.transferObjToNewLocation(newIndexLine, newIndexColumn, this);
+        BlockingQueue<Animal> storageCurrentAnimal = (BlockingQueue<Animal>) processor.getStorageNature(getLocation(), this.getClass());
+        if (storageCurrentAnimal.remove(this)) {
+            processor.transferObjToNewLocation(newIndexLine, newIndexColumn, this);
+        }
     }
 
-    private int calculateNewIndex(int oldIndex, int length, ThreadLocalRandom random,  int movesCount) {
+    private int calculateNewIndex(int oldIndex, int length, int movesCount) {
 
         boolean moveIsBack = random.nextBoolean();
 
@@ -143,7 +144,7 @@ public abstract class Animal extends Nature {
             newIndex = Math.max(newIndex, MIN_INDEX);
         } else {
             newIndex = oldIndex + movesCount;
-            newIndex = newIndex >= length ? length - 1 : newIndex;
+            newIndex = (newIndex >= length) ? length - OUT_BOUND : newIndex;
         }
         return newIndex;
     }

@@ -27,7 +27,7 @@ public class Location {
         return plants;
     }
 
-    public BlockingQueue<? extends Nature> getTargetQueue(Class<? extends Nature> aClass) {
+    public BlockingQueue<? extends Nature> getStorageNature(Class<Nature> aClass) {
         if (Predator.class.isAssignableFrom(aClass)) {
             return getPredators();
         } else if (Herbivore.class.isAssignableFrom(aClass)) {

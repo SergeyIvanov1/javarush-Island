@@ -8,6 +8,7 @@ import java.util.*;
 
 public class InitParameters {
 
+    ProcessorParam processor = new ProcessorParam();
     private static int widthSize = 5;
     private static int heightSize = 5;
 
@@ -27,8 +28,15 @@ public class InitParameters {
         initField();
 
         for (Map<Class<? extends Nature>, Integer> map: parameters) {
-            List<Queue<? extends Nature>> listQueuesByObjects = ProcessorInitParam.createListQueuesByObjects(map);
-            ProcessorInitParam.allocateObjsIntoField(listQueuesByObjects);
+            List<Queue<? extends Nature>> listQueuesByObjects = processor.createListQueuesByObjects(map);
+            processor.allocateObjsIntoField(listQueuesByObjects);
+        }
+    }
+
+    public InitParameters(boolean manual) {
+        if (manual) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter the width of the field");
         }
     }
 
@@ -38,13 +46,6 @@ public class InitParameters {
 
     public static int getHeightField() {
         return heightSize;
-    }
-
-    public InitParameters(boolean manual) {
-        if (manual) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter the width of the field");
-        }
     }
 
     private void initField() {
