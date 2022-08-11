@@ -4,7 +4,12 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
 
 public abstract class Herbivore extends Animal {
 
-    public Herbivore(double weight, int maxCountIntoCell, int speedMove, double amountNeedFood) {
-        super(weight, maxCountIntoCell, speedMove, amountNeedFood);
+    public Herbivore(double weight, int maxCountIntoCell, int rangeMove, double amountNeedFood) {
+        super(weight, maxCountIntoCell, rangeMove, amountNeedFood);
+    }
+
+    @Override
+    public void run() {
+
     }
 }

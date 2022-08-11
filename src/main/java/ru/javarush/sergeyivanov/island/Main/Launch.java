@@ -13,8 +13,7 @@ import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 public class Launch {
     public static void main(String[] args) throws NoSuchFieldException {
@@ -24,5 +23,8 @@ public class Launch {
 //        boolean answer = scanner.nextBoolean();
         new InitParameters(false);
         Statistic.printParametersOfField();
+
+        ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
+        schedule.scheduleWithFixedDelay(new LifeCycle(), 0,20, TimeUnit.SECONDS);
     }
 }

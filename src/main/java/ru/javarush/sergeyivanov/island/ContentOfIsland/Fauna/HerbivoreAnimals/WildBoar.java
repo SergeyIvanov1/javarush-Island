@@ -15,9 +15,4 @@ public class WildBoar extends Herbivore{
     public WildBoar() {
         super(400, 50, 2, 50);
     }
-
-    @Override
-    public void die() {
-
-    }
 }

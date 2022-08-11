@@ -12,7 +12,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class Animal extends Nature {
+public abstract class Animal extends Nature implements Runnable {
 
     protected Map<Class<? extends Nature>, Integer> ration = new ConcurrentHashMap<>();
     protected double satiety;
@@ -70,16 +70,22 @@ public abstract class Animal extends Nature {
         return Optional.empty();
     }
 
-    public void multiply() throws InstantiationException, IllegalAccessException {
+    public void multiply() {
         if (this.isNotMultiplied) {
-            BlockingQueue<Animal> storageAnimals = (BlockingQueue<Animal>) getLocation().getStorageNature(this.getClass());
+            BlockingQueue<Animal> storageAnimals =
+                    (BlockingQueue<Animal>) getLocation().getStorageNature(this.getClass());
 
             Optional<Animal> pair = findPair(this, storageAnimals);
             if (pair.isPresent()) {
                 Animal partner = pair.get();
                 try {
                     Constructor<? extends Animal> constructor = this.getClass().getConstructor();
-                    Animal child = constructor.newInstance();
+                    Animal child;
+                    try {
+                        child = constructor.newInstance();
+                    } catch (InstantiationException | IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
 
                     child.setLocation(getLocation());
                     child.setIndexLineField(getIndexLineField());
@@ -109,7 +115,7 @@ public abstract class Animal extends Nature {
         return Optional.empty();
     }
 
-    public void move() {
+    public void changeLocation() {
         if (rangeMove == 0) {
             return;
         }
@@ -128,7 +134,8 @@ public abstract class Animal extends Nature {
         } else {
             newIndexColumn = getIndexColumnField();
         }
-        BlockingQueue<? extends Animal> storageCurrentAnimal = (BlockingQueue<? extends Animal>) getLocation().getStorageNature(this.getClass());
+        BlockingQueue<? extends Animal> storageCurrentAnimal =
+                (BlockingQueue<? extends Animal>) getLocation().getStorageNature(this.getClass());
 
         if (storageCurrentAnimal.remove(this)) {
             processor.transferObjToNewLocation(newIndexLine, newIndexColumn, this);
