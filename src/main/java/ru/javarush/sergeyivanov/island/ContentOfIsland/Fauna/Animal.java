@@ -1,5 +1,6 @@
 package ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna;
 
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 import ru.javarush.sergeyivanov.island.Inicialization.ProcessorParam;
@@ -12,7 +13,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class Animal extends Nature implements Runnable {
+public abstract class Animal extends Nature {
 
     protected Map<Class<? extends Nature>, Integer> ration = new ConcurrentHashMap<>();
     protected double satiety;
@@ -42,7 +43,7 @@ public abstract class Animal extends Nature implements Runnable {
         this.amountNeedFood = amountNeedFood;
     }
 
-    public void eat(BlockingQueue<? extends Animal> natureObj) {
+    public void eat(BlockingQueue<? extends Nature> natureObj) {
         while (satiety < amountNeedFood) {
             Optional<Double> food = findFood(natureObj);
             if (food.isPresent()) {
@@ -58,8 +59,8 @@ public abstract class Animal extends Nature implements Runnable {
         }
     }
 
-    private Optional<Double> findFood(BlockingQueue<? extends Animal> animals) {
-        for (Animal food : animals) {
+    private Optional<Double> findFood(BlockingQueue<? extends Nature> animals) {
+        for (Nature food : animals) {
             if (ration.containsKey(food.getClass())) {
                 int probability = ration.get(food.getClass());
                 boolean catchFood = random.nextInt(BOUND) < probability;
@@ -120,8 +121,8 @@ public abstract class Animal extends Nature implements Runnable {
             return;
         }
 
-        int width = InitParameters.getWidthField();
-        int height = InitParameters.getHeightField();
+        int width = Island.getWidthField();
+        int height = Island.getHeightField();
 
         int boundField = rangeMove + INCLUDING_NUMBER;
         int movesCountInLine = random.nextInt(MIN_INDEX, boundField);

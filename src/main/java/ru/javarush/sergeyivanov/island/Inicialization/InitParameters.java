@@ -9,8 +9,6 @@ import java.util.*;
 public class InitParameters {
 
     ProcessorParam processor = new ProcessorParam();
-    private static int widthSize = 5;
-    private static int heightSize = 5;
 
     private final Long durationCycle = 3_000L;
     private final int amountCycles = 3;
@@ -40,17 +38,9 @@ public class InitParameters {
         }
     }
 
-    public static int getWidthField() {
-        return widthSize;
-    }
-
-    public static int getHeightField() {
-        return heightSize;
-    }
-
     private void initField() {
-        for (int i = 0; i < widthSize; i++) {
-            for (int j = 0; j < heightSize; j++) {
+        for (int i = 0; i < Island.getWidthField(); i++) {
+            for (int j = 0; j < Island.getHeightField(); j++) {
                 Island.getInstance().getField()[i][j] = new Location();
             }
         }

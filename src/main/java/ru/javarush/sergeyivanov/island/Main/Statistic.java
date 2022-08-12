@@ -5,8 +5,8 @@ import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 
 public class Statistic {
     public static void printParametersOfField(){
-        for (int i = 0; i < InitParameters.getWidthField(); i++) {
-            for (int j = 0; j < InitParameters.getHeightField(); j++) {
+        for (int i = 0; i < Island.getWidthField(); i++) {
+            for (int j = 0; j < Island.getHeightField(); j++) {
                 System.out.println("Location[" + i +"][" + j +"]");
                 System.out.println("Herbivores queue. initSize = "
                         + Island.getInstance().getField()[i][j].getHerbivores().size());

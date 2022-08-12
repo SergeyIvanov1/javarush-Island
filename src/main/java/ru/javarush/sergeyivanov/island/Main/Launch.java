@@ -24,7 +24,5 @@ public class Launch {
         new InitParameters(false);
         Statistic.printParametersOfField();
 
-        ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
-        schedule.scheduleWithFixedDelay(new LifeCycle(), 0,20, TimeUnit.SECONDS);
     }
 }

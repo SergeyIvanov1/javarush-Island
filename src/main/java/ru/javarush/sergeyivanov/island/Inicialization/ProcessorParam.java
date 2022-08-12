@@ -53,8 +53,8 @@ public class ProcessorParam {
 
         for (Queue<? extends Nature> queue : listQueues) {
             for (int i = 0; i < queue.size(); i++) {
-                int randomLine = random.nextInt(0, InitParameters.getWidthField());
-                int randomColumn = random.nextInt(0, InitParameters.getHeightField());
+                int randomLine = random.nextInt(0, Island.getWidthField());
+                int randomColumn = random.nextInt(0, Island.getHeightField());
 
                 Nature object = queue.poll();
                 transferObjToNewLocation(randomLine, randomColumn, object);
