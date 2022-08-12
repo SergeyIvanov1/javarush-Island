@@ -10,8 +10,8 @@ import java.util.Map;
 public class ParamPlants {
     private static final Map<Class<? extends Nature>, Integer> map = new HashMap<>();
     static  {
-        map.put(Grass.class, 150_000);
-        map.put(Shrub.class, 9_000);
+        map.put(Grass.class, 1500); //150_000
+        map.put(Shrub.class, 90); //9_000
 
     }
 

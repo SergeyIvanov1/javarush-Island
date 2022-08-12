@@ -3,8 +3,8 @@ package ru.javarush.sergeyivanov.island.ContentOfIsland.Field;
 public class Island {
     private static Island instance;
     private static final Location[][] FIELD;
-    private static int widthSize = 5;
-    private static int heightSize = 5;
+    private static int widthSize = 4;
+    private static int heightSize = 4;
 
     static {
         FIELD = new Location[widthSize][heightSize];

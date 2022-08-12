@@ -22,7 +22,10 @@ public class Launch {
 //        System.out.println("Does to run the program manually?");
 //        boolean answer = scanner.nextBoolean();
         new InitParameters(false);
-        Statistic.printParametersOfField();
+//        Statistic.printParametersOfField();
+
+        LiveCycle cycle = new LiveCycle();
+        cycle.start();
 
     }
 }

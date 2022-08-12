@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animal extends Nature {
+    public boolean markerOfEndedCycle = false;
 
     protected Map<Class<? extends Nature>, Integer> ration = new ConcurrentHashMap<>();
     protected double satiety;
@@ -44,11 +45,22 @@ public abstract class Animal extends Nature {
     }
 
     public void eat(BlockingQueue<? extends Nature> natureObj) {
+        System.out.print("\n");
+        if (amountNeedFood == 0) {
+            System.out.println(this.getClass().getSimpleName() + " eats very little, insignificant");
+        }
+        if (satiety < amountNeedFood) {
+            System.out.println("Animal " + this.getClass().getSimpleName() + " wants EAT()");
+            System.out.println("\tsatiety = " + satiety + ", amountNeedFood = " + amountNeedFood);
+        }
+
         while (satiety < amountNeedFood) {
             Optional<Double> food = findFood(natureObj);
             if (food.isPresent()) {
                 double foodWeight = food.get();
                 satiety += foodWeight;
+                System.out.println("satiety = " + satiety + ", amountNeedFood = " + amountNeedFood);
+
                 if (satiety > amountNeedFood) {
                     satiety = amountNeedFood;
                     break;
@@ -63,18 +75,43 @@ public abstract class Animal extends Nature {
         for (Nature food : animals) {
             if (ration.containsKey(food.getClass())) {
                 int probability = ration.get(food.getClass());
+
+                System.out.println("\t" + this.getClass().getSimpleName() + " found food - " + food.getClass().getSimpleName());
+
                 boolean catchFood = random.nextInt(BOUND) < probability;
-                double foodWeight = food.getWeight();
-                if (catchFood && animals.remove(food)) return Optional.of(foodWeight);
+                if (catchFood) {
+                    double foodWeight = food.getWeight();
+
+                    System.out.println("\tWeight of " + food.getClass().getSimpleName() +
+                            " consists - " + foodWeight + " kg");
+
+                    if (animals.remove(food)) {
+                        System.out.println("\t" + food.getClass().getSimpleName() + " eaten and deleted from queue");
+                    }
+                    return Optional.of(foodWeight);
+                } else {
+                    System.out.println("\t" + this.getClass().getSimpleName() + " can't to catch food - " + food.getClass().getSimpleName());
+                    return Optional.empty();
+                }
             }
         }
+        System.out.println("\tInside location finished food from ration " + this.getClass().getSimpleName());
         return Optional.empty();
     }
 
     public void multiply() {
+        System.out.print("\n");
+
+        if (!this.isNotMultiplied){
+            System.out.println(this.getClass().getSimpleName() + " has already multiplied during this cycle");
+        }
+
         if (this.isNotMultiplied) {
             BlockingQueue<Animal> storageAnimals =
                     (BlockingQueue<Animal>) getLocation().getStorageNature(this.getClass());
+
+            System.out.println("Animal " + this.getClass().getSimpleName() + " wants MULTIPLY()");
+
 
             Optional<Animal> pair = findPair(this, storageAnimals);
             if (pair.isPresent()) {
@@ -84,6 +121,8 @@ public abstract class Animal extends Nature {
                     Animal child;
                     try {
                         child = constructor.newInstance();
+                        System.out.println(" \tchild " + child.getClass().getSimpleName() + " was born");
+
                     } catch (InstantiationException | IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
@@ -104,22 +143,33 @@ public abstract class Animal extends Nature {
     }
 
     private Optional<Animal> findPair(Animal animal, BlockingQueue<? extends Nature> animals) {
+        System.out.println("\t" + this.getClass().getSimpleName() + " is looking for a pair");
+
         for (Nature pair : animals) {
             if (animal.getClass() == pair.getClass()
                     && animal.isMale != ((Animal) pair).isMale
                     && ((Animal) pair).isNotMultiplied) {
 
                 Animal result = (Animal) pair;
+
+                System.out.println("\t" + result.getClass().getSimpleName() + " is found - " + result.getClass().getSimpleName());
+
                 return Optional.of(result);
             }
         }
+        System.out.println("\tThe pair is not found inside this location");
         return Optional.empty();
     }
 
     public void changeLocation() {
+        System.out.print("\n");
+
         if (rangeMove == 0) {
+            System.out.println(this.getClass().getSimpleName() + " can't change location");
+            System.out.print("\n");
             return;
         }
+        System.out.println("Animal " + this.getClass().getSimpleName() + " can to CHANGE lOCATION()");
 
         int width = Island.getWidthField();
         int height = Island.getHeightField();
@@ -137,10 +187,13 @@ public abstract class Animal extends Nature {
         }
         BlockingQueue<? extends Animal> storageCurrentAnimal =
                 (BlockingQueue<? extends Animal>) getLocation().getStorageNature(this.getClass());
+        System.out.println("\tCurrent location [" + getIndexLineField() + "][" + getIndexColumnField()+ "]");
 
         if (storageCurrentAnimal.remove(this)) {
             processor.transferObjToNewLocation(newIndexLine, newIndexColumn, this);
+            System.out.println("\tNew location [" + newIndexLine + "][" + newIndexColumn + "]");
         }
+        System.out.print("\n");
     }
 
     private int calculateNewIndex(int oldIndex, int length, int movesCount) {
@@ -160,5 +213,12 @@ public abstract class Animal extends Nature {
 
     public boolean die(){
         return getLocation().getStorageNature(this.getClass()).remove(this);
+    }
+
+
+    public void updateParamNewDay(){
+        isNotMultiplied = true;
+        satiety -= amountNeedFood/4;
+        markerOfEndedCycle = false;
     }
 }

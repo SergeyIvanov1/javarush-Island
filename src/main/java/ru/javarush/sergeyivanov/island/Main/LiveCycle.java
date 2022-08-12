@@ -8,7 +8,7 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
 import java.util.concurrent.BlockingQueue;
 
 public class LiveCycle {
-    boolean marker;
+    public static boolean marker = true;
 
     public void start() {
         for (int i = 0; i < Island.getWidthField(); i++) {
@@ -19,6 +19,7 @@ public class LiveCycle {
                 for (Predator predator: predators) {
                     if (!predator.markerOfEndedCycle) {
                         predator.liveOneCycle();
+                        System.out.println("+++++++++++++++++++++++++++++");
                     }
                 }
 
@@ -26,10 +27,12 @@ public class LiveCycle {
                 for (Herbivore herbivore: herbivores) {
                     if (!herbivore.markerOfEndedCycle) {
                         herbivore.liveOneCycle();
+                        System.out.println("+++++++++++++++++++++++++++++");
                     }
                 }
             }
         }
+
     }
 
     public void repeatCycle(int amount){
