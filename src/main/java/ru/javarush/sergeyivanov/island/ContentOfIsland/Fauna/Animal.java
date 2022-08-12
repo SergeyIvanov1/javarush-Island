@@ -22,6 +22,7 @@ public abstract class Animal extends Nature {
     protected boolean isNotMultiplied = true;
     protected ThreadLocalRandom random;
     ProcessorParam processor = new ProcessorParam();
+    String thisAnimal;
     private static final int BOUND = 100;
     private static final int MIN_INDEX = 0;
     private static final int INCLUDING_NUMBER = 1;
@@ -30,11 +31,7 @@ public abstract class Animal extends Nature {
     {
         random = ThreadLocalRandom.current();
         isMale = random.nextBoolean();
-        if (amountNeedFood != 0) {
-            satiety = random.nextDouble(amountNeedFood / 2, amountNeedFood);
-        } else {
-            satiety = 0;
-        }
+        thisAnimal = this.getClass().getSimpleName();
     }
 
     public Animal(double weight, int maxCountIntoCell, int rangeMove, double amountNeedFood) {
@@ -42,15 +39,21 @@ public abstract class Animal extends Nature {
         this.maxCountInsideCell = maxCountIntoCell;
         this.rangeMove = rangeMove;
         this.amountNeedFood = amountNeedFood;
+
+        if (amountNeedFood != 0) {
+            satiety = amountNeedFood / 2;
+        } else {
+            satiety = 0;
+        }
     }
 
     public void eat(BlockingQueue<? extends Nature> natureObj) {
         System.out.print("\n");
         if (amountNeedFood == 0) {
-            System.out.println(this.getClass().getSimpleName() + " eats very little, insignificant");
+            System.out.println(thisAnimal + " eats very little, insignificant");
         }
         if (satiety < amountNeedFood) {
-            System.out.println("Animal " + this.getClass().getSimpleName() + " wants EAT()");
+            System.out.println("Animal - " + thisAnimal + " wants EAT()");
             System.out.println("\tsatiety = " + satiety + ", amountNeedFood = " + amountNeedFood);
         }
 
@@ -76,7 +79,7 @@ public abstract class Animal extends Nature {
             if (ration.containsKey(food.getClass())) {
                 int probability = ration.get(food.getClass());
 
-                System.out.println("\t" + this.getClass().getSimpleName() + " found food - " + food.getClass().getSimpleName());
+                System.out.println("\t" + thisAnimal + " found food - " + food.getClass().getSimpleName());
 
                 boolean catchFood = random.nextInt(BOUND) < probability;
                 if (catchFood) {
@@ -90,12 +93,12 @@ public abstract class Animal extends Nature {
                     }
                     return Optional.of(foodWeight);
                 } else {
-                    System.out.println("\t" + this.getClass().getSimpleName() + " can't to catch food - " + food.getClass().getSimpleName());
+                    System.out.println("\t" + thisAnimal + " can't to catch food - " + food.getClass().getSimpleName());
                     return Optional.empty();
                 }
             }
         }
-        System.out.println("\tInside location finished food from ration " + this.getClass().getSimpleName());
+        System.out.println("\tInside location finished food from ration " + thisAnimal);
         return Optional.empty();
     }
 
@@ -103,14 +106,14 @@ public abstract class Animal extends Nature {
         System.out.print("\n");
 
         if (!this.isNotMultiplied){
-            System.out.println(this.getClass().getSimpleName() + " has already multiplied during this cycle");
+            System.out.println(thisAnimal + " has already multiplied during this cycle");
         }
 
         if (this.isNotMultiplied) {
             BlockingQueue<Animal> storageAnimals =
                     (BlockingQueue<Animal>) getLocation().getStorageNature(this.getClass());
 
-            System.out.println("Animal " + this.getClass().getSimpleName() + " wants MULTIPLY()");
+            System.out.println("Animal - " + thisAnimal + " wants MULTIPLY()");
 
 
             Optional<Animal> pair = findPair(this, storageAnimals);
@@ -143,7 +146,7 @@ public abstract class Animal extends Nature {
     }
 
     private Optional<Animal> findPair(Animal animal, BlockingQueue<? extends Nature> animals) {
-        System.out.println("\t" + this.getClass().getSimpleName() + " is looking for a pair");
+        System.out.println("\t" + thisAnimal + " is looking for a pair");
 
         for (Nature pair : animals) {
             if (animal.getClass() == pair.getClass()
@@ -165,11 +168,11 @@ public abstract class Animal extends Nature {
         System.out.print("\n");
 
         if (rangeMove == 0) {
-            System.out.println(this.getClass().getSimpleName() + " can't change location");
+            System.out.println(thisAnimal + " can't change location");
             System.out.print("\n");
             return;
         }
-        System.out.println("Animal " + this.getClass().getSimpleName() + " can to CHANGE lOCATION()");
+        System.out.println("Animal - " + thisAnimal + " can to CHANGE lOCATION()");
 
         int width = Island.getWidthField();
         int height = Island.getHeightField();
