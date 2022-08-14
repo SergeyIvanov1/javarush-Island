@@ -1,5 +1,7 @@
 package ru.javarush.sergeyivanov.island.Main;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Herbivore;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Predator;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
@@ -9,7 +11,8 @@ import java.util.concurrent.BlockingQueue;
 
 public class LiveCycle {
     public static boolean marker = true;
-
+    static final Logger rootLogger = LogManager.getRootLogger();
+    static final Logger cycleLogger = LogManager.getLogger(LiveCycle.class);
     public void start() {
         for (int i = 0; i < Island.getWidthField(); i++) {
             for (int j = 0; j < Island.getHeightField(); j++) {
@@ -19,7 +22,12 @@ public class LiveCycle {
                 for (Predator predator: predators) {
                     if (!predator.markerOfEndedCycle) {
                         predator.liveOneCycle();
-                        System.out.println("+++++++++++++++++++++++++++++");
+//                        System.out.println("+++++++++++++++++++++++++++++");
+                        cycleLogger.info("+++++++++++++++++++++++++++++");
+                        rootLogger.info("rootLogger info run");
+                        rootLogger.debug("rootLogger debug run");
+                        cycleLogger.debug("cycleLogger debug run");
+
                     }
                 }
 
@@ -27,7 +35,12 @@ public class LiveCycle {
                 for (Herbivore herbivore: herbivores) {
                     if (!herbivore.markerOfEndedCycle) {
                         herbivore.liveOneCycle();
-                        System.out.println("+++++++++++++++++++++++++++++");
+//                        System.out.println("+++++++++++++++++++++++++++++");
+                        cycleLogger.info("+++++++++++++++");
+                        cycleLogger.error("cycleLogger error write");
+                        rootLogger.error("rootLogger error write");
+                        rootLogger.fatal("rootLogger fatal write");
+
                     }
                 }
             }
