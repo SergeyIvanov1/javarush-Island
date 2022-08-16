@@ -10,7 +10,7 @@ public class Calculations {
         return roundNumber(satiety - hunger);
     }
 
-    private static double roundNumber(double calculate){
+    public static double roundNumber(double calculate){
         double scale = Math.pow(10, 3);
         return Math.floor(calculate * scale) / scale;
     }

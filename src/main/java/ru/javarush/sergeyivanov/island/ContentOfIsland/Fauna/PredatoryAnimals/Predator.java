@@ -19,4 +19,18 @@ public abstract class Predator extends Animal {
 
         markerOfEndedCycle = true;
     }
+
+    @Override
+    public void run() {
+        eat(getLocation().getHerbivores());
+        if (satiety < amountNeedFood) {
+            eat(getLocation().getPredators());
+        }
+
+        multiply();
+        changeLocation();
+
+        markerOfEndedCycle = true;
+    }
 }
+

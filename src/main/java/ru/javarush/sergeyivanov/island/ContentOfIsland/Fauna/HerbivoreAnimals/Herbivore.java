@@ -20,4 +20,17 @@ public abstract class Herbivore extends Animal {
 
         markerOfEndedCycle = true;
     }
+
+    @Override
+    public void run() {
+        eat(getLocation().getPlants());
+        if (satiety < amountNeedFood) {
+            eat(getLocation().getHerbivores());
+        }
+
+        multiply();
+        changeLocation();
+
+        markerOfEndedCycle = true;
+    }
 }

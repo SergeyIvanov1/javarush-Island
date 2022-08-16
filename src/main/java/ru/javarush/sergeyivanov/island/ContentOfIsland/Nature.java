@@ -5,8 +5,8 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
 public abstract class Nature {
     Location location;
 
-    int IndexLineField;
-    int IndexColumnField;
+    protected int indexLineField;
+    protected int IndexColumnField;
 
     protected double weight;
     protected int maxCountInsideCell;
@@ -26,11 +26,11 @@ public abstract class Nature {
     }
 
     public int getIndexLineField() {
-        return IndexLineField;
+        return indexLineField;
     }
 
     public void setIndexLineField(int indexLineField) {
-        this.IndexLineField = indexLineField;
+        this.indexLineField = indexLineField;
     }
 
     public int getIndexColumnField() {

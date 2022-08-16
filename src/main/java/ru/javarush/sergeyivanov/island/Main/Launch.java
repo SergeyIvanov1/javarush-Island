@@ -25,7 +25,7 @@ public class Launch {
 //        Statistic.printParametersOfField();
 
         LiveCycle cycle = new LiveCycle();
-        cycle.repeatCycle(8);
+        cycle.repeatCycle(3);
 
     }
 }

@@ -32,7 +32,7 @@ public class ProcessorParam {
     }
 
     List<Queue<? extends Nature>> createListQueuesByObjects(Map<Class<? extends Nature>, Integer> map) {
-        List<Queue<? extends Nature>> listQueue = new ArrayList<>();
+        List<Queue<? extends Nature>> listQueues = new ArrayList<>();
 
         for (Map.Entry<Class<? extends Nature>, Integer> pair : map.entrySet()) {
             Queue<Nature> queue = new LinkedList<>();
@@ -40,12 +40,12 @@ public class ProcessorParam {
             var aClass = pair.getKey();
             Integer amount = pair.getValue();
             try {
-                listQueue.add(fillQueueAndGet(queue, aClass, amount));
+                listQueues.add(fillQueueAndGet(queue, aClass, amount));
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
-        return listQueue;
+        return listQueues;
     }
 
     void allocateObjsIntoField(List<Queue<? extends Nature>> listQueues) {
