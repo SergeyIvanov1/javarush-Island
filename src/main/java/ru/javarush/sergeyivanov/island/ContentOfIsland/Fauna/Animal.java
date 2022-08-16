@@ -2,6 +2,7 @@ package ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Caterpillar;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import ru.javarush.sergeyivanov.island.Inicialization.ProcessorParam;
@@ -51,7 +52,7 @@ public abstract class Animal extends Nature {
 
     public void eat(BlockingQueue<? extends Nature> natureObj) {
         if (amountNeedFood == 0) {
-            log.debug(thisAnimal + " eats very little, insignificant");
+            log.debug(thisAnimal + " eats very little, insignificant\n");
         }
         if (satiety < amountNeedFood) {
             log.debug("Animal - " + thisAnimal + " wants EAT()");
@@ -212,10 +213,10 @@ public abstract class Animal extends Nature {
         markerOfEndedCycle = false;
         satiety = Calculations.reduceSatiety(satiety, amountNeedFood);
 
-        if (satiety <= 0){
+        if (satiety <= 0 && this.getClass() != Caterpillar.class){
             die();
             log.debug(thisAnimal + " (location [" + getIndexLineField() + "][" + getIndexColumnField()+ "])"
-                    + " has hungry death");
+                    + " has hungry death. " + "Satiety = " + satiety);
         }
     }
 
