@@ -7,6 +7,7 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import ru.javarush.sergeyivanov.island.Inicialization.ProcessorParam;
 import ru.javarush.sergeyivanov.island.Main.Calculations;
+import ru.javarush.sergeyivanov.island.Main.Statistic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -93,6 +94,7 @@ public abstract class Animal extends Nature implements Runnable {
 
                     if (animals.remove(food)) {
                         log.debug("\t" + food.getClass().getSimpleName() + " eaten and deleted from queue\n");
+                        Statistic.amountEatenAnimals.incrementAndGet();
                     }
                     return Optional.of(foodWeight);
                 } else {
@@ -128,6 +130,7 @@ public abstract class Animal extends Nature implements Runnable {
                     try {
                         child = constructor.newInstance();
                         log.debug("\tchild " + child.getClass().getSimpleName() + " was born\n");
+                        Statistic.amountBorn.incrementAndGet();
                     } catch (InstantiationException | IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
@@ -226,7 +229,8 @@ public abstract class Animal extends Nature implements Runnable {
         if (satiety <= 0 && this.getClass() != Caterpillar.class){
             die();
             log.debug(thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
-                    + " has hungry death. " + "Satiety = " + satiety);
+                    + " has hungry death. Satiety = " + satiety);
+            Statistic.amountHungryDeath.incrementAndGet();
         }
     }
 

@@ -24,7 +24,6 @@ public class LiveCycle {
                 Location currentLocation = Island.getInstance().getField()[i][j];
 
                 BlockingQueue<Predator> predators = currentLocation.getPredators();
-
                 for (Predator predator : predators) {
                     if (!predator.markerOfEndedCycle) {
                         service.submit(predator);
@@ -43,14 +42,12 @@ public class LiveCycle {
                 }
 
                 try {
-                    boolean resultExecute = service.awaitTermination(1, TimeUnit.SECONDS);
-                    System.out.println(resultExecute);
+                    service.awaitTermination(1, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         }
-
     }
 
     public void repeatCycle(int amount) {
@@ -58,6 +55,8 @@ public class LiveCycle {
             rootLogger.debug("**************** Launched cycle № " + i +" *******************");
             launch();
             updateNewCycle();
+            Statistic.collectDataOfNewCycle();
+            Statistic.printParamNewCycle();
         }
     }
 
