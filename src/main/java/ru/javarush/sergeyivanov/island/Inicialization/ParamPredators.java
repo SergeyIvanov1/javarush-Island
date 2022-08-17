@@ -16,7 +16,7 @@ public class ParamPredators {
         map.put(Wolf.class, 45);//900
     }
 
-    public static Map<Class<? extends Nature>, Integer> getMap() {
+    public static Map<Class<? extends Nature>, Integer> getMapOfAnimals() {
         return map;
     }
 }

@@ -7,9 +7,9 @@ public class WildBoar extends Herbivore{
 
     {
         ration.put(Grass.class, 100);
-        ration.put(Shrub.class, 75);
-        ration.put(Caterpillar.class, 75);
-        ration.put(Mouse.class, 75);
+        ration.put(Shrub.class, 100);
+        ration.put(Caterpillar.class, 90);
+        ration.put(Mouse.class, 50);
     }
 
     public WildBoar() {

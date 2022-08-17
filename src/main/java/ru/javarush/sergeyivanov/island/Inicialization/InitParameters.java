@@ -19,9 +19,10 @@ public class InitParameters {
 
     List<Map<Class<? extends Nature>, Integer>> parameters = new ArrayList<>();
     {
-        parameters.add(ParamHerbivores.getMap());
-        parameters.add(ParamPredators.getMap());
-        parameters.add(ParamPlants.getMap());
+        parameters.add(ParamHerbivores.getMapOfAnimals());
+        parameters.add(ParamPredators.getMapOfAnimals());
+        parameters.add(ParamPlants.getMapOfPlants());
+        System.out.println("parameters.size = " + parameters.size());
 
         initField();
 

@@ -15,7 +15,7 @@ public class ParamPlants {
 
     }
 
-    public static Map<Class<? extends Nature>, Integer> getMap() {
+    public static Map<Class<? extends Nature>, Integer> getMapOfPlants() {
         return map;
     }
 }

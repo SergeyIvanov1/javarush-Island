@@ -31,18 +31,19 @@ public class Statistic {
     }
 
     public static void printParamNewCycle(){
-        System.out.println("****** Statistic new cycle ******");
+        System.out.println("\n****** Statistic new cycle ******");
         System.out.println("\tAmount animals after initialization = " + amountAnimalsAfterInit);
         System.out.println("\tCommon amount of animals in new cycle = " + amountAnimalsInNewCycle);
         System.out.println("\tThe difference between amount animals after initialization and " +
                 "\n\tcommon amount of animals in new cycle is " + (amountAnimalsAfterInit - amountAnimalsInNewCycle));
         System.out.println("\n\tAmount born animals = " + amountBorn);
-        System.out.println("\tAmount hungry death = " + amountHungryDeath);
+        System.out.println("\tAmount hungry deaths = " + amountHungryDeath);
         System.out.println("\tAmount eaten animals = " + amountEatenAnimals);
-        System.out.println("*******\n");
+        System.out.println();
         amountBorn.set(0);
         amountHungryDeath.set(0);
         amountEatenAnimals.set(0);
+        amountAnimalsInNewCycle = 0;
     }
 
     public static void collectDataOfNewCycle(){

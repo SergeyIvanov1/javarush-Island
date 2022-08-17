@@ -7,7 +7,7 @@ public class Buffalo extends Herbivore{
 
     {
         ration.put(Grass.class, 100);
-        ration.put(Shrub.class, 75);
+        ration.put(Shrub.class, 100);
     }
 
     public Buffalo() {

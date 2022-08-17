@@ -22,7 +22,7 @@ public class ParamHerbivores {
         map.put(WildBoar.class, 15); // 1500
     }
 
-    public static Map<Class<? extends Nature>, Integer> getMap() {
+    public static Map<Class<? extends Nature>, Integer> getMapOfAnimals() {
         return map;
     }
 }

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Caterpillar;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Plant;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import ru.javarush.sergeyivanov.island.Inicialization.ProcessorParam;
 import ru.javarush.sergeyivanov.island.Main.Calculations;
@@ -83,18 +84,21 @@ public abstract class Animal extends Nature implements Runnable {
         for (Nature food : animals) {
             if (ration.containsKey(food.getClass())) {
                 int probability = ration.get(food.getClass());
+                String nameFood = food.getClass().getSimpleName();
                 log.debug("\t" + thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
-                        + " found food - " + food.getClass().getSimpleName());
+                        + " found food - " + nameFood);
                 boolean catchFood = random.nextInt(BOUND) < probability;
 
                 if (catchFood) {
                     double foodWeight = food.getWeight();
-                    log.debug("\tWeight of " + food.getClass().getSimpleName() +
+                    log.debug("\tWeight of " + nameFood +
                             " consists - " + foodWeight + " kg");
 
                     if (animals.remove(food)) {
-                        log.debug("\t" + food.getClass().getSimpleName() + " eaten and deleted from queue\n");
-                        Statistic.amountEatenAnimals.incrementAndGet();
+                        log.debug("\t" + nameFood + " eaten and deleted from queue\n");
+                        if (!(Plant.class.isAssignableFrom(food.getClass()))) {
+                            Statistic.amountEatenAnimals.incrementAndGet();
+                        }
                     }
                     return Optional.of(foodWeight);
                 } else {

@@ -37,14 +37,17 @@ public class ProcessorParam {
         for (Map.Entry<Class<? extends Nature>, Integer> pair : map.entrySet()) {
             Queue<Nature> queue = new LinkedList<>();
 
-            var aClass = pair.getKey();
-            Integer amount = pair.getValue();
+            var classNatureObj = pair.getKey();
+            Integer amountNatureObj = pair.getValue();
             try {
-                listQueues.add(fillQueueAndGet(queue, aClass, amount));
+                Queue<? extends Nature> natures = fillQueueAndGet(queue, classNatureObj, amountNatureObj);
+                System.out.println("Queue of " + classNatureObj.getSimpleName() + "equals - " + natures.size());
+                listQueues.add(natures);
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
+        System.out.println("Size listQueues of Natures = " + listQueues.size());
         return listQueues;
     }
 
@@ -52,7 +55,8 @@ public class ProcessorParam {
         ThreadLocalRandom random = ThreadLocalRandom.current();
 
         for (Queue<? extends Nature> queue : listQueues) {
-            for (int i = 0; i < queue.size(); i++) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
                 int randomLine = random.nextInt(0, Island.getWidthField());
                 int randomColumn = random.nextInt(0, Island.getHeightField());
 
@@ -63,12 +67,12 @@ public class ProcessorParam {
     }
 
     private Queue<? extends Nature> fillQueueAndGet(
-            Queue<Nature> queue, Class<? extends Nature> obj, int amountAnimals)
+            Queue<Nature> queue, Class<? extends Nature> classNatureObj, int amountObj)
             throws InstantiationException, IllegalAccessException
     {
-        for (int i = 0; i < amountAnimals; i++) {
+        for (int i = 0; i < amountObj; i++) {
             try {
-                Constructor<? extends Nature> constructor = obj.getConstructor();
+                Constructor<? extends Nature> constructor = classNatureObj.getConstructor();
                 Nature natureObj = constructor.newInstance();
                 queue.add(natureObj);
             } catch (NoSuchMethodException | InvocationTargetException e) {
