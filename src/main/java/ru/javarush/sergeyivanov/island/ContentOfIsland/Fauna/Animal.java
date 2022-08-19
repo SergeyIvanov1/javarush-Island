@@ -6,12 +6,14 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Ca
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Plant;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
+import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 import ru.javarush.sergeyivanov.island.Inicialization.ProcessorParam;
 import ru.javarush.sergeyivanov.island.Main.Calculations;
 import ru.javarush.sergeyivanov.island.Main.Statistic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.*;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
@@ -22,6 +24,7 @@ public abstract class Animal extends Nature implements Runnable {
     static final Logger log = LogManager.getRootLogger();
     public boolean markerOfEndedCycle = false;
     protected Map<Class<? extends Nature>, Integer> ration = new ConcurrentHashMap<>();
+    Statement statement = InitParameters.statement;
     protected double satiety;
     protected boolean isMale;
     protected boolean isNotMultiplied = true;
@@ -37,6 +40,27 @@ public abstract class Animal extends Nature implements Runnable {
         random = ThreadLocalRandom.current();
         isMale = random.nextBoolean();
         thisAnimal = this.getClass().getSimpleName();
+
+        String userName = "root";
+        String password = "Fhgffv56764()()";
+        String URL = "jdbc:mysql://localhost:3306/island_settings";
+        try {
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(URL, userName, password);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT ration_animal, " + thisAnimal + " FROM table_of_probability WHERE " +
+                            thisAnimal + " > 0");
+
+            while (resultSet.next()) {
+                String class_name = resultSet.getString("ration_animal");
+                Class<? extends Nature> classObj = (Class<? extends Nature>) Class.forName(class_name);
+                int probability = resultSet.getInt(thisAnimal);
+                ration.put(classObj, probability);
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Animal(double weight, int maxCountIntoCell, int rangeMove, double amountNeedFood) {
@@ -114,7 +138,7 @@ public abstract class Animal extends Nature implements Runnable {
     }
 
     public void multiply() {
-        if (!this.isNotMultiplied){
+        if (!this.isNotMultiplied) {
             log.debug(thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                     + " has already multiplied during this cycle\n");
         }
@@ -220,17 +244,17 @@ public abstract class Animal extends Nature implements Runnable {
         return newIndex;
     }
 
-    public boolean die(){
+    public boolean die() {
         return getLocation().getStorageNature(this.getClass()).remove(this);
     }
 
 
-    public void updateParamNewDay(){
+    public void updateParamNewDay() {
         isNotMultiplied = true;
         markerOfEndedCycle = false;
         satiety = Calculations.reduceSatiety(satiety, amountNeedFood);
 
-        if (satiety <= 0 && this.getClass() != Caterpillar.class){
+        if (satiety <= 0 && this.getClass() != Caterpillar.class) {
             die();
             log.debug(thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                     + " has hungry death. Satiety = " + satiety);
@@ -238,4 +262,7 @@ public abstract class Animal extends Nature implements Runnable {
         }
     }
 
+    public Map<Class<? extends Nature>, Integer> getRation() {
+        return ration;
+    }
 }

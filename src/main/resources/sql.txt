@@ -102,3 +102,62 @@ INSERT INTO table_of_probability(ration_animal, Wolf, Boa, Fox, Bear, Eagle, Hor
     UPDATE settings SET class_name =
                             'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Shrub'
     WHERE class_name = 'Shrub';
+
+
+ALTER TABLE table_of_probability MODIFY COLUMN ration_animal VARCHAR(100);
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Bear'
+WHERE ration_animal = 'Bear';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Boa'
+WHERE ration_animal = 'Boa';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Eagle'
+WHERE ration_animal = 'Eagle';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Fox'
+WHERE ration_animal = 'Fox';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Wolf'
+WHERE ration_animal = 'Wolf';
+
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Buffalo'
+WHERE ration_animal = 'Buffalo';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Caterpillar'
+WHERE ration_animal = 'Caterpillar';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Deer'
+WHERE ration_animal = 'Deer';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Duck'
+WHERE ration_animal = 'Duck';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Goat'
+WHERE ration_animal = 'Goat';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Horse'
+WHERE ration_animal = 'Horse';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Mouse'
+WHERE ration_animal = 'Mouse';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Rabbit'
+WHERE ration_animal = 'Rabbit';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Sheep'
+WHERE ration_animal = 'Sheep';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.WildBoar'
+WHERE ration_animal = 'WildBoar';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.WildBoar'
+WHERE ration_animal = 'WildBoar';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Grass'
+WHERE ration_animal = 'Grass';
+UPDATE table_of_probability SET ration_animal =
+                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Shrub'
+WHERE ration_animal = 'Shrub';
+select * from table_of_probability;

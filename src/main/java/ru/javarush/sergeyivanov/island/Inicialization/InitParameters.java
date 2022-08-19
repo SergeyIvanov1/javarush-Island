@@ -17,6 +17,7 @@ public class InitParameters {
 
     private boolean termForStopping;
     private int startAmountChildren;
+    public static Statement statement;
 
 //    List<Map<Class<? extends Nature>, Integer>> parameters = new ArrayList<>();
     private static final Map<Class<? extends Nature>, Integer> map = new HashMap<>();
@@ -26,9 +27,9 @@ public class InitParameters {
         String password = "Fhgffv56764()()";
         String URL = "jdbc:mysql://localhost:3306/island_settings";
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(URL, userName, password);
-            Statement statement = connection.createStatement();
+           Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT class_name, amount_objects FROM settings");
 
             while (resultSet.next()){

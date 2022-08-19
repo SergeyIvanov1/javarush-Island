@@ -5,11 +5,11 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Shrub;
 
 public class Mouse extends Herbivore {
 
-    {
-        ration.put(Grass.class, 100);
-        ration.put(Shrub.class, 100);
-        ration.put(Caterpillar.class, 75);
-    }
+//    {
+//        ration.put(Grass.class, 100);
+//        ration.put(Shrub.class, 100);
+//        ration.put(Caterpillar.class, 75);
+//    }
 
     public Mouse() {
         super(0.05, 500, 1, 0.01);
