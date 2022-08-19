@@ -41,7 +41,7 @@ public class ProcessorParam {
             Integer amountNatureObj = pair.getValue();
             try {
                 Queue<? extends Nature> natures = fillQueueAndGet(queue, classNatureObj, amountNatureObj);
-                System.out.println("Queue of " + classNatureObj.getSimpleName() + "equals - " + natures.size());
+                System.out.println("Queue of " + classNatureObj.getSimpleName() + " equals - " + natures.size());
                 listQueues.add(natures);
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();

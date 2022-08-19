@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="userName">root</entry>
+    <entry key="password">Fhgffv56764()()</entry>
+    <entry key="URL">jdbc:mysql://localhost:3306/island_settings</entry>
+</properties>

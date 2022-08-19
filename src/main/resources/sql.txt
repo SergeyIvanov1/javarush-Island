@@ -45,3 +45,60 @@ INSERT INTO table_of_probability(ration_animal, Wolf, Boa, Fox, Bear, Eagle, Hor
     ('Caterpillar', 0, 0, 40, 0, 0, 0, 0,  0,  90,  0,  0,  90,  0,  90,  0),
     ('Grass', 0, 0, 0, 0, 0, 100, 100,  100,  100,  100,  100,  100,  100,  100,  100),
     ('Shrub', 0, 0, 0, 0, 0, 100, 100,  100,  100,  100,  100,  100,  100,  100,  100);
+
+
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Bear'
+    WHERE class_name = 'Bear';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Boa'
+    WHERE class_name = 'Boa';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Eagle'
+    WHERE class_name = 'Eagle';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Fox'
+    WHERE class_name = 'Fox';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Wolf'
+    WHERE class_name = 'Wolf';
+
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Buffalo'
+    WHERE class_name = 'Buffalo';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Caterpillar'
+    WHERE class_name = 'Caterpillar';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Deer'
+    WHERE class_name = 'Deer';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Duck'
+    WHERE class_name = 'Duck';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Goat'
+    WHERE class_name = 'Goat';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Horse'
+    WHERE class_name = 'Horse';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Mouse'
+    WHERE class_name = 'Mouse';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Rabbit'
+    WHERE class_name = 'Rabbit';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Sheep'
+    WHERE class_name = 'Sheep';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.WildBoar'
+    WHERE class_name = 'WildBoar';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.WildBoar'
+    WHERE class_name = 'WildBoar';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Grass'
+    WHERE class_name = 'Grass';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Shrub'
+    WHERE class_name = 'Shrub';
