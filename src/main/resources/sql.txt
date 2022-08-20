@@ -161,3 +161,4 @@ UPDATE table_of_probability SET ration_animal =
                         'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Shrub'
 WHERE ration_animal = 'Shrub';
 select * from table_of_probability;
+

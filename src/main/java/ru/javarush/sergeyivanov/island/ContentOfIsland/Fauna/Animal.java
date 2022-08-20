@@ -6,31 +6,29 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Ca
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Plant;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
-import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 import ru.javarush.sergeyivanov.island.Inicialization.ProcessorParam;
-import ru.javarush.sergeyivanov.island.Main.Calculations;
+import ru.javarush.sergeyivanov.island.Main.UtilProcessor;
 import ru.javarush.sergeyivanov.island.Main.Statistic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animal extends Nature implements Runnable {
     static final Logger log = LogManager.getRootLogger();
     public boolean markerOfEndedCycle = false;
-    protected Map<Class<? extends Nature>, Integer> ration = new ConcurrentHashMap<>();
-    Statement statement = InitParameters.statement;
+    protected Map<Class<? extends Nature>, Integer> ration = new HashMap<>();
+    public Map<String, Map<Class<? extends Nature>, Integer>> cacheRation = new HashMap<>();
     protected double satiety;
     protected boolean isMale;
     protected boolean isNotMultiplied = true;
     protected ThreadLocalRandom random;
     ProcessorParam processor = new ProcessorParam();
-    String thisAnimal;
+    String nameAnimal;
     private static final int BOUND = 100;
     private static final int MIN_INDEX = 0;
     private static final int INCLUDING_NUMBER = 1;
@@ -39,33 +37,19 @@ public abstract class Animal extends Nature implements Runnable {
     {
         random = ThreadLocalRandom.current();
         isMale = random.nextBoolean();
-        thisAnimal = this.getClass().getSimpleName();
+        nameAnimal = this.getClass().getSimpleName();
 
-        String userName = "root";
-        String password = "Fhgffv56764()()";
-        String URL = "jdbc:mysql://localhost:3306/island_settings";
-        try {
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(URL, userName, password);
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(
-                    "SELECT ration_animal, " + thisAnimal + " FROM table_of_probability WHERE " +
-                            thisAnimal + " > 0");
-
-            while (resultSet.next()) {
-                String class_name = resultSet.getString("ration_animal");
-                Class<? extends Nature> classObj = (Class<? extends Nature>) Class.forName(class_name);
-                int probability = resultSet.getInt(thisAnimal);
-                ration.put(classObj, probability);
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
+        if (cacheRation.containsKey(nameAnimal)) {
+            ration = cacheRation.get(nameAnimal);
+        } else {
+            UtilProcessor.fillRationFromDataBase(nameAnimal, ration);
+            cacheRation.put(nameAnimal, ration);
         }
     }
 
     public Animal(double weight, int maxCountIntoCell, int rangeMove, double amountNeedFood) {
         this.weight = weight;
-        this.maxCountInsideCell = maxCountIntoCell;
+        this.maxObjInCell = maxCountIntoCell;
         this.rangeMove = rangeMove;
         this.amountNeedFood = amountNeedFood;
 
@@ -78,20 +62,20 @@ public abstract class Animal extends Nature implements Runnable {
 
     public void eat(BlockingQueue<? extends Nature> natureObj) {
         if (amountNeedFood == 0) {
-            log.debug(thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+            log.debug(nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                     + " eats very little, insignificant\n");
         }
         if (satiety < amountNeedFood) {
-            log.debug("Animal - " + thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+            log.debug("Animal - " + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                     + " wants EAT()");
-            log.debug("\tsatiety" + thisAnimal + " = " + satiety + ", amountNeedFood = " + amountNeedFood);
+            log.debug("\tsatiety" + nameAnimal + " = " + satiety + ", amountNeedFood = " + amountNeedFood);
         }
 
         while (satiety < amountNeedFood) {
             Optional<Double> food = findFood(natureObj);
             if (food.isPresent()) {
                 double foodWeight = food.get();
-                satiety = Calculations.roundNumber(satiety + foodWeight);
+                satiety = UtilProcessor.roundNumber(satiety + foodWeight);
                 log.debug("satiety = " + satiety + ", amountNeedFood = " + amountNeedFood);
 
                 if (satiety > amountNeedFood) {
@@ -109,7 +93,7 @@ public abstract class Animal extends Nature implements Runnable {
             if (ration.containsKey(food.getClass())) {
                 int probability = ration.get(food.getClass());
                 String nameFood = food.getClass().getSimpleName();
-                log.debug("\t" + thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+                log.debug("\t" + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                         + " found food - " + nameFood);
                 boolean catchFood = random.nextInt(BOUND) < probability;
 
@@ -126,27 +110,27 @@ public abstract class Animal extends Nature implements Runnable {
                     }
                     return Optional.of(foodWeight);
                 } else {
-                    log.debug("\t" + thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+                    log.debug("\t" + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                             + " couldn't to catch food - " + food.getClass().getSimpleName() + "\n");
                     return Optional.empty();
                 }
             }
         }
-        log.debug("\tInside location finished food from ration " + thisAnimal
+        log.debug("\tInside location finished food from ration " + nameAnimal
                 + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]" + "\n");
         return Optional.empty();
     }
 
     public void multiply() {
         if (!this.isNotMultiplied) {
-            log.debug(thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+            log.debug(nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                     + " has already multiplied during this cycle\n");
         }
 
         if (this.isNotMultiplied) {
             BlockingQueue<Animal> storageAnimals =
                     (BlockingQueue<Animal>) getLocation().getStorageNature(this.getClass());
-            log.debug("Animal - " + thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+            log.debug("Animal - " + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                     + " wants MULTIPLY()");
 
             Optional<Animal> pair = findPair(this, storageAnimals);
@@ -179,7 +163,7 @@ public abstract class Animal extends Nature implements Runnable {
     }
 
     private Optional<Animal> findPair(Animal animal, BlockingQueue<? extends Nature> animals) {
-        log.debug("\t" + thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+        log.debug("\t" + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                 + " is looking for a pair");
 
         for (Nature pair : animals) {
@@ -199,11 +183,11 @@ public abstract class Animal extends Nature implements Runnable {
 
     public void changeLocation() {
         if (rangeMove == 0) {
-            log.debug(thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+            log.debug(nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                     + " can't change location\n");
             return;
         }
-        log.debug("Animal - " + thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+        log.debug("Animal - " + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                 + " can to CHANGE LOCATION()");
 
         int width = Island.getWidthField();
@@ -252,11 +236,11 @@ public abstract class Animal extends Nature implements Runnable {
     public void updateParamNewDay() {
         isNotMultiplied = true;
         markerOfEndedCycle = false;
-        satiety = Calculations.reduceSatiety(satiety, amountNeedFood);
+        satiety = UtilProcessor.reduceSatiety(satiety, amountNeedFood);
 
         if (satiety <= 0 && this.getClass() != Caterpillar.class) {
             die();
-            log.debug(thisAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+            log.debug(nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                     + " has hungry death. Satiety = " + satiety);
             Statistic.amountHungryDeath.incrementAndGet();
         }

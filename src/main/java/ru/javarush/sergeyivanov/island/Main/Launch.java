@@ -53,6 +53,17 @@ public class Launch {
         extracted(eagle);
         extracted(fox);
         extracted(wolf);
+        Map<String, Map<Class<? extends Nature>, Integer>> cacheRation = wolf.cacheRation;
+        for (Map.Entry<String, Map<Class<? extends Nature>, Integer>> stringMapMap: cacheRation.entrySet()) {
+            System.out.println("_________________________________________________________");
+            System.out.println(stringMapMap.getKey() + ":");
+            Map<Class<? extends Nature>, Integer> value = stringMapMap.getValue();
+            for (Map.Entry<Class<? extends Nature>, Integer> entry: value.entrySet()) {
+                System.out.println(entry.getKey());
+                System.out.println(entry.getValue());
+            }
+            System.out.println();
+        }
     }
 
     private static void extracted(Animal animal) {

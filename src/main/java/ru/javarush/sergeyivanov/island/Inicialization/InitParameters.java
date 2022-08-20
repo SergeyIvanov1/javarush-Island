@@ -19,40 +19,33 @@ public class InitParameters {
     private int startAmountChildren;
     public static Statement statement;
 
-//    List<Map<Class<? extends Nature>, Integer>> parameters = new ArrayList<>();
-    private static final Map<Class<? extends Nature>, Integer> map = new HashMap<>();
+    public static final Map<Class<? extends Nature>, Integer> mapaOfNatureObj = new HashMap<>();
 
     {
         String userName = "root";
         String password = "Fhgffv56764()()";
         String URL = "jdbc:mysql://localhost:3306/island_settings";
         try {
-//            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(URL, userName, password);
-           Statement statement = connection.createStatement();
+            Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT class_name, amount_objects FROM settings");
 
             while (resultSet.next()){
                 String class_name = resultSet.getString("class_name");
                 Class<? extends Nature> classObj = (Class<? extends Nature>) Class.forName(class_name);
                 int amount_objects = resultSet.getInt("amount_objects");
-               map.put(classObj, amount_objects);
+                mapaOfNatureObj.put(classObj, amount_objects);
             }
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
 
-//        parameters.add(ParamHerbivores.getMapOfAnimals());
-//        parameters.add(ParamPredators.getMapOfAnimals());
-//        parameters.add(ParamPlants.getMapOfPlants());
-        System.out.println("parameters.size = " + map.size());
+        System.out.println("mapaOfNatureObj.size = " + mapaOfNatureObj.size());
 
         initField();
 
-//        for (Map<Class<? extends Nature>, Integer> map: parameters) {
-            List<Queue<? extends Nature>> listQueuesByObjects = processor.createListQueuesByObjects(map);
+            List<Queue<? extends Nature>> listQueuesByObjects = processor.createListQueuesByObjects(mapaOfNatureObj);
             processor.allocateObjsIntoField(listQueuesByObjects);
-//        }
     }
 
     public InitParameters(boolean manual) {
