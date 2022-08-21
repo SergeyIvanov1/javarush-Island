@@ -21,35 +21,16 @@ public class InitParameters {
     private int startAmountChildren;
     public static Statement statement;
 
-    public static final Map<Class<? extends Nature>, Integer> cacheNatureObj = new HashMap<>();
+    public static Map<Class<? extends Nature>, Integer> cacheNatureObj;
     public static Map<String, Map<Class<? extends Animal>, Integer>> cacheRations;
     public static Map<String, Map<String, Number>> cacheSettings;
 
     {
-        String userName = "root";
-        String password = "Fhgffv56764()()";
-        String URL = "jdbc:mysql://localhost:3306/island_settings";
-        try {
-            Connection connection = DriverManager.getConnection(URL, userName, password);
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT class_name, amount_objects FROM settings");
-
-            while (resultSet.next()){
-                String class_name = resultSet.getString("class_name");
-                Class<? extends Nature> classObj = (Class<? extends Nature>) Class.forName(class_name);
-                int amount_objects = resultSet.getInt("amount_objects");
-                cacheNatureObj.put(classObj, amount_objects);
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+        cacheNatureObj = DBProcessor.getCacheNatureObjectsFromDB();
         System.out.println("Size of Map cacheNatureObj = " + cacheNatureObj.size());
-
-        initField();
-
         cacheSettings = DBProcessor.getCacheSettingsFromDataBase();
         cacheRations = DBProcessor.getCacheRationsFromDataBase();
+        initField();
         List<Queue<? extends Nature>> listQueuesByObjects = processor.createListQueuesByObjects(cacheNatureObj);
         processor.allocateObjsIntoField(listQueuesByObjects);
     }

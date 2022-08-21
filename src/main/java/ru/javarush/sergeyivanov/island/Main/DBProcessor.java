@@ -4,15 +4,34 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class DBProcessor {
 
     private static final double PERCENTAGE_OF_SATIETY_REDUCTION = 25;
     private static final int ZERO = 0;
     private static final int ONE_HUNDRED_PERCENTS = 100;
+
+    private static String userName;
+    private static String password;
+    private static String URL;
+
+    static {
+        Properties properties = new Properties();
+        try {
+            properties.loadFromXML(new FileInputStream("src/main/resources/settings.xml"));
+            userName = properties.getProperty("userName");
+            password = properties.getProperty("password");
+            URL = properties.getProperty("URL");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static double reduceSatiety(double satiety, double amountNeedFood) {
         double hunger = PERCENTAGE_OF_SATIETY_REDUCTION * amountNeedFood / ONE_HUNDRED_PERCENTS;
@@ -27,9 +46,6 @@ public class DBProcessor {
     public static Map<String, Map<Class<? extends Animal>, Integer>> getCacheRationsFromDataBase() {
         Map<String, Map<Class<? extends Animal>, Integer>> cacheRation = new HashMap<>();
 
-        String userName = "root";
-        String password = "Fhgffv56764()()";
-        String URL = "jdbc:mysql://localhost:3306/island_settings";
         try {
             Connection connection = DriverManager.getConnection(URL, userName, password);
             Statement statement = connection.createStatement();
@@ -60,9 +76,7 @@ public class DBProcessor {
 
     public static Map <String, Map<String, Number>> getCacheSettingsFromDataBase() {
         Map <String, Map<String, Number>> cacheSettingsFromDataBase = new HashMap<>();
-        String userName = "root";
-        String password = "Fhgffv56764()()";
-        String URL = "jdbc:mysql://localhost:3306/island_settings";
+
         try {
             Connection connection = DriverManager.getConnection(URL, userName, password);
             Statement statement = connection.createStatement();
@@ -86,5 +100,25 @@ public class DBProcessor {
             throw new RuntimeException(e);
         }
         return cacheSettingsFromDataBase;
+    }
+
+    public static Map<Class<? extends Nature>, Integer> getCacheNatureObjectsFromDB(){
+        Map<Class<? extends Nature>, Integer> cacheNatureObj = new HashMap<>();
+
+        try {
+            Connection connection = DriverManager.getConnection(URL, userName, password);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT class_name, amount_objects FROM settings");
+
+            while (resultSet.next()){
+                String class_name = resultSet.getString("class_name");
+                Class<? extends Nature> classObj = (Class<? extends Nature>) Class.forName(class_name);
+                int amount_objects = resultSet.getInt("amount_objects");
+                cacheNatureObj.put(classObj, amount_objects);
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return cacheNatureObj;
     }
 }

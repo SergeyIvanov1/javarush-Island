@@ -6,9 +6,12 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.*;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.Map;
+import java.util.Properties;
 
 public class Launch {
     public static void main(String[] args) throws NoSuchFieldException, ClassNotFoundException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -24,7 +27,6 @@ public class Launch {
 
         LiveCycle cycle = new LiveCycle();
         cycle.repeatCycle(3);
-
     }
 
     private static void printRations() {
@@ -47,15 +49,5 @@ public class Launch {
                 System.out.println(entry1.getKey() + " : " + entry1.getValue());
             }
         }
-    }
-
-    private static void extracted(Animal animal) {
-        System.out.println(animal.getClass().getSimpleName() + ":");
-        for (Map.Entry<Class<? extends Animal>, Integer> ration: animal.getRation().entrySet()) {
-            Class<? extends Nature> key = ration.getKey();
-            Integer value = ration.getValue();
-            System.out.println(key.getSimpleName() + " = " + value);
-        }
-        System.out.println();
     }
 }
