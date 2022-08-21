@@ -34,8 +34,9 @@ public class Statistic {
         System.out.println("\n****** Statistic new cycle ******");
         System.out.println("\tAmount animals after initialization = " + amountAnimalsAfterInit);
         System.out.println("\tCommon amount of animals in new cycle = " + amountAnimalsInNewCycle);
-        System.out.println("\tThe difference between amount animals after initialization and " +
-                "\n\tcommon amount of animals in new cycle is " + (amountAnimalsAfterInit - amountAnimalsInNewCycle));
+        System.out.println("\tThe difference between amount animals after initialization " +
+                "\n\t\tand common amount of animals in new cycle consists = " +
+                (amountAnimalsAfterInit - amountAnimalsInNewCycle));
         System.out.println("\n\tAmount born animals = " + amountBorn);
         System.out.println("\tAmount hungry deaths = " + amountHungryDeath);
         System.out.println("\tAmount eaten animals = " + amountEatenAnimals);

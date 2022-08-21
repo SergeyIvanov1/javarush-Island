@@ -21,8 +21,9 @@ public class InitParameters {
     private int startAmountChildren;
     public static Statement statement;
 
-    public static final Map<Class<? extends Nature>, Integer> mapaOfNatureObj = new HashMap<>();
-    public static Map<String, Map<Class<? extends Animal>, Integer>> cacheRation;
+    public static final Map<Class<? extends Nature>, Integer> cacheNatureObj = new HashMap<>();
+    public static Map<String, Map<Class<? extends Animal>, Integer>> cacheRations;
+    public static Map<String, Map<String, Number>> cacheSettings;
 
     {
         String userName = "root";
@@ -37,19 +38,20 @@ public class InitParameters {
                 String class_name = resultSet.getString("class_name");
                 Class<? extends Nature> classObj = (Class<? extends Nature>) Class.forName(class_name);
                 int amount_objects = resultSet.getInt("amount_objects");
-                mapaOfNatureObj.put(classObj, amount_objects);
+                cacheNatureObj.put(classObj, amount_objects);
             }
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println("mapaOfNatureObj.size = " + mapaOfNatureObj.size());
+        System.out.println("Size of Map cacheNatureObj = " + cacheNatureObj.size());
 
-        cacheRation = DBProcessor.getCacheRationsFromDataBase();
         initField();
 
-            List<Queue<? extends Nature>> listQueuesByObjects = processor.createListQueuesByObjects(mapaOfNatureObj);
-            processor.allocateObjsIntoField(listQueuesByObjects);
+        cacheSettings = DBProcessor.getCacheSettingsFromDataBase();
+        cacheRations = DBProcessor.getCacheRationsFromDataBase();
+        List<Queue<? extends Nature>> listQueuesByObjects = processor.createListQueuesByObjects(cacheNatureObj);
+        processor.allocateObjsIntoField(listQueuesByObjects);
     }
 
     public InitParameters(boolean manual) {

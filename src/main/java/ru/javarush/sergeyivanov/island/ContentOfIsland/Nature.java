@@ -2,9 +2,7 @@ package ru.javarush.sergeyivanov.island.ContentOfIsland;
 
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
-
-import java.sql.*;
-import java.util.HashMap;
+import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 import java.util.Map;
 
 public abstract class Nature {
@@ -24,26 +22,19 @@ public abstract class Nature {
 
     {
         nameObj = this.getClass().getSimpleName();
+        initFields();
+    }
 
-//        String userName = "root";
-//        String password = "Fhgffv56764()()";
-//        String URL = "jdbc:mysql://localhost:3306/island_settings";
-//        try {
-//            Connection connection = DriverManager.getConnection(URL, userName, password);
-//            Statement statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery(
-//                    "SELECT ration_animal, " + nameObj + " FROM table_of_probability WHERE " +
-//                            nameObj + " > 0");
-//
-//            while (resultSet.next()) {
-//                String class_name = resultSet.getString("ration_animal");
-//                Class<? extends Nature> classObj = (Class<? extends Nature>) Class.forName(class_name);
-//                int probability = resultSet.getInt(nameObj);
-//                ration.put(classObj, probability);
-//            }
-//        } catch (ClassNotFoundException | SQLException e) {
-//            throw new RuntimeException(e);
-//        }
+    private void initFields() {
+        Map<String, Number> settings = InitParameters.cacheSettings.get(nameObj);
+        weight = (double)settings.get("weight");
+        maxObjInCell = (int)settings.get("maxObjInCell");
+        rangeMove = (int)settings.get("rangeMove");
+        amountNeedFood = (double)settings.get("amountNeedFood");
+        if (Animal.class.isAssignableFrom(this.getClass())) {
+            amountChildren = (int) settings.get("amountChildren");
+            amountCycleLive = (int) settings.get("amountCycleLive");
+        }
     }
 
     public void setLocation(Location location) {

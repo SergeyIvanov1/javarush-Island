@@ -19,40 +19,34 @@ public class Launch {
 
         new InitParameters(false);
         Statistic.printParametersOfField();
+        printRations();
+        printSettings();
 
         LiveCycle cycle = new LiveCycle();
         cycle.repeatCycle(3);
 
-        Buffalo buffalo = new Buffalo();
-        Caterpillar caterpillar = new Caterpillar();
-        Deer deer = new Deer();
-        Duck duck = new Duck();
-        Goat goat = new Goat();
-        Horse horse = new Horse();
-        Mouse mouse = new Mouse();
-        Rabbit rabbit = new Rabbit();
-        Sheep sheep = new Sheep();
-        WildBoar wildBoar = new WildBoar();
-        Bear bear = new Bear();
-        Boa boa = new Boa();
-        Eagle eagle = new Eagle();
-        Fox fox = new Fox();
-        Wolf wolf = new Wolf();
-        extracted(buffalo);
-        extracted(caterpillar);
-        extracted(deer);
-        extracted(duck);
-        extracted(goat);
-        extracted(horse);
-        extracted(mouse);
-        extracted(rabbit);
-        extracted(sheep);
-        extracted(wildBoar);
-        extracted(bear);
-        extracted(boa);
-        extracted(eagle);
-        extracted(fox);
-        extracted(wolf);
+    }
+
+    private static void printRations() {
+        System.out.println("\n*** RATIONS ***\n");
+        for (Map.Entry<String, Map<Class<? extends Animal>, Integer>> entry: InitParameters.cacheRations.entrySet()) {
+            System.out.println("===============");
+            System.out.println(entry.getKey() + ":");
+            for (Map.Entry<Class<? extends Animal>, Integer> entry1: entry.getValue().entrySet()) {
+                System.out.println(entry1.getKey().getSimpleName() + " = " + entry1.getValue());
+            }
+        }
+    }
+
+    private static void printSettings() {
+        System.out.println("\n*** SETTINGS ***\n");
+        for (Map.Entry<String, Map<String, Number>> entry: InitParameters.cacheSettings.entrySet()) {
+            System.out.println("+++++++++++++++");
+            System.out.println(entry.getKey());
+            for (Map.Entry<String, Number> entry1: entry.getValue().entrySet()) {
+                System.out.println(entry1.getKey() + " : " + entry1.getValue());
+            }
+        }
     }
 
     private static void extracted(Animal animal) {

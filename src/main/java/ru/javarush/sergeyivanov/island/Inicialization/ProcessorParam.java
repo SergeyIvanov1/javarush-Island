@@ -47,7 +47,7 @@ public class ProcessorParam {
                 e.printStackTrace();
             }
         }
-        System.out.println("Size listQueues of Natures = " + listQueues.size());
+        System.out.println("Size listQueues of Natures = " + listQueues.size() + "\n");
         return listQueues;
     }
 

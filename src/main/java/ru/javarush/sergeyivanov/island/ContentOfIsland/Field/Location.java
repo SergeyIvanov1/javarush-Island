@@ -1,6 +1,5 @@
 package ru.javarush.sergeyivanov.island.ContentOfIsland.Field;
 
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Herbivore;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Predator;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Plant;

@@ -32,25 +32,14 @@ public abstract class Animal extends Nature implements Runnable {
     private static final int MIN_INDEX = 0;
     private static final int INCLUDING_NUMBER = 1;
     private static final int OUT_BOUND = 1;
+    private static final int HALF = 2;
 
     {
         random = ThreadLocalRandom.current();
         isMale = random.nextBoolean();
         nameAnimal = this.getClass().getSimpleName();
-        ration = InitParameters.cacheRation.get(nameAnimal);
-    }
-
-    public Animal(double weight, int maxCountIntoCell, int rangeMove, double amountNeedFood) {
-        this.weight = weight;
-        this.maxObjInCell = maxCountIntoCell;
-        this.rangeMove = rangeMove;
-        this.amountNeedFood = amountNeedFood;
-
-        if (amountNeedFood != 0) {
-            satiety = amountNeedFood / 2;
-        } else {
-            satiety = 0;
-        }
+        ration = InitParameters.cacheRations.get(nameAnimal);
+        satiety = amountNeedFood / HALF;
     }
 
     public void eat(BlockingQueue<? extends Nature> natureObj) {
