@@ -1,8 +1,10 @@
 package ru.javarush.sergeyivanov.island.Inicialization;
 
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
+import ru.javarush.sergeyivanov.island.Main.DBProcessor;
 
 import java.sql.*;
 import java.util.*;
@@ -20,6 +22,7 @@ public class InitParameters {
     public static Statement statement;
 
     public static final Map<Class<? extends Nature>, Integer> mapaOfNatureObj = new HashMap<>();
+    public static Map<String, Map<Class<? extends Animal>, Integer>> cacheRation;
 
     {
         String userName = "root";
@@ -42,6 +45,7 @@ public class InitParameters {
 
         System.out.println("mapaOfNatureObj.size = " + mapaOfNatureObj.size());
 
+        cacheRation = DBProcessor.getCacheRationsFromDataBase();
         initField();
 
             List<Queue<? extends Nature>> listQueuesByObjects = processor.createListQueuesByObjects(mapaOfNatureObj);

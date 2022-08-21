@@ -1,10 +1,9 @@
 package ru.javarush.sergeyivanov.island.ContentOfIsland;
 
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Herbivore;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
-import ru.javarush.sergeyivanov.island.Main.UtilProcessor;
 
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,9 +13,8 @@ public abstract class Nature {
     protected int indexLineField;
     protected int IndexColumnField;
 
-//    String nameObj;
-//    protected Map<Class<? extends Animal>, Integer> ration = new HashMap<>();
-//    public Map<String, Map<Class<? extends Animal>, Integer>> cacheRation = new HashMap<>();
+    String nameObj;
+
     protected double weight;
     protected int maxObjInCell;
     protected int rangeMove;
@@ -25,15 +23,26 @@ public abstract class Nature {
     protected int amountCycleLive;
 
     {
-//        nameObj = this.getClass().getSimpleName();
+        nameObj = this.getClass().getSimpleName();
+
+//        String userName = "root";
+//        String password = "Fhgffv56764()()";
+//        String URL = "jdbc:mysql://localhost:3306/island_settings";
+//        try {
+//            Connection connection = DriverManager.getConnection(URL, userName, password);
+//            Statement statement = connection.createStatement();
+//            ResultSet resultSet = statement.executeQuery(
+//                    "SELECT ration_animal, " + nameObj + " FROM table_of_probability WHERE " +
+//                            nameObj + " > 0");
 //
-//        if (Animal.class.isAssignableFrom(this.getClass())) {
-//            if (cacheRation.containsKey(nameObj)) {
-//                ration = cacheRation.get(nameObj);
-//            } else {
-//                UtilProcessor.fillRationFromDataBase(nameObj, ration);
-//                cacheRation.put(nameObj, ration);
+//            while (resultSet.next()) {
+//                String class_name = resultSet.getString("ration_animal");
+//                Class<? extends Nature> classObj = (Class<? extends Nature>) Class.forName(class_name);
+//                int probability = resultSet.getInt(nameObj);
+//                ration.put(classObj, probability);
 //            }
+//        } catch (ClassNotFoundException | SQLException e) {
+//            throw new RuntimeException(e);
 //        }
     }
 

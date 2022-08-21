@@ -41,13 +41,13 @@ public class LiveCycle {
                     }
                 }
 
+            }
+        }
                 try {
                     service.awaitTermination(1, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-            }
-        }
     }
 
     public void repeatCycle(int amount) {

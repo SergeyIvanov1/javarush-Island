@@ -6,13 +6,13 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Ca
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Plant;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
+import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 import ru.javarush.sergeyivanov.island.Inicialization.ProcessorParam;
-import ru.javarush.sergeyivanov.island.Main.UtilProcessor;
+import ru.javarush.sergeyivanov.island.Main.DBProcessor;
 import ru.javarush.sergeyivanov.island.Main.Statistic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
@@ -21,14 +21,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class Animal extends Nature implements Runnable {
     static final Logger log = LogManager.getRootLogger();
     public boolean markerOfEndedCycle = false;
-    protected Map<Class<? extends Nature>, Integer> ration = new HashMap<>();
-    public Map<String, Map<Class<? extends Nature>, Integer>> cacheRation = new HashMap<>();
+    String nameAnimal;
+    public Map<Class<? extends Animal>, Integer> ration;
     protected double satiety;
     protected boolean isMale;
     protected boolean isNotMultiplied = true;
     protected ThreadLocalRandom random;
     ProcessorParam processor = new ProcessorParam();
-    String nameAnimal;
     private static final int BOUND = 100;
     private static final int MIN_INDEX = 0;
     private static final int INCLUDING_NUMBER = 1;
@@ -38,13 +37,7 @@ public abstract class Animal extends Nature implements Runnable {
         random = ThreadLocalRandom.current();
         isMale = random.nextBoolean();
         nameAnimal = this.getClass().getSimpleName();
-
-        if (cacheRation.containsKey(nameAnimal)) {
-            ration = cacheRation.get(nameAnimal);
-        } else {
-            UtilProcessor.fillRationFromDataBase(nameAnimal, ration);
-            cacheRation.put(nameAnimal, ration);
-        }
+        ration = InitParameters.cacheRation.get(nameAnimal);
     }
 
     public Animal(double weight, int maxCountIntoCell, int rangeMove, double amountNeedFood) {
@@ -75,7 +68,7 @@ public abstract class Animal extends Nature implements Runnable {
             Optional<Double> food = findFood(natureObj);
             if (food.isPresent()) {
                 double foodWeight = food.get();
-                satiety = UtilProcessor.roundNumber(satiety + foodWeight);
+                satiety = DBProcessor.roundNumber(satiety + foodWeight);
                 log.debug("satiety = " + satiety + ", amountNeedFood = " + amountNeedFood);
 
                 if (satiety > amountNeedFood) {
@@ -236,7 +229,7 @@ public abstract class Animal extends Nature implements Runnable {
     public void updateParamNewDay() {
         isNotMultiplied = true;
         markerOfEndedCycle = false;
-        satiety = UtilProcessor.reduceSatiety(satiety, amountNeedFood);
+        satiety = DBProcessor.reduceSatiety(satiety, amountNeedFood);
 
         if (satiety <= 0 && this.getClass() != Caterpillar.class) {
             die();
@@ -246,7 +239,7 @@ public abstract class Animal extends Nature implements Runnable {
         }
     }
 
-    public Map<Class<? extends Nature>, Integer> getRation() {
+    public Map<Class<? extends Animal>, Integer> getRation() {
         return ration;
     }
 }
