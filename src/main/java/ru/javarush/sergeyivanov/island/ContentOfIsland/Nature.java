@@ -14,7 +14,7 @@ public abstract class Nature {
     String nameObj;
 
     protected double weight;
-    protected int maxObjInCell;
+    public int maxObjInCell;
     protected int rangeMove;
     protected double amountNeedFood;
     protected int amountChildren;

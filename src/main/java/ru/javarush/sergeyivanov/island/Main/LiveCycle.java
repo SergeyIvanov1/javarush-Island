@@ -62,6 +62,7 @@ public class LiveCycle {
     }
 
     public void updateCycle() {
+        ExecutorService serviceOfPlantGrowth = Executors.newWorkStealingPool();
         for (int i = 0; i < Island.getWidthField(); i++) {
             for (int j = 0; j < Island.getHeightField(); j++) {
                 Location currentLocation = Island.getInstance().getField()[i][j];
@@ -75,7 +76,13 @@ public class LiveCycle {
                 for (Herbivore herbivore : herbivores) {
                 herbivore.updateParamForNewCycle();
                 }
+                serviceOfPlantGrowth.submit(currentLocation);
             }
+        }
+        try {
+            serviceOfPlantGrowth.awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

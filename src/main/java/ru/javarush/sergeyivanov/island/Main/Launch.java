@@ -3,6 +3,7 @@ package ru.javarush.sergeyivanov.island.Main;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.*;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.*;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Grass;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 
@@ -53,5 +54,8 @@ public class Launch implements Runnable {
 
         LiveCycle cycle = new LiveCycle();
         cycle.repeatCycle(3);
+//        System.out.println("Grass " + Grass.maxObjInCell);
+//        System.out.println("Wolf " + Wolf.maxObjInCell);
+//        System.out.println("Boa " + Boa.maxObjInCell);
     }
 }

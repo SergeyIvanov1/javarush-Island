@@ -20,8 +20,7 @@ INSERT INTO settings(animal, amount_objects, weight,
             ('Rabbit', 45, 2, 150, 2, 0.45, 6, 3),
             ('Sheep', 42, 70, 140, 3, 15, 2, 4),
             ('WildBoar', 15, 400, 50, 2, 50, 4, 5),
-            ('Grass', 1500, 1, 200, 0, 0, 0, null),
-            ('Shrub', 90, 1, 40, 0, 0, 0, null);
+            ('Grass', 1500, 1, 200, 0, 0, 0, null);
 
 CREATE TABLE table_of_probability(ration_animal VARCHAR(15), Wolf INT, Boa INT, Fox INT, Bear INT, Eagle INT, Horse INT, Deer INT,
         Rabbit INT, Mouse INT, Goat INT, Sheep INT, WildBoar INT, Buffalo INT, Duck INT, Caterpillar INT);
@@ -43,8 +42,7 @@ INSERT INTO table_of_probability(ration_animal, Wolf, Boa, Fox, Bear, Eagle, Hor
     ('Buffalo', 10, 0, 0, 20, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
     ('Duck', 40, 10, 60, 10, 80, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
     ('Caterpillar', 0, 0, 40, 0, 0, 0, 0,  0,  90,  0,  0,  90,  0,  90,  0),
-    ('Grass', 0, 0, 0, 0, 0, 100, 100,  100,  100,  100,  100,  100,  100,  100,  100),
-    ('Shrub', 0, 0, 0, 0, 0, 100, 100,  100,  100,  100,  100,  100,  100,  100,  100);
+    ('Grass', 0, 0, 0, 0, 0, 100, 100,  100,  100,  100,  100,  100,  100,  100,  100);
 
 
     UPDATE settings SET class_name =
@@ -99,9 +97,6 @@ INSERT INTO table_of_probability(ration_animal, Wolf, Boa, Fox, Bear, Eagle, Hor
     UPDATE settings SET class_name =
                             'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Grass'
     WHERE class_name = 'Grass';
-    UPDATE settings SET class_name =
-                            'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Shrub'
-    WHERE class_name = 'Shrub';
 
 
 ALTER TABLE table_of_probability MODIFY COLUMN ration_animal VARCHAR(100);
@@ -157,8 +152,12 @@ WHERE ration_animal = 'WildBoar';
 UPDATE table_of_probability SET ration_animal =
                         'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Grass'
 WHERE ration_animal = 'Grass';
-UPDATE table_of_probability SET ration_animal =
-                        'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Shrub'
-WHERE ration_animal = 'Shrub';
+
+select * from table_of_probability;
+
+DELETE FROM settings where class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Shrub';
+select * from settings;
+
+DELETE FROM table_of_probability where ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Shrub';
 select * from table_of_probability;
 
