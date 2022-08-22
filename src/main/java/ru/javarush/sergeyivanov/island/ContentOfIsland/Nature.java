@@ -18,7 +18,7 @@ public abstract class Nature {
     protected int rangeMove;
     protected double amountNeedFood;
     protected int amountChildren;
-    protected int amountCycleLive;
+    protected int amountCyclesLife;
 
     {
         nameObj = this.getClass().getSimpleName();
@@ -33,7 +33,7 @@ public abstract class Nature {
         amountNeedFood = (double)settings.get("amountNeedFood");
         if (Animal.class.isAssignableFrom(this.getClass())) {
             amountChildren = (int) settings.get("amountChildren");
-            amountCycleLive = (int) settings.get("amountCycleLive");
+            amountCyclesLife = (int) settings.get("amountCycleLive");
         }
     }
 

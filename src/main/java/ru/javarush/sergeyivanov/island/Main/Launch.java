@@ -13,21 +13,8 @@ import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 
-public class Launch {
-    public static void main(String[] args) throws NoSuchFieldException, ClassNotFoundException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-//        Scanner scanner = new Scanner(System.in);
+public class Launch implements Runnable {
 
-//        System.out.println("Does to run the program manually?");
-//        boolean answer = scanner.nextBoolean();
-
-        new InitParameters(false);
-        Statistic.printParametersOfField();
-        printRations();
-        printSettings();
-
-        LiveCycle cycle = new LiveCycle();
-        cycle.repeatCycle(3);
-    }
 
     private static void printRations() {
         System.out.println("\n*** RATIONS ***\n");
@@ -38,6 +25,7 @@ public class Launch {
                 System.out.println(entry1.getKey().getSimpleName() + " = " + entry1.getValue());
             }
         }
+        System.out.println();
     }
 
     private static void printSettings() {
@@ -49,5 +37,21 @@ public class Launch {
                 System.out.println(entry1.getKey() + " : " + entry1.getValue());
             }
         }
+    }
+
+    @Override
+    public void run() {
+        //        Scanner scanner = new Scanner(System.in);
+
+//        System.out.println("Does to run the program manually?");
+//        boolean answer = scanner.nextBoolean();
+
+        new InitParameters(false);
+        printSettings();
+        printRations();
+        Statistic.printParametersOfField();
+
+        LiveCycle cycle = new LiveCycle();
+        cycle.repeatCycle(3);
     }
 }

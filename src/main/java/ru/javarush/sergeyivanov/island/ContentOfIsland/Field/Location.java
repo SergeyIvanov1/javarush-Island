@@ -5,6 +5,7 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Pr
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Plant;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -26,7 +27,7 @@ public class Location {
         return plants;
     }
 
-    public BlockingQueue<? extends Nature> getStorageNature(Class<? extends Nature> aClass) {
+    public BlockingQueue<? extends Nature> getStorageNatureObjs(Class<? extends Nature> aClass) {
         if (Predator.class.isAssignableFrom(aClass)) {
             return getPredators();
         } else if (Herbivore.class.isAssignableFrom(aClass)) {
@@ -36,4 +37,9 @@ public class Location {
         }
         return new LinkedBlockingQueue<>();
     }
+
+//    public void getCountObjects(BlockingQueue<? extends Nature> queue){
+//        Map<String, >
+//
+//    }
 }

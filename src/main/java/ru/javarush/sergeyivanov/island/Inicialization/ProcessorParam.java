@@ -1,11 +1,7 @@
 package ru.javarush.sergeyivanov.island.Inicialization;
 
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Herbivore;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Predator;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Plant;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 
 import java.lang.reflect.Constructor;
@@ -19,7 +15,7 @@ public class ProcessorParam {
     public void transferObjToNewLocation(int newIndexLine, int newIndexColumn, Nature object) {
         Location nextLocation = Island.getInstance().getField()[newIndexLine][newIndexColumn];
         try {
-            BlockingQueue<Nature> nextStorageObj = (BlockingQueue<Nature>) nextLocation.getStorageNature(object.getClass());
+            BlockingQueue<Nature> nextStorageObj = (BlockingQueue<Nature>) nextLocation.getStorageNatureObjs(object.getClass());
 
             object.setLocation(nextLocation);
             object.setIndexLineField(newIndexLine);
@@ -47,7 +43,7 @@ public class ProcessorParam {
                 e.printStackTrace();
             }
         }
-        System.out.println("Size listQueues of Natures = " + listQueues.size() + "\n");
+        System.out.println("Size listQueues of Natures = " + listQueues.size());
         return listQueues;
     }
 

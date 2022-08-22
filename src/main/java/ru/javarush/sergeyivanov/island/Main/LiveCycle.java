@@ -52,27 +52,28 @@ public class LiveCycle {
 
     public void repeatCycle(int amount) {
         for (int i = 0; i < amount; i++) {
-            rootLogger.debug("**************** Launched cycle № " + i +" *******************");
+            rootLogger.debug("**************** Launched cycle № " + i + " *******************");
             launch();
-            updateNewCycle();
-            Statistic.collectDataOfNewCycle();
+            updateCycle();
+            Statistic.calculateAmountAnimals();
             Statistic.printParamNewCycle();
         }
+        System.out.println("Detailed statistic are reflected in the log");
     }
 
-    public void updateNewCycle() {
+    public void updateCycle() {
         for (int i = 0; i < Island.getWidthField(); i++) {
             for (int j = 0; j < Island.getHeightField(); j++) {
                 Location currentLocation = Island.getInstance().getField()[i][j];
 
                 BlockingQueue<Predator> predators = currentLocation.getPredators();
                 for (Predator predator : predators) {
-                predator.updateParamNewDay();
+                predator.updateParamForNewCycle();
                 }
 
                 BlockingQueue<Herbivore> herbivores = currentLocation.getHerbivores();
                 for (Herbivore herbivore : herbivores) {
-                herbivore.updateParamNewDay();
+                herbivore.updateParamForNewCycle();
                 }
             }
         }

@@ -42,7 +42,7 @@ public abstract class Animal extends Nature implements Runnable {
         satiety = amountNeedFood / HALF;
     }
 
-    public void eat(BlockingQueue<? extends Nature> natureObj) {
+    public void eat(BlockingQueue<? extends Nature> natureObjs) {
         if (amountNeedFood == 0) {
             log.debug(nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                     + " eats very little, insignificant\n");
@@ -54,7 +54,7 @@ public abstract class Animal extends Nature implements Runnable {
         }
 
         while (satiety < amountNeedFood) {
-            Optional<Double> food = findFood(natureObj);
+            Optional<Double> food = findFood(natureObjs);
             if (food.isPresent()) {
                 double foodWeight = food.get();
                 satiety = DBProcessor.roundNumber(satiety + foodWeight);
@@ -70,8 +70,8 @@ public abstract class Animal extends Nature implements Runnable {
         }
     }
 
-    private Optional<Double> findFood(BlockingQueue<? extends Nature> animals) {
-        for (Nature food : animals) {
+    private Optional<Double> findFood(BlockingQueue<? extends Nature> natureObjs) {
+        for (Nature food : natureObjs) {
             if (ration.containsKey(food.getClass())) {
                 int probability = ration.get(food.getClass());
                 String nameFood = food.getClass().getSimpleName();
@@ -84,9 +84,11 @@ public abstract class Animal extends Nature implements Runnable {
                     log.debug("\tWeight of " + nameFood +
                             " consists - " + foodWeight + " kg");
 
-                    if (animals.remove(food)) {
+                    if (natureObjs.remove(food)) {
                         log.debug("\t" + nameFood + " eaten and deleted from queue\n");
-                        if (!(Plant.class.isAssignableFrom(food.getClass()))) {
+                        if (Plant.class.isAssignableFrom(food.getClass())) {
+                            Statistic.amountEatenPlants.incrementAndGet();
+                        } else {
                             Statistic.amountEatenAnimals.incrementAndGet();
                         }
                     }
@@ -111,7 +113,7 @@ public abstract class Animal extends Nature implements Runnable {
 
         if (this.isNotMultiplied) {
             BlockingQueue<Animal> storageAnimals =
-                    (BlockingQueue<Animal>) getLocation().getStorageNature(this.getClass());
+                    (BlockingQueue<Animal>) getLocation().getStorageNatureObjs(this.getClass());
             log.debug("Animal - " + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                     + " wants MULTIPLY()");
 
@@ -187,7 +189,7 @@ public abstract class Animal extends Nature implements Runnable {
             newIndexColumn = IndexColumnField;
         }
         BlockingQueue<? extends Animal> storageCurrentAnimal =
-                (BlockingQueue<? extends Animal>) getLocation().getStorageNature(this.getClass());
+                (BlockingQueue<? extends Animal>) getLocation().getStorageNatureObjs(this.getClass());
         log.debug("\tCurrent location " + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]");
 
         if (storageCurrentAnimal.remove(this)) {
@@ -211,14 +213,15 @@ public abstract class Animal extends Nature implements Runnable {
     }
 
     public boolean die() {
-        return getLocation().getStorageNature(this.getClass()).remove(this);
+        BlockingQueue<? extends Nature> storageNatureObjs = getLocation().getStorageNatureObjs(this.getClass());
+        return storageNatureObjs.remove(this);
     }
 
-
-    public void updateParamNewDay() {
+    public void updateParamForNewCycle() {
         isNotMultiplied = true;
         markerOfEndedCycle = false;
         satiety = DBProcessor.reduceSatiety(satiety, amountNeedFood);
+        amountCyclesLife --;
 
         if (satiety <= 0 && this.getClass() != Caterpillar.class) {
             die();
@@ -226,9 +229,12 @@ public abstract class Animal extends Nature implements Runnable {
                     + " has hungry death. Satiety = " + satiety);
             Statistic.amountHungryDeath.incrementAndGet();
         }
-    }
 
-    public Map<Class<? extends Animal>, Integer> getRation() {
-        return ration;
+        if (amountCyclesLife == 0) {
+            die();
+            log.debug(nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+                    + " died of old age");
+            Statistic.amountDeathsOfOldAge.incrementAndGet();
+        }
     }
 }
