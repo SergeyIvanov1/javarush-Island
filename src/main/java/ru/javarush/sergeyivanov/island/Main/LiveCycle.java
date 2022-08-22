@@ -56,7 +56,7 @@ public class LiveCycle {
             launch();
             updateCycle();
             Statistic.calculateAmountAnimals();
-            Statistic.printParamNewCycle();
+            Statistic.printParamCurrentCycle();
         }
         System.out.println("Detailed statistic are reflected in the log");
     }

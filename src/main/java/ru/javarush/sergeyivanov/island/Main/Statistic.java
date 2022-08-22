@@ -32,7 +32,7 @@ public class Statistic {
         }
     }
 
-    public static void printParamNewCycle(){
+    public static void printParamCurrentCycle(){
         System.out.println("\n****** Statistic current cycle ******");
         System.out.println("\tAmount animals after initialization = " + amountAnimalsAfterInit);
         System.out.println("\tCommon amount of animals in the end this cycle = " + amountAnimalsInNewCycle);

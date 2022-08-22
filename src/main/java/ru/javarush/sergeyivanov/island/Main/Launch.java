@@ -42,11 +42,6 @@ public class Launch implements Runnable {
 
     @Override
     public void run() {
-        //        Scanner scanner = new Scanner(System.in);
-
-//        System.out.println("Does to run the program manually?");
-//        boolean answer = scanner.nextBoolean();
-
         new InitParameters(false);
         printSettings();
         printRations();
@@ -54,8 +49,5 @@ public class Launch implements Runnable {
 
         LiveCycle cycle = new LiveCycle();
         cycle.repeatCycle(3);
-//        System.out.println("Grass " + Grass.maxObjInCell);
-//        System.out.println("Wolf " + Wolf.maxObjInCell);
-//        System.out.println("Boa " + Boa.maxObjInCell);
     }
 }
