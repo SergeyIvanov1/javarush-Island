@@ -15,7 +15,8 @@ public class ProcessorParam {
     public void transferObjToNewLocation(int newIndexLine, int newIndexColumn, Nature object) {
         Location nextLocation = Island.getInstance().getField()[newIndexLine][newIndexColumn];
         try {
-            BlockingQueue<Nature> nextStorageObj = (BlockingQueue<Nature>) nextLocation.getStorageNatureObjs(object.getClass());
+//            BlockingQueue<Nature> nextStorageObj = (BlockingQueue<Nature>) nextLocation.getStorageNatureObjs(object.getClass());
+            BlockingQueue< Nature> nextStorageObj = (BlockingQueue<Nature>) nextLocation.getQueueOfNatureObjects(object.getClass());
 
             object.setLocation(nextLocation);
             object.setIndexLineField(newIndexLine);

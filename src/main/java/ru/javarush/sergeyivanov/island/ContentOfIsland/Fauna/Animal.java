@@ -13,6 +13,8 @@ import ru.javarush.sergeyivanov.island.Main.Statistic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
@@ -28,6 +30,8 @@ public abstract class Animal extends Nature implements Runnable {
     protected boolean isNotMultiplied = true;
     protected ThreadLocalRandom random;
     ProcessorParam processor = new ProcessorParam();
+    protected List<Class<? extends Animal>> listRation = new ArrayList<>();
+    protected static final int ZERO = 0;
     private static final int BOUND = 100;
     private static final int MIN_INDEX = 0;
     private static final int INCLUDING_NUMBER = 1;
@@ -40,9 +44,10 @@ public abstract class Animal extends Nature implements Runnable {
         nameAnimal = this.getClass().getSimpleName();
         ration = InitParameters.cacheRations.get(nameAnimal);
         satiety = amountNeedFood / HALF;
+        fillListRation(listRation);
     }
 
-    public void eat(BlockingQueue<? extends Nature> natureObjs) {
+    public void eat() {
         if (amountNeedFood == 0) {
             log.debug(nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                     + " eats very little, insignificant\n");
@@ -54,7 +59,13 @@ public abstract class Animal extends Nature implements Runnable {
         }
 
         while (satiety < amountNeedFood) {
-            Optional<Double> food = findFood(natureObjs);
+            Optional<Double> food;
+            try {
+                food = findFood();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
             if (food.isPresent()) {
                 double foodWeight = food.get();
                 satiety = DBProcessor.roundNumber(satiety + foodWeight);
@@ -65,44 +76,81 @@ public abstract class Animal extends Nature implements Runnable {
                     break;
                 }
             } else {
-                break;
+                if (!foodIsPresentInLocation()) {
+                    break;
+                }
             }
         }
     }
 
-    private Optional<Double> findFood(BlockingQueue<? extends Nature> natureObjs) {
-        for (Nature food : natureObjs) {
-            if (ration.containsKey(food.getClass())) {
-                int probability = ration.get(food.getClass());
-                String nameFood = food.getClass().getSimpleName();
-                log.debug("\t" + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
-                        + " found food - " + nameFood);
-                boolean catchFood = random.nextInt(BOUND) < probability;
+    private Optional<Double> findFood() throws InterruptedException {
+        int randomIndex = random.nextInt(ZERO, listRation.size());
+        Class<? extends Animal> classFood = listRation.get(randomIndex);
+        String nameFood = classFood.getSimpleName();
+        BlockingQueue<Nature> randomQueueOfFood = (BlockingQueue<Nature>) getLocation().getQueueOfNatureObjects(classFood);
+        Nature food = randomQueueOfFood.poll();
 
-                if (catchFood) {
-                    double foodWeight = food.getWeight();
-                    log.debug("\tWeight of " + nameFood +
-                            " consists - " + foodWeight + " kg");
+        if (food != null) {
+            int probability = ration.get(classFood);
+            log.debug("\t" + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+                    + " found food - " + nameFood);
+            boolean catchFood = random.nextInt(BOUND) < probability;
 
-                    if (natureObjs.remove(food)) {
-                        log.debug("\t" + nameFood + " eaten and deleted from queue\n");
-                        if (Plant.class.isAssignableFrom(food.getClass())) {
-                            Statistic.amountEatenPlants.incrementAndGet();
-                        } else {
-                            Statistic.amountEatenAnimals.incrementAndGet();
-                        }
-                    }
-                    return Optional.of(foodWeight);
+            if (catchFood) {
+                double foodWeight = food.getWeight();
+                log.debug("\tWeight of found " + nameFood + " consists - " + foodWeight + " kg");
+                log.debug("\t" + nameFood + " eaten and deleted from queue\n");
+
+                if (Plant.class.isAssignableFrom(classFood)) {
+                    Statistic.amountEatenPlants.incrementAndGet();
                 } else {
-                    log.debug("\t" + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
-                            + " couldn't to catch food - " + food.getClass().getSimpleName() + "\n");
-                    return Optional.empty();
+                    Statistic.amountEatenAnimals.incrementAndGet();
                 }
+
+                return Optional.of(foodWeight);
+            } else {
+                randomQueueOfFood.put(food);
+                log.debug("\t" + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+                        + " couldn't to catch food - " + nameFood + "\n");
+                return Optional.empty();
             }
+        } else {
+            log.debug("\tInside queue finished " + nameFood + " from ration " + nameAnimal
+                    + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]" + "\n");
+            return Optional.empty();
         }
-        log.debug("\tInside location finished food from ration " + nameAnimal
-                + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]" + "\n");
-        return Optional.empty();
+//        for (Nature food : natureObjs) {
+//            if (ration.containsKey(food.getClass())) {
+//                int probability = ration.get(food.getClass());
+//                String nameFood = food.getClass().getSimpleName();
+//                log.debug("\t" + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+//                        + " found food - " + nameFood);
+//                boolean catchFood = random.nextInt(BOUND) < probability;
+//
+//                if (catchFood) {
+//                    double foodWeight = food.getWeight();
+//                    log.debug("\tWeight of " + nameFood +
+//                            " consists - " + foodWeight + " kg");
+//
+//                    if (natureObjs.remove(food)) {
+//                        log.debug("\t" + nameFood + " eaten and deleted from queue\n");
+//                        if (Plant.class.isAssignableFrom(food.getClass())) {
+//                            Statistic.amountEatenPlants.incrementAndGet();
+//                        } else {
+//                            Statistic.amountEatenAnimals.incrementAndGet();
+//                        }
+//                    }
+//                    return Optional.of(foodWeight);
+//                } else {
+//                    log.debug("\t" + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
+//                            + " couldn't to catch food - " + food.getClass().getSimpleName() + "\n");
+//                    return Optional.empty();
+//                }
+//            }
+//        }
+//        log.debug("\tInside location finished food from ration " + nameAnimal
+//                + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]" + "\n");
+//        return Optional.empty();
     }
 
     public void multiply() {
@@ -112,8 +160,10 @@ public abstract class Animal extends Nature implements Runnable {
         }
 
         if (this.isNotMultiplied) {
+//            BlockingQueue<Animal> storageAnimals =
+//                    (BlockingQueue<Animal>) getLocation().getStorageNatureObjs(this.getClass());
             BlockingQueue<Animal> storageAnimals =
-                    (BlockingQueue<Animal>) getLocation().getStorageNatureObjs(this.getClass());
+                    (BlockingQueue<Animal>) getLocation().getQueueOfNatureObjects(this.getClass());
             log.debug("Animal - " + nameAnimal + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]"
                     + " wants MULTIPLY()");
 
@@ -188,8 +238,10 @@ public abstract class Animal extends Nature implements Runnable {
         } else {
             newIndexColumn = IndexColumnField;
         }
+//        BlockingQueue<? extends Animal> storageCurrentAnimal =
+//                (BlockingQueue<? extends Animal>) getLocation().getStorageNatureObjs(this.getClass());
         BlockingQueue<? extends Animal> storageCurrentAnimal =
-                (BlockingQueue<? extends Animal>) getLocation().getStorageNatureObjs(this.getClass());
+                (BlockingQueue<? extends Animal>) getLocation().getQueueOfNatureObjects(this.getClass());
         log.debug("\tCurrent location " + "[" + getIndexLineField() + "][" + getIndexColumnField() + "]");
 
         if (storageCurrentAnimal.remove(this)) {
@@ -213,7 +265,8 @@ public abstract class Animal extends Nature implements Runnable {
     }
 
     public boolean die() {
-        BlockingQueue<? extends Nature> storageNatureObjs = getLocation().getStorageNatureObjs(this.getClass());
+//        BlockingQueue<? extends Nature> storageNatureObjs = getLocation().getStorageNatureObjs(this.getClass());
+        BlockingQueue<? extends Nature> storageNatureObjs = getLocation().getQueueOfNatureObjects(this.getClass());
         return storageNatureObjs.remove(this);
     }
 
@@ -221,7 +274,7 @@ public abstract class Animal extends Nature implements Runnable {
         isNotMultiplied = true;
         markerOfEndedCycle = false;
         satiety = DBProcessor.reduceSatiety(satiety, amountNeedFood);
-        amountCyclesLife --;
+        amountCyclesLife--;
 
         if (satiety <= 0 && this.getClass() != Caterpillar.class) {
             die();
@@ -236,5 +289,24 @@ public abstract class Animal extends Nature implements Runnable {
                     + " died of old age");
             Statistic.amountDeathsOfOldAge.incrementAndGet();
         }
+    }
+
+    private void fillListRation(List<Class<? extends Animal>> listRation) {
+        String className = this.getClass().getSimpleName();
+        Map<Class<? extends Animal>, Integer> rationThisAnimal = InitParameters.cacheRations.get(className);
+
+        for (Map.Entry<Class<? extends Animal>, Integer> entry : rationThisAnimal.entrySet()) {
+            listRation.add(entry.getKey());
+        }
+    }
+
+    private boolean foodIsPresentInLocation (){
+        Map<Class<? extends Nature>, BlockingQueue<? extends Nature>> mapQueuesNatureObj = getLocation().getMapQueuesNatureObj();
+        for (Class<? extends Nature> classFood: listRation) {
+            if (!mapQueuesNatureObj.get(classFood).isEmpty()){
+                return true;
+            }
+        }
+        return false;
     }
 }

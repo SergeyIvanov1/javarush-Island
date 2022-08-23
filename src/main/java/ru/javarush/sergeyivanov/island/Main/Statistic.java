@@ -1,8 +1,13 @@
 package ru.javarush.sergeyivanov.island.Main;
 
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Island;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
+import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
+import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Statistic {
@@ -19,14 +24,27 @@ public class Statistic {
             for (int j = 0; j < Island.getHeightField(); j++) {
                 System.out.println("Location[" + i +"][" + j +"]");
 
-                int amountHerbivores = Island.getInstance().getField()[i][j].getHerbivores().size();
-                int amountPredators = Island.getInstance().getField()[i][j].getPredators().size();
-                amountAnimalsAfterInit += (amountPredators + amountHerbivores);
+                Location currentLocation = Island.getInstance().getField()[i][j];
+                for (Map.Entry<Class<? extends Nature>, Integer> entry : InitParameters.cacheNatureObj.entrySet()) {
+                    Class<? extends Nature> classObj = entry.getKey();
 
-                System.out.println("Herbivores queue. initSize = " + amountHerbivores);
-                System.out.println("Predators queue. initSize = " + amountPredators);
-                System.out.println("Plants queue. initSize = "
-                        + Island.getInstance().getField()[i][j].getPlants().size());
+                    BlockingQueue<? extends Nature> storage = currentLocation.getQueueOfNatureObjects(classObj);
+                    int amountAnimals = storage.size();
+                    System.out.println("Amount " + classObj.getSimpleName() + " in the queue = " + amountAnimals);
+
+                    if (Animal.class.isAssignableFrom(entry.getKey())) {
+                        amountAnimalsAfterInit += amountAnimals;
+                    }
+                }
+
+//                int amountHerbivores = Island.getInstance().getField()[i][j].getHerbivores().size();
+//                int amountPredators = Island.getInstance().getField()[i][j].getPredators().size();
+//                amountAnimalsAfterInit += (amountPredators + amountHerbivores);
+
+//                System.out.println("Herbivores queue. initSize = " + amountHerbivores);
+//                System.out.println("Predators queue. initSize = " + amountPredators);
+//                System.out.println("Plants queue. initSize = "
+//                        + Island.getInstance().getField()[i][j].getPlants().size());
                 System.out.println("____________________");
             }
         }
@@ -56,10 +74,21 @@ public class Statistic {
     public static void calculateAmountAnimals(){
         for (int i = 0; i < Island.getWidthField(); i++) {
             for (int j = 0; j < Island.getHeightField(); j++) {
+//                Location currentLocation = Island.getInstance().getField()[i][j];
+//                int amountHerbivores = currentLocation.getHerbivores().size();
+//                int amountPredators = currentLocation.getPredators().size();
+//                amountAnimalsInNewCycle += (amountPredators + amountHerbivores);
                 Location currentLocation = Island.getInstance().getField()[i][j];
-                int amountHerbivores = currentLocation.getHerbivores().size();
-                int amountPredators = currentLocation.getPredators().size();
-                amountAnimalsInNewCycle += (amountPredators + amountHerbivores);
+
+                for (Map.Entry<Class<? extends Nature>, Integer> entry : InitParameters.cacheNatureObj.entrySet()) {
+                    Class<? extends Nature> classObj = entry.getKey();
+                    BlockingQueue<? extends Nature> storage = currentLocation.getQueueOfNatureObjects(classObj);
+                    int amountAnimals = storage.size();
+
+                    if (Animal.class.isAssignableFrom(entry.getKey())) {
+                        amountAnimalsInNewCycle += amountAnimals;
+                    }
+                }
             }
         }
     }
