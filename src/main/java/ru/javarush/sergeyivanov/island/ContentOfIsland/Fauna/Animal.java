@@ -14,10 +14,7 @@ import ru.javarush.sergeyivanov.island.Main.Statistic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -86,7 +83,7 @@ public abstract class Animal extends Nature implements Runnable {
         int randomIndex = random.nextInt(ZERO, listRation.size());
         Class<? extends Animal> classFood = listRation.get(randomIndex);
         String nameFood = classFood.getSimpleName();
-        BlockingQueue<Nature> randomQueueOfFood = (BlockingQueue<Nature>) getLocation().getQueueOfNatureObjects(classFood);
+        Queue<Nature> randomQueueOfFood = (Queue<Nature>) getLocation().getQueueOfNatureObjects(classFood);
         Nature food = randomQueueOfFood.poll();
 
         if (food != null) {
@@ -107,7 +104,7 @@ public abstract class Animal extends Nature implements Runnable {
 
                 return Optional.of(foodWeight);
             } else {
-                randomQueueOfFood.put(food);
+                randomQueueOfFood.add(food);
                 log.debug("\t" + nameAnimal + inputIndexes() + " couldn't to catch food - " + nameFood + "\n");
                 return Optional.empty();
             }
@@ -123,8 +120,8 @@ public abstract class Animal extends Nature implements Runnable {
         }
 
         if (this.isNotMultiplied) {
-            BlockingQueue<Animal> storageAnimals =
-                    (BlockingQueue<Animal>) getLocation().getQueueOfNatureObjects(this.getClass());
+            Queue<Animal> storageAnimals =
+                    (Queue<Animal>) getLocation().getQueueOfNatureObjects(this.getClass());
             log.debug("Animal - " + nameAnimal + inputIndexes() +" wants MULTIPLY()");
 
             Optional<Animal> pair = findPair(this, storageAnimals);
@@ -140,7 +137,7 @@ public abstract class Animal extends Nature implements Runnable {
         }
     }
 
-    private int createChildren(int amount, BlockingQueue<Animal> storageAnimals) {
+    private int createChildren(int amount, Queue<Animal> storageAnimals) {
         int amountBornAnimals = 0;
         for (int i = 0; i < amount; i++) {
 
@@ -172,7 +169,7 @@ public abstract class Animal extends Nature implements Runnable {
         return amountBornAnimals;
     }
 
-    private Optional<Animal> findPair(Animal animal, BlockingQueue<? extends Nature> animals) {
+    private Optional<Animal> findPair(Animal animal, Queue<? extends Nature> animals) {
         log.debug("\t" + nameAnimal + inputIndexes() + " is looking for a pair");
 
         for (Nature pair : animals) {
@@ -212,8 +209,8 @@ public abstract class Animal extends Nature implements Runnable {
         } else {
             newIndexColumn = IndexColumnField;
         }
-        BlockingQueue<? extends Animal> storageCurrentAnimal =
-                (BlockingQueue<? extends Animal>) getLocation().getQueueOfNatureObjects(this.getClass());
+        Queue<? extends Animal> storageCurrentAnimal =
+                (Queue<? extends Animal>) getLocation().getQueueOfNatureObjects(this.getClass());
         log.debug("\tCurrent location " + nameAnimal + "is " + inputIndexes());
 
         Location newLocation = Island.getInstance().getField()[newIndexLine][newIndexColumn];
@@ -240,7 +237,7 @@ public abstract class Animal extends Nature implements Runnable {
     }
 
     public void die() {
-        BlockingQueue<? extends Nature> storageNatureObjs = getLocation().getQueueOfNatureObjects(this.getClass());
+        Queue<? extends Nature> storageNatureObjs = getLocation().getQueueOfNatureObjects(this.getClass());
         storageNatureObjs.remove(this);
     }
 
@@ -273,7 +270,7 @@ public abstract class Animal extends Nature implements Runnable {
     }
 
     private boolean foodIsPresentInLocation (){
-        Map<Class<? extends Nature>, BlockingQueue<? extends Nature>> mapQueuesNatureObj = getLocation().getMapQueuesNatureObj();
+        Map<Class<? extends Nature>, Queue<? extends Nature>> mapQueuesNatureObj = getLocation().getMapQueuesNatureObj();
         for (Class<? extends Nature> classFood: listRation) {
             if (!mapQueuesNatureObj.get(classFood).isEmpty()){
                 return true;

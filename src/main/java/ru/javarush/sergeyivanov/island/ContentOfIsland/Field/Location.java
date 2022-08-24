@@ -6,40 +6,36 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Grass;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 
+import java.util.LinkedList;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class Location implements Runnable {
 
-    Map<Class<? extends Nature>, BlockingQueue<? extends Nature>> mapQueuesNatureObj = new ConcurrentHashMap<>();
+    Map<Class<? extends Nature>, Queue<? extends Nature>> mapQueuesNatureObj = new ConcurrentHashMap<>();
 
     {
         for (Map.Entry<Class<? extends Nature>, Integer> entry : InitParameters.cacheNatureObj.entrySet()) {
-            mapQueuesNatureObj.put(entry.getKey(), new LinkedBlockingQueue<>());
+            mapQueuesNatureObj.put(entry.getKey(), new LinkedList<>());
         }
 
     }
 
-    public Map<Class<? extends Nature>, BlockingQueue<? extends Nature>> getMapQueuesNatureObj() {
+    public Map<Class<? extends Nature>, Queue<? extends Nature>> getMapQueuesNatureObj() {
         return mapQueuesNatureObj;
     }
 
-    public BlockingQueue<? extends Nature> getQueueOfNatureObjects(Class<? extends Nature> aClass) {
+    public Queue<? extends Nature> getQueueOfNatureObjects(Class<? extends Nature> aClass) {
         return mapQueuesNatureObj.get(aClass);
     }
 
     private void restoreGrass(int maxObjInCell) {
-        BlockingQueue<Grass> queueGrass = (BlockingQueue<Grass>)mapQueuesNatureObj.get(Grass.class);
+        Queue<Grass> queueGrass = (Queue<Grass>)mapQueuesNatureObj.get(Grass.class);
         int amountGrassInQueue = queueGrass.size();
         int difference = maxObjInCell - amountGrassInQueue;
         for (int i = 0; i < difference; i++) {
-            try {
-                queueGrass.put(new Grass());
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            queueGrass.add(new Grass());
         }
     }
 

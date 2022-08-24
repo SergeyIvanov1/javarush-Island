@@ -8,7 +8,7 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Field.Location;
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
+import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +24,7 @@ public class LiveCycle {
             for (int j = 0; j < Island.getHeightField(); j++) {
                 Location currentLocation = Island.getInstance().getField()[i][j];
 
-                for (Map.Entry<Class<? extends Nature>, BlockingQueue<? extends Nature>> entry :
+                for (Map.Entry<Class<? extends Nature>, Queue<? extends Nature>> entry :
                         currentLocation.getMapQueuesNatureObj().entrySet()) {
 
                     if (Animal.class.isAssignableFrom(entry.getKey())) {
@@ -59,7 +59,7 @@ public class LiveCycle {
             for (int j = 0; j < Island.getHeightField(); j++) {
                 Location currentLocation = Island.getInstance().getField()[i][j];
 
-                for (Map.Entry<Class<? extends Nature>, BlockingQueue<? extends Nature>> entry :
+                for (Map.Entry<Class<? extends Nature>, Queue<? extends Nature>> entry :
                         currentLocation.getMapQueuesNatureObj().entrySet()) {
 
                     if (Animal.class.isAssignableFrom(entry.getKey())) {

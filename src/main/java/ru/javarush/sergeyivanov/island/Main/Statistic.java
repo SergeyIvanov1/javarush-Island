@@ -7,7 +7,7 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
 
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
+import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Statistic {
@@ -28,7 +28,7 @@ public class Statistic {
                 for (Map.Entry<Class<? extends Nature>, Integer> entry : InitParameters.cacheNatureObj.entrySet()) {
                     Class<? extends Nature> classObj = entry.getKey();
 
-                    BlockingQueue<? extends Nature> storage = currentLocation.getQueueOfNatureObjects(classObj);
+                    Queue<? extends Nature> storage = currentLocation.getQueueOfNatureObjects(classObj);
                     int amountAnimals = storage.size();
                     System.out.println("Amount " + classObj.getSimpleName() + " in the queue = " + amountAnimals);
 
@@ -69,7 +69,7 @@ public class Statistic {
 
                 for (Map.Entry<Class<? extends Nature>, Integer> entry : InitParameters.cacheNatureObj.entrySet()) {
                     Class<? extends Nature> classObj = entry.getKey();
-                    BlockingQueue<? extends Nature> storage = currentLocation.getQueueOfNatureObjects(classObj);
+                    Queue<? extends Nature> storage = currentLocation.getQueueOfNatureObjects(classObj);
                     int amountAnimals = storage.size();
 
                     if (Animal.class.isAssignableFrom(entry.getKey())) {

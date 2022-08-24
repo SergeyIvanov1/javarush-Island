@@ -7,24 +7,19 @@ import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ProcessorParam {
 
     public void transferObjToNewLocation(int newIndexLine, int newIndexColumn, Nature object) {
         Location nextLocation = Island.getInstance().getField()[newIndexLine][newIndexColumn];
-        try {
-            BlockingQueue< Nature> nextStorageObj = (BlockingQueue<Nature>) nextLocation.getQueueOfNatureObjects(object.getClass());
+        Queue< Nature> nextStorageObj = (Queue<Nature>) nextLocation.getQueueOfNatureObjects(object.getClass());
 
-            object.setLocation(nextLocation);
-            object.setIndexLineField(newIndexLine);
-            object.setIndexColumnField(newIndexColumn);
+        object.setLocation(nextLocation);
+        object.setIndexLineField(newIndexLine);
+        object.setIndexColumnField(newIndexColumn);
 
-            nextStorageObj.put(object);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        nextStorageObj.add(object);
     }
 
     List<Queue<? extends Nature>> createListQueuesByObjects(Map<Class<? extends Nature>, Integer> map) {
