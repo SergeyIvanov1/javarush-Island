@@ -14,4 +14,3 @@ public abstract class Predator extends Animal {
         markerOfEndedCycle = true;
     }
 }
-
