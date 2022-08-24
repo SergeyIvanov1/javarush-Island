@@ -36,15 +36,6 @@ public class Statistic {
                         amountAnimalsAfterInit += amountAnimals;
                     }
                 }
-
-//                int amountHerbivores = Island.getInstance().getField()[i][j].getHerbivores().size();
-//                int amountPredators = Island.getInstance().getField()[i][j].getPredators().size();
-//                amountAnimalsAfterInit += (amountPredators + amountHerbivores);
-
-//                System.out.println("Herbivores queue. initSize = " + amountHerbivores);
-//                System.out.println("Predators queue. initSize = " + amountPredators);
-//                System.out.println("Plants queue. initSize = "
-//                        + Island.getInstance().getField()[i][j].getPlants().size());
                 System.out.println("____________________");
             }
         }
@@ -74,10 +65,6 @@ public class Statistic {
     public static void calculateAmountAnimals(){
         for (int i = 0; i < Island.getWidthField(); i++) {
             for (int j = 0; j < Island.getHeightField(); j++) {
-//                Location currentLocation = Island.getInstance().getField()[i][j];
-//                int amountHerbivores = currentLocation.getHerbivores().size();
-//                int amountPredators = currentLocation.getPredators().size();
-//                amountAnimalsInNewCycle += (amountPredators + amountHerbivores);
                 Location currentLocation = Island.getInstance().getField()[i][j];
 
                 for (Map.Entry<Class<? extends Nature>, Integer> entry : InitParameters.cacheNatureObj.entrySet()) {

@@ -1,18 +1,8 @@
 package ru.javarush.sergeyivanov.island.Main;
 
 import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.Animal;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.*;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.*;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Grass;
-import ru.javarush.sergeyivanov.island.ContentOfIsland.Nature;
 import ru.javarush.sergeyivanov.island.Inicialization.InitParameters;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.sql.*;
 import java.util.Map;
-import java.util.Properties;
 
 public class Launch implements Runnable {
 

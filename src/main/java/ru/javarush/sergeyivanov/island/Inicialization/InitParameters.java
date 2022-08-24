@@ -13,14 +13,6 @@ public class InitParameters {
 
     ProcessorParam processor = new ProcessorParam();
 
-    private final Long durationCycle = 3_000L;
-    private final int amountCycles = 3;
-    private int startAmountAnimals;
-
-    private boolean termForStopping;
-    private int startAmountChildren;
-    public static Statement statement;
-
     public static Map<Class<? extends Nature>, Integer> cacheNatureObj;
     public static Map<String, Map<Class<? extends Animal>, Integer>> cacheRations;
     public static Map<String, Map<String, Number>> cacheSettings;
@@ -48,10 +40,6 @@ public class InitParameters {
                 Island.getInstance().getField()[i][j] = new Location();
             }
         }
-    }
-
-    public static class Dialogue{
-
     }
 }
 

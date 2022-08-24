@@ -22,7 +22,7 @@ public abstract class Nature {
 
     {
         nameObj = this.getClass().getSimpleName();
-        initFields();
+        initFieldsClass();
     }
 
     public void setLocation(Location location) {
@@ -53,7 +53,7 @@ public abstract class Nature {
         this.IndexColumnField = indexColumnField;
     }
 
-    private void initFields() {
+    private void initFieldsClass() {
         Map<String, Number> settings = InitParameters.cacheSettings.get(nameObj);
         weight = (double)settings.get("weight");
         maxObjInCell = (int)settings.get("maxObjInCell");
