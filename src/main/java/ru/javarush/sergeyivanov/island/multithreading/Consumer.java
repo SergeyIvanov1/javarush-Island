@@ -18,8 +18,11 @@ public class Consumer extends Thread{
     public void run() {
         try {
             Queue<? extends Nature> queueAnimals = synchronousQueue.take();
+            int count = 1;
             for (Nature nature: queueAnimals) {
-                executorService.submit((Runnable) nature);
+                new Thread((Runnable) nature, "Thread № " + count +" for queue" + nature.getClass().getSimpleName()).start();
+//                executorService.submit((Runnable) nature);
+                count++;
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

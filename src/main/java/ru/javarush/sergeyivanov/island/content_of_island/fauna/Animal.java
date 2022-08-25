@@ -22,12 +22,12 @@ public abstract class Animal extends Nature implements Runnable {
     public boolean markerOfEndedCycle = false;
     String nameAnimal;
     public Map<Class<? extends Animal>, Integer> ration;
-    protected double satiety;
     protected boolean isMale;
     protected boolean isNotMultiplied = true;
     protected ThreadLocalRandom random;
     ProcessorParam processor = new ProcessorParam();
     protected List<Class<? extends Animal>> listRation = new ArrayList<>();
+    protected double satiety;
     protected static final int ZERO = 0;
     private static final int BOUND = 100;
     private static final int MIN_INDEX = 0;
@@ -40,8 +40,8 @@ public abstract class Animal extends Nature implements Runnable {
         isMale = random.nextBoolean();
         nameAnimal = this.getClass().getSimpleName();
         ration = InitParameters.cacheRations.get(nameAnimal);
-        satiety = amountNeedFood / HALF;
         fillListRation(listRation);
+        satiety = amountNeedFood/HALF;
     }
 
     public void eat() {

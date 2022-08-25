@@ -299,4 +299,3 @@ UPDATE settings SET class_name =
 WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Grass';
 
 select * from settings;
-

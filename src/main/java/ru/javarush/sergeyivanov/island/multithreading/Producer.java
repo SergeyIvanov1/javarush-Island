@@ -20,8 +20,8 @@ public class Producer extends Thread {
     public void run() {
 
         for (Map.Entry<Class<? extends Nature>, Queue<? extends Nature>> entry :
-                currentLocation.getMapQueuesNatureObj().entrySet()) {
-
+                currentLocation.getMapQueuesNatureObj().entrySet())
+        {
             Class<? extends Nature> key = entry.getKey();
             if (Animal.class.isAssignableFrom(key)) {
 
