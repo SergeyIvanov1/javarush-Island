@@ -2,17 +2,14 @@ package ru.javarush.sergeyivanov.island.content_of_island;
 
 import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
-import ru.javarush.sergeyivanov.island.inicialization.InitParameters;
+import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 import java.util.Map;
 
 public abstract class Nature {
     Location location;
-
     protected int indexLineField;
     protected int IndexColumnField;
-
-    String nameObj;
-
+    protected String nameAnimal = this.getClass().getSimpleName();
     protected double weight;
     public int maxObjInCell;
     protected int rangeMove;
@@ -21,7 +18,6 @@ public abstract class Nature {
     protected int amountCyclesLife;
 
     {
-        nameObj = this.getClass().getSimpleName();
         initFieldsClass();
     }
 
@@ -54,7 +50,7 @@ public abstract class Nature {
     }
 
     private void initFieldsClass() {
-        Map<String, Number> settingsFromDataBase = InitParameters.cacheSettings.get(nameObj);
+        Map<String, Number> settingsFromDataBase = Parameters.cacheSettings.get(nameAnimal);
         weight = (double)settingsFromDataBase.get("weight");
         maxObjInCell = (int)settingsFromDataBase.get("maxObjInCell");
         rangeMove = (int)settingsFromDataBase.get("rangeMove");

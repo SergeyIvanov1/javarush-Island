@@ -2,15 +2,12 @@ package ru.javarush.sergeyivanov.island.content_of_island.field;
 
 public class Island {
     private static Island instance;
-    private static final Location[][] FIELD;
-    private static int widthSize = 4;
-    private static int heightSize = 4;
-
-    static {
-        FIELD = new Location[widthSize][heightSize];
-    }
+    private final Location[][] FIELD;
+    private int widthSize = 4;
+    private int heightSize = 4;
 
     private Island() {
+        FIELD = new Location[widthSize][heightSize];
     }
 
     public static Island getInstance(){
@@ -20,15 +17,15 @@ public class Island {
         return instance;
     }
 
-    public  Location[][] getField() {
+    public Location[][] getField() {
         return FIELD;
     }
 
-    public static int getWidthField() {
+    public int getWidthField() {
         return widthSize;
     }
 
-    public static int getHeightField() {
+    public int getHeightField() {
         return heightSize;
     }
 }

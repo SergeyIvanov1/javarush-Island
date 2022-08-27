@@ -4,7 +4,7 @@ import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Island;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
-import ru.javarush.sergeyivanov.island.inicialization.InitParameters;
+import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 
 import java.util.Map;
 import java.util.Queue;
@@ -20,12 +20,12 @@ public class Statistic {
     private static int amountAnimalsInNewCycle;
 
     public static void printParametersOfField(){
-        for (int i = 0; i < Island.getWidthField(); i++) {
-            for (int j = 0; j < Island.getHeightField(); j++) {
+        for (int i = 0; i < Island.getInstance().getWidthField(); i++) {
+            for (int j = 0; j < Island.getInstance().getHeightField(); j++) {
                 System.out.println("Location[" + i +"][" + j +"]");
 
                 Location currentLocation = Island.getInstance().getField()[i][j];
-                for (Map.Entry<Class<? extends Nature>, Integer> entry : InitParameters.cacheNatureObj.entrySet()) {
+                for (Map.Entry<Class<? extends Nature>, Integer> entry : Parameters.cacheNatureObj.entrySet()) {
                     Class<? extends Nature> classObj = entry.getKey();
 
                     Queue<? extends Nature> storage = currentLocation.getQueueOfNatureObjects(classObj);
@@ -63,11 +63,11 @@ public class Statistic {
     }
 
     public static void calculateAmountAnimals(){
-        for (int i = 0; i < Island.getWidthField(); i++) {
-            for (int j = 0; j < Island.getHeightField(); j++) {
+        for (int i = 0; i < Island.getInstance().getWidthField(); i++) {
+            for (int j = 0; j < Island.getInstance().getHeightField(); j++) {
                 Location currentLocation = Island.getInstance().getField()[i][j];
 
-                for (Map.Entry<Class<? extends Nature>, Integer> entry : InitParameters.cacheNatureObj.entrySet()) {
+                for (Map.Entry<Class<? extends Nature>, Integer> entry : Parameters.cacheNatureObj.entrySet()) {
                     Class<? extends Nature> classObj = entry.getKey();
                     Queue<? extends Nature> storage = currentLocation.getQueueOfNatureObjects(classObj);
                     int amountAnimals = storage.size();

@@ -7,9 +7,8 @@ import ru.javarush.sergeyivanov.island.content_of_island.field.Island;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
 import ru.javarush.sergeyivanov.island.content_of_island.flora.Plant;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
-import ru.javarush.sergeyivanov.island.inicialization.InitParameters;
+import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 import ru.javarush.sergeyivanov.island.inicialization.ProcessorParam;
-import ru.javarush.sergeyivanov.island.main.DBProcessor;
 import ru.javarush.sergeyivanov.island.main.Statistic;
 
 import java.lang.reflect.Constructor;
@@ -19,34 +18,30 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animal extends Nature implements Runnable {
     static final Logger log = LogManager.getRootLogger();
-    public boolean markerOfEndedCycle = false;
-    String nameAnimal;
-    public Map<Class<? extends Animal>, Integer> ration;
-    protected boolean isMale;
-    protected boolean isNotMultiplied = true;
-    protected ThreadLocalRandom random;
-    ProcessorParam processor = new ProcessorParam();
-    protected List<Class<? extends Animal>> listRation = new ArrayList<>();
-    protected double satiety;
-    protected static final int ZERO = 0;
+    private static final int ZERO = 0;
     private static final int BOUND = 100;
     private static final int MIN_INDEX = 0;
     private static final int INCLUDING_NUMBER = 1;
     private static final int OUT_BOUND = 1;
     private static final int HALF = 2;
+    public boolean markerOfEndedCycle = false;
+    public Map<Class<? extends Animal>, Integer> ration;
+    protected boolean isMale;
+    protected boolean isNotMultiplied = true;
+    protected ThreadLocalRandom random = ThreadLocalRandom.current();
+    protected List<Class<? extends Animal>> listRation = new ArrayList<>();
+    protected double satiety = amountNeedFood/HALF;
+    ProcessorParam processor = new ProcessorParam();
 
-    {
-        random = ThreadLocalRandom.current();
+    public Animal() {
         isMale = random.nextBoolean();
-        nameAnimal = this.getClass().getSimpleName();
-        ration = InitParameters.cacheRations.get(nameAnimal);
+        ration = Parameters.cacheRations.get(nameAnimal);
         fillListRation(listRation);
-        satiety = amountNeedFood/HALF;
     }
 
     public void eat() {
         if (amountNeedFood == 0) {
-            log.debug(nameAnimal + inputIndexes() + " eats very little, insignificant\n");
+            log.debug(nameAnimal + inputIndexes() + " is eating very little, values don't change\n");
         }
         if (satiety < amountNeedFood) {
             log.debug("Animal - " + nameAnimal + inputIndexes() + " wants EAT()");
@@ -63,7 +58,7 @@ public abstract class Animal extends Nature implements Runnable {
 
             if (food.isPresent()) {
                 double foodWeight = food.get();
-                satiety = DBProcessor.roundNumber(satiety + foodWeight);
+                satiety = ProcessorParam.roundNumber(satiety + foodWeight);
                 log.debug("satiety = " + satiety + ", amountNeedFood = " + amountNeedFood);
 
                 if (satiety > amountNeedFood) {
@@ -193,8 +188,8 @@ public abstract class Animal extends Nature implements Runnable {
         }
         log.debug("Animal - " + nameAnimal + inputIndexes() + " can to CHANGE LOCATION()");
 
-        int width = Island.getWidthField();
-        int height = Island.getHeightField();
+        int width = Island.getInstance().getWidthField();
+        int height = Island.getInstance().getHeightField();
 
         int boundField = rangeMove + INCLUDING_NUMBER;
         int movesCountInLine = random.nextInt(MIN_INDEX, boundField);
@@ -243,7 +238,7 @@ public abstract class Animal extends Nature implements Runnable {
     public void updateParamForNewCycle() {
         isNotMultiplied = true;
         markerOfEndedCycle = false;
-        satiety = DBProcessor.reduceSatiety(satiety, amountNeedFood);
+        satiety = ProcessorParam.reduceSatiety(satiety, amountNeedFood);
         amountCyclesLife--;
 
         if (satiety <= 0 && this.getClass() != Caterpillar.class) {
@@ -261,7 +256,7 @@ public abstract class Animal extends Nature implements Runnable {
 
     private void fillListRation(List<Class<? extends Animal>> listRation) {
         String className = this.getClass().getSimpleName();
-        Map<Class<? extends Animal>, Integer> rationThisAnimal = InitParameters.cacheRations.get(className);
+        Map<Class<? extends Animal>, Integer> rationThisAnimal = Parameters.cacheRations.get(className);
 
         for (Map.Entry<Class<? extends Animal>, Integer> entry : rationThisAnimal.entrySet()) {
             listRation.add(entry.getKey());

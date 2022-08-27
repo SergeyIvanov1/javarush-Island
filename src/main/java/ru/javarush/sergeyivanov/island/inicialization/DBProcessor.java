@@ -1,8 +1,8 @@
-package ru.javarush.sergeyivanov.island.main;
+package ru.javarush.sergeyivanov.island.inicialization;
 
 import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
-import ru.javarush.sergeyivanov.island.inicialization.InitParameters;
+import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,10 +13,7 @@ import java.util.Properties;
 
 public class DBProcessor {
 
-    private static final double PERCENTAGE_OF_SATIETY_REDUCTION = 25;
     private static final int ZERO = 0;
-    private static final int ONE_HUNDRED_PERCENTS = 100;
-
     private static String userName;
     private static String password;
     private static String URL;
@@ -33,15 +30,7 @@ public class DBProcessor {
         }
     }
 
-    public static double reduceSatiety(double satiety, double amountNeedFood) {
-        double hunger = PERCENTAGE_OF_SATIETY_REDUCTION * amountNeedFood / ONE_HUNDRED_PERCENTS;
-        return roundNumber(satiety - hunger);
-    }
 
-    public static double roundNumber(double calculate) {
-        double scale = Math.pow(10, 3);
-        return Math.floor(calculate * scale) / scale;
-    }
 
     public static Map<String, Map<Class<? extends Animal>, Integer>> getCacheRationsFromDataBase() {
         Map<String, Map<Class<? extends Animal>, Integer>> cacheRation = new HashMap<>();
@@ -51,7 +40,7 @@ public class DBProcessor {
             Statement statement = connection.createStatement();
             ResultSet resultSet;
 
-            for (Map.Entry<Class<? extends Nature>, Integer> entry : InitParameters.cacheNatureObj.entrySet()) {
+            for (Map.Entry<Class<? extends Nature>, Integer> entry : Parameters.cacheNatureObj.entrySet()) {
                 if (Animal.class.isAssignableFrom(entry.getKey())) {
                     Map<Class<? extends Animal>, Integer> ration = new HashMap<>();
                     String nameAnimal = entry.getKey().getSimpleName();

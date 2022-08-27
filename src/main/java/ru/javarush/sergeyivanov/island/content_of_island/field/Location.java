@@ -2,7 +2,7 @@ package ru.javarush.sergeyivanov.island.content_of_island.field;
 
 import ru.javarush.sergeyivanov.island.content_of_island.flora.Grass;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
-import ru.javarush.sergeyivanov.island.inicialization.InitParameters;
+import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 
 import java.util.Map;
 import java.util.Queue;
@@ -10,10 +10,10 @@ import java.util.concurrent.*;
 
 public class Location implements Runnable {
 
-    Map<Class<? extends Nature>, Queue<? extends Nature>> mapQueuesNatureObj = new ConcurrentHashMap<>();
+    private final Map<Class<? extends Nature>, Queue<? extends Nature>> mapQueuesNatureObj = new ConcurrentHashMap<>();
 
     {
-        for (Map.Entry<Class<? extends Nature>, Integer> entry : InitParameters.cacheNatureObj.entrySet()) {
+        for (Map.Entry<Class<? extends Nature>, Integer> entry : Parameters.cacheNatureObj.entrySet()) {
             mapQueuesNatureObj.put(entry.getKey(), new LinkedBlockingQueue<>());
         }
 

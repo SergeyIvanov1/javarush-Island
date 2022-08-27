@@ -9,23 +9,19 @@ import ru.javarush.sergeyivanov.island.content_of_island.Nature;
 import ru.javarush.sergeyivanov.island.multithreading.Consumer;
 import ru.javarush.sergeyivanov.island.multithreading.Producer;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.*;
 
 public class LiveCycle {
     static final Logger rootLogger = LogManager.getRootLogger();
-    static final Logger cycleLogger = LogManager.getLogger(LiveCycle.class);
-
     private static final int AMOUNT_THREADS = 15;
 
     public void launch() {
-        ExecutorService executorService = Executors.newFixedThreadPool(15);
         BlockingQueue<Queue<? extends Nature>> synchronousQueue = new SynchronousQueue<>();
 
-        for (int i = 0; i < Island.getWidthField(); i++) {
-            for (int j = 0; j < Island.getHeightField(); j++) {
+        for (int i = 0; i < Island.getInstance().getWidthField(); i++) {
+            for (int j = 0; j < Island.getInstance().getHeightField(); j++) {
                 Location currentLocation = Island.getInstance().getField()[i][j];
 
                 Producer producer = new Producer(synchronousQueue, currentLocation);
@@ -33,7 +29,7 @@ public class LiveCycle {
 
                 Consumer[] consumers = new Consumer[AMOUNT_THREADS];
                 for (int k = 0; k < AMOUNT_THREADS; k++) {
-                    consumers[k] = new Consumer(synchronousQueue, executorService);
+                    consumers[k] = new Consumer(synchronousQueue);
                     consumers[k].start();
                 }
             }
@@ -58,18 +54,14 @@ public class LiveCycle {
 
     public void updateCycle() {
         ExecutorService serviceOfPlantGrowth = Executors.newWorkStealingPool();
-        for (int i = 0; i < Island.getWidthField(); i++) {
-            for (int j = 0; j < Island.getHeightField(); j++) {
+        for (int i = 0; i < Island.getInstance().getWidthField(); i++) {
+            for (int j = 0; j < Island.getInstance().getHeightField(); j++) {
                 Location currentLocation = Island.getInstance().getField()[i][j];
 
                 for (Map.Entry<Class<? extends Nature>, Queue<? extends Nature>> entry :
                         currentLocation.getMapQueuesNatureObj().entrySet()) {
 
                     if (Animal.class.isAssignableFrom(entry.getKey())) {
-//                        for (Iterator<? extends Nature> iterator = entry.getValue().iterator(); iterator.hasNext(); ) {
-//                            Animal animal = (Animal) iterator.next();
-//                            animal.updateParamForNewCycle();
-//                        }
                         for (Nature object : entry.getValue()) {
                             Animal animal = (Animal) object;
                             animal.updateParamForNewCycle();
