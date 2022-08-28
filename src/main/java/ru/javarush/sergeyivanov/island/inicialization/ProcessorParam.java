@@ -1,8 +1,10 @@
 package ru.javarush.sergeyivanov.island.inicialization;
 
+import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Island;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
+import ru.javarush.sergeyivanov.island.content_of_island.flora.Plant;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,19 +16,24 @@ public class ProcessorParam {
     private static final double PERCENTAGE_OF_SATIETY_REDUCTION = 25;
     private static final int TEN = 10;
     private static final int DEGREE = 3;
+    Parameters parameters;
 
-    public static double reduceSatiety(double satiety, double amountNeedFood) {
+    public ProcessorParam(Parameters parameters) {
+        this.parameters = parameters;
+    }
+
+    public double reduceSatiety(double satiety, double amountNeedFood) {
         double hunger = PERCENTAGE_OF_SATIETY_REDUCTION * amountNeedFood / ONE_HUNDRED_PERCENTS;
         return roundNumber(satiety - hunger);
     }
 
-    public static double roundNumber(double calculate) {
+    public double roundNumber(double calculate) {
         double scale = Math.pow(TEN, DEGREE);
         return Math.floor(calculate * scale) / scale;
     }
 
     public void transferObjToNewLocation(int newIndexLine, int newIndexColumn, Nature object) {
-        Location nextLocation = Island.getInstance().getField()[newIndexLine][newIndexColumn];
+        Location nextLocation = parameters.getFieldOfIsland()[newIndexLine][newIndexColumn];
         Queue< Nature> nextStorageObj = (Queue<Nature>) nextLocation.getQueueOfNatureObjects(object.getClass());
 
         object.setLocation(nextLocation);
@@ -37,9 +44,9 @@ public class ProcessorParam {
     }
 
     public void inputCellsToTheField() {
-        for (int i = 0; i < Island.getInstance().getWidthField(); i++) {
-            for (int j = 0; j < Island.getInstance().getHeightField(); j++) {
-                Island.getInstance().getField()[i][j] = new Location();
+        for (int i = 0; i < parameters.getIsland().getWidthField(); i++) {
+            for (int j = 0; j < parameters.getIsland().getHeightField(); j++) {
+                parameters.getFieldOfIsland()[i][j] = new Location(parameters);
             }
         }
     }
@@ -53,7 +60,7 @@ public class ProcessorParam {
             var classNatureObj = pair.getKey();
             Integer amountNatureObj = pair.getValue();
             try {
-                Queue<? extends Nature> natures = fillQueueAndGet(queue, classNatureObj, amountNatureObj);
+                Queue<? extends Nature> natures = fillQueueObjsAndGet(queue, classNatureObj, amountNatureObj);
                 System.out.println("Queue of " + classNatureObj.getSimpleName() + " equals - " + natures.size());
                 listQueues.add(natures);
             } catch (InstantiationException | IllegalAccessException e) {
@@ -70,8 +77,8 @@ public class ProcessorParam {
         for (Queue<? extends Nature> queue : listQueues) {
             int size = queue.size();
             for (int i = 0; i < size; i++) {
-                int randomLine = random.nextInt(0, Island.getInstance().getWidthField());
-                int randomColumn = random.nextInt(0, Island.getInstance().getHeightField());
+                int randomLine = random.nextInt(0, parameters.getIsland().getWidthField());
+                int randomColumn = random.nextInt(0, parameters.getIsland().getHeightField());
 
                 Nature object = queue.poll();
                 transferObjToNewLocation(randomLine, randomColumn, object);
@@ -79,19 +86,34 @@ public class ProcessorParam {
         }
     }
 
-    private Queue<? extends Nature> fillQueueAndGet(
+    private Queue<? extends Nature> fillQueueObjsAndGet(
             Queue<Nature> queue, Class<? extends Nature> classNatureObj, int amountObj)
             throws InstantiationException, IllegalAccessException
     {
         for (int i = 0; i < amountObj; i++) {
             try {
-                Constructor<? extends Nature> constructor = classNatureObj.getConstructor();
-                Nature natureObj = constructor.newInstance();
-                queue.add(natureObj);
+//                if (Plant.class.isAssignableFrom(classNatureObj)) {
+//                    Constructor<? extends Nature> constructor = classNatureObj.getConstructor();
+//                    Nature natureObj = constructor.newInstance();
+//                    queue.add(natureObj);
+//                } else {
+                    Constructor<? extends Nature> constructor = classNatureObj.getConstructor(Parameters.class);
+                    Nature natureObj = constructor.newInstance(parameters);
+                    queue.add(natureObj);
+//                }
             } catch (NoSuchMethodException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }
         return queue;
     }
+
+//    private void fillListRation(List<Class<? extends Animal>> listRation) {
+//        String className = this.getClass().getSimpleName();
+//        Map<Class<? extends Animal>, Integer> rationThisAnimal = Parameters.cacheRations.get(className);
+//
+//        for (Map.Entry<Class<? extends Animal>, Integer> entry : rationThisAnimal.entrySet()) {
+//            listRation.add(entry.getKey());
+//        }
+//    }
 }

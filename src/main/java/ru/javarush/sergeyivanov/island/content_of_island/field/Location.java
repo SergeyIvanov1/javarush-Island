@@ -10,10 +10,12 @@ import java.util.concurrent.*;
 
 public class Location implements Runnable {
 
+    private Parameters parameters;
     private final Map<Class<? extends Nature>, Queue<? extends Nature>> mapQueuesNatureObj = new ConcurrentHashMap<>();
 
-    {
-        for (Map.Entry<Class<? extends Nature>, Integer> entry : Parameters.cacheNatureObj.entrySet()) {
+    public Location(Parameters parameters) {
+        this.parameters = parameters;
+        for (Map.Entry<Class<? extends Nature>, Integer> entry : parameters.getCacheNatureObj().entrySet()) {
             mapQueuesNatureObj.put(entry.getKey(), new LinkedBlockingQueue<>());
         }
 
@@ -32,13 +34,13 @@ public class Location implements Runnable {
         int amountGrassInQueue = queueGrass.size();
         int difference = maxObjInCell - amountGrassInQueue;
         for (int i = 0; i < difference; i++) {
-            queueGrass.add(new Grass());
+            queueGrass.add(new Grass(parameters));
         }
     }
 
     @Override
     public void run() {
-        Grass grass = new Grass();
+        Grass grass = new Grass(parameters);
         int maxObjInCell = grass.maxObjInCell;
         if (mapQueuesNatureObj.get(Grass.class).size() < maxObjInCell){
             restoreGrass(maxObjInCell);

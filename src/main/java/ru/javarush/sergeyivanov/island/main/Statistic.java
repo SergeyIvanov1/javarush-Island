@@ -16,30 +16,8 @@ public class Statistic {
     public static AtomicInteger amountDeathsOfOldAge = new AtomicInteger(0);
     public static AtomicInteger amountEatenAnimals = new AtomicInteger(0);
     public static AtomicInteger amountEatenPlants = new AtomicInteger(0);
-    private static int amountAnimalsAfterInit;
-    private static int amountAnimalsInNewCycle;
-
-    public static void printParametersOfField(){
-        for (int i = 0; i < Island.getInstance().getWidthField(); i++) {
-            for (int j = 0; j < Island.getInstance().getHeightField(); j++) {
-                System.out.println("Location[" + i +"][" + j +"]");
-
-                Location currentLocation = Island.getInstance().getField()[i][j];
-                for (Map.Entry<Class<? extends Nature>, Integer> entry : Parameters.cacheNatureObj.entrySet()) {
-                    Class<? extends Nature> classObj = entry.getKey();
-
-                    Queue<? extends Nature> storage = currentLocation.getQueueOfNatureObjects(classObj);
-                    int amountAnimals = storage.size();
-                    System.out.println("Amount " + classObj.getSimpleName() + " in the queue = " + amountAnimals);
-
-                    if (Animal.class.isAssignableFrom(entry.getKey())) {
-                        amountAnimalsAfterInit += amountAnimals;
-                    }
-                }
-                System.out.println("____________________");
-            }
-        }
-    }
+    public static int amountAnimalsAfterInit;
+    public static int amountAnimalsInNewCycle;
 
     public static void printParamCurrentCycle(){
         System.out.println("\n****** Statistic current cycle ******");
@@ -62,21 +40,5 @@ public class Statistic {
         amountAnimalsInNewCycle = 0;
     }
 
-    public static void calculateAmountAnimals(){
-        for (int i = 0; i < Island.getInstance().getWidthField(); i++) {
-            for (int j = 0; j < Island.getInstance().getHeightField(); j++) {
-                Location currentLocation = Island.getInstance().getField()[i][j];
 
-                for (Map.Entry<Class<? extends Nature>, Integer> entry : Parameters.cacheNatureObj.entrySet()) {
-                    Class<? extends Nature> classObj = entry.getKey();
-                    Queue<? extends Nature> storage = currentLocation.getQueueOfNatureObjects(classObj);
-                    int amountAnimals = storage.size();
-
-                    if (Animal.class.isAssignableFrom(entry.getKey())) {
-                        amountAnimalsInNewCycle += amountAnimals;
-                    }
-                }
-            }
-        }
-    }
 }

@@ -2,7 +2,6 @@ package ru.javarush.sergeyivanov.island.inicialization;
 
 import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
-import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,14 +10,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class DBProcessor {
+public class DataBaseProcessor {
 
-    private static final int ZERO = 0;
-    private static String userName;
-    private static String password;
-    private static String URL;
+    private final int ZERO = 0;
+    private String userName;
+    private String password;
+    private String URL;
+    private final Parameters parameters;
 
-    static {
+    public DataBaseProcessor(Parameters parameters){
+        this.parameters = parameters;
         Properties properties = new Properties();
         try {
             properties.loadFromXML(new FileInputStream("src/main/resources/settings.xml"));
@@ -30,19 +31,17 @@ public class DBProcessor {
         }
     }
 
-
-
-    public static Map<String, Map<Class<? extends Animal>, Integer>> getCacheRationsFromDataBase() {
-        Map<String, Map<Class<? extends Animal>, Integer>> cacheRation = new HashMap<>();
+    public Map<String, Map<Class<? extends Nature>, Integer>> getCacheRationsFromDataBase() {
+        Map<String, Map<Class<? extends Nature>, Integer>> cacheRation = new HashMap<>();
 
         try {
             Connection connection = DriverManager.getConnection(URL, userName, password);
             Statement statement = connection.createStatement();
             ResultSet resultSet;
 
-            for (Map.Entry<Class<? extends Nature>, Integer> entry : Parameters.cacheNatureObj.entrySet()) {
+            for (Map.Entry<Class<? extends Nature>, Integer> entry : parameters.getCacheNatureObj().entrySet()) {
                 if (Animal.class.isAssignableFrom(entry.getKey())) {
-                    Map<Class<? extends Animal>, Integer> ration = new HashMap<>();
+                    Map<Class<? extends Nature>, Integer> ration = new HashMap<>();
                     String nameAnimal = entry.getKey().getSimpleName();
                     resultSet = statement.executeQuery(
                             "SELECT ration_animal, " + nameAnimal + " FROM table_of_probability WHERE " +
@@ -50,7 +49,7 @@ public class DBProcessor {
 
                     while (resultSet.next()) {
                         String class_name = resultSet.getString("ration_animal");
-                        Class<? extends Animal> classObj = (Class<? extends Animal>) Class.forName(class_name);
+                        Class<? extends Nature> classObj = (Class<? extends Nature>) Class.forName(class_name);
                         int probability = resultSet.getInt(nameAnimal);
                         ration.put(classObj, probability);
                     }
@@ -63,7 +62,7 @@ public class DBProcessor {
         return cacheRation;
     }
 
-    public static Map <String, Map<String, Number>> getCacheSettingsFromDataBase() {
+    public Map <String, Map<String, Number>> getCacheSettingsFromDataBase() {
         Map <String, Map<String, Number>> cacheSettingsFromDataBase = new HashMap<>();
 
         try {
@@ -91,7 +90,7 @@ public class DBProcessor {
         return cacheSettingsFromDataBase;
     }
 
-    public static Map<Class<? extends Nature>, Integer> getCacheNatureObjectsFromDB(){
+    public Map<Class<? extends Nature>, Integer> getCacheNatureObjectsFromDB(){
         Map<Class<? extends Nature>, Integer> cacheNatureObj = new HashMap<>();
 
         try {

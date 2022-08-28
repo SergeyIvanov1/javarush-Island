@@ -16,8 +16,10 @@ public abstract class Nature {
     protected double amountNeedFood;
     protected int amountChildren;
     protected int amountCyclesLife;
+    public Parameters parameters;
 
-    {
+    public Nature(Parameters parameters) {
+        this.parameters = parameters;
         initFieldsClass();
     }
 
@@ -50,7 +52,7 @@ public abstract class Nature {
     }
 
     private void initFieldsClass() {
-        Map<String, Number> settingsFromDataBase = Parameters.cacheSettings.get(nameAnimal);
+        Map<String, Number> settingsFromDataBase = parameters.getCacheSettings().get(nameAnimal);
         weight = (double)settingsFromDataBase.get("weight");
         maxObjInCell = (int)settingsFromDataBase.get("maxObjInCell");
         rangeMove = (int)settingsFromDataBase.get("rangeMove");
