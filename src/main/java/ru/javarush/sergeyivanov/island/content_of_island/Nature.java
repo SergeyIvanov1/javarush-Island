@@ -6,21 +6,26 @@ import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 import java.util.Map;
 
 public abstract class Nature {
-    Location location;
+    protected String nameAnimal = this.getClass().getSimpleName();
     protected int indexLineField;
     protected int IndexColumnField;
-    protected String nameAnimal = this.getClass().getSimpleName();
     protected double weight;
-    public int maxObjInCell;
+    protected int maxObjInCell;
     protected int rangeMove;
     protected double amountNeedFood;
     protected int amountChildren;
     protected int amountCyclesLife;
-    public Parameters parameters;
+    protected Parameters parameters;
+    Location location;
+
 
     public Nature(Parameters parameters) {
         this.parameters = parameters;
         initFieldsClass();
+    }
+
+    public int getMaxObjInCell() {
+        return maxObjInCell;
     }
 
     public void setLocation(Location location) {

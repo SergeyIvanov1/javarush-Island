@@ -41,7 +41,7 @@ public class Location implements Runnable {
     @Override
     public void run() {
         Grass grass = new Grass(parameters);
-        int maxObjInCell = grass.maxObjInCell;
+        int maxObjInCell = grass.getMaxObjInCell();
         if (mapQueuesNatureObj.get(Grass.class).size() < maxObjInCell){
             restoreGrass(maxObjInCell);
         }

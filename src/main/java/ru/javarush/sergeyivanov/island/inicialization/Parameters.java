@@ -4,7 +4,6 @@ import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Island;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
-import ru.javarush.sergeyivanov.island.content_of_island.flora.Plant;
 import ru.javarush.sergeyivanov.island.main.Statistic;
 
 import java.util.*;
@@ -30,10 +29,6 @@ public class Parameters {
     public Map<Class<? extends Nature>, Integer> getCacheNatureObj() {
         return cacheNatureObj;
     }
-
-//    public Map<String, Map<Class<? extends Animal>, Integer>> getCacheRations() {
-//        return cacheRations;
-//    }
 
     public Map<String, Map<String, Number>> getCacheSettings() {
         return cacheSettings;
@@ -80,8 +75,8 @@ public class Parameters {
     }
 
     public void printParametersOfField(){
-        for (int i = 0; i < island.getWidthField(); i++) {
-            for (int j = 0; j < island.getHeightField(); j++) {
+        for (int i = 0; i < island.getWidthOfField(); i++) {
+            for (int j = 0; j < island.getHeightOfField(); j++) {
                 System.out.println("Location[" + i +"][" + j +"]");
 
                 Location currentLocation = island.getField()[i][j];

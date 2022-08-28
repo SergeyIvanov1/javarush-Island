@@ -4,7 +4,6 @@ import ru.javarush.sergeyivanov.island.content_of_island.Nature;
 
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
 
 public class Consumer extends Thread{
     private final BlockingQueue<Queue<? extends Nature>> synchronousQueue;

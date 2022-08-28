@@ -15,12 +15,12 @@ import java.util.Queue;
 import java.util.concurrent.*;
 
 public class Launch {
-    static final Logger rootLogger = LogManager.getRootLogger();
+    private static final Logger rootLogger = LogManager.getRootLogger();
     private static final int AMOUNT_THREADS = 15;
 
-    private static final int AMOUNT = 3;
-    Island island;
-    Parameters parameters;
+    private static final int AMOUNT = 15;
+    private final Island island;
+    private final Parameters parameters;
 
     public Launch(Island island) {
         this.island = island;
@@ -39,8 +39,8 @@ public class Launch {
     public void launchThreads() {
         BlockingQueue<Queue<? extends Nature>> synchronousQueue = new SynchronousQueue<>();
 
-        for (int i = 0; i < island.getWidthField(); i++) {
-            for (int j = 0; j < island.getHeightField(); j++) {
+        for (int i = 0; i < island.getWidthOfField(); i++) {
+            for (int j = 0; j < island.getHeightOfField(); j++) {
                 Location currentLocation = island.getField()[i][j];
 
                 Producer producer = new Producer(synchronousQueue, currentLocation);
@@ -59,8 +59,9 @@ public class Launch {
         for (int i = 0; i < amount; i++) {
             rootLogger.debug("**************** Launched cycle № " + i + " *******************");
             launchThreads();
+
             try {
-                Thread.sleep(3000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -73,21 +74,20 @@ public class Launch {
 
     public void updateCycle() {
         ExecutorService serviceOfPlantGrowth = Executors.newWorkStealingPool();
-        for (int i = 0; i < island.getWidthField(); i++) {
-            for (int j = 0; j < island.getHeightField(); j++) {
+        for (int i = 0; i < island.getWidthOfField(); i++) {
+            for (int j = 0; j < island.getHeightOfField(); j++) {
                 Location currentLocation = island.getField()[i][j];
+                serviceOfPlantGrowth.submit(currentLocation);
 
                 for (Map.Entry<Class<? extends Nature>, Queue<? extends Nature>> entry :
                         currentLocation.getMapQueuesNatureObj().entrySet()) {
-
                     if (Animal.class.isAssignableFrom(entry.getKey())) {
                         for (Nature object : entry.getValue()) {
                             Animal animal = (Animal) object;
-                            animal.updateParamForNewCycle();
+                            animal.updateParamForAnimal();
                         }
                     }
                 }
-                serviceOfPlantGrowth.submit(currentLocation);
             }
         }
         try {
@@ -98,8 +98,8 @@ public class Launch {
     }
 
     public void calculateAmountAnimals(){
-        for (int i = 0; i < island.getWidthField(); i++) {
-            for (int j = 0; j < island.getHeightField(); j++) {
+        for (int i = 0; i < island.getWidthOfField(); i++) {
+            for (int j = 0; j < island.getHeightOfField(); j++) {
                 Location currentLocation = island.getField()[i][j];
 
                 for (Map.Entry<Class<? extends Nature>, Integer> entry : parameters.getCacheNatureObj().entrySet()) {

@@ -13,11 +13,11 @@ public class Island {
         return FIELD;
     }
 
-    public int getWidthField() {
+    public int getWidthOfField() {
         return widthSize;
     }
 
-    public int getHeightField() {
+    public int getHeightOfField() {
         return heightSize;
     }
 }

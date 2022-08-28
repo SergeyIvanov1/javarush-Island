@@ -1,10 +1,7 @@
 package ru.javarush.sergeyivanov.island.inicialization;
 
-import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
-import ru.javarush.sergeyivanov.island.content_of_island.field.Island;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
-import ru.javarush.sergeyivanov.island.content_of_island.flora.Plant;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -24,10 +21,10 @@ public class ProcessorParam {
 
     public double reduceSatiety(double satiety, double amountNeedFood) {
         double hunger = PERCENTAGE_OF_SATIETY_REDUCTION * amountNeedFood / ONE_HUNDRED_PERCENTS;
-        return roundNumber(satiety - hunger);
+        return roundResult(satiety - hunger);
     }
 
-    public double roundNumber(double calculate) {
+    public double roundResult(double calculate) {
         double scale = Math.pow(TEN, DEGREE);
         return Math.floor(calculate * scale) / scale;
     }
@@ -44,8 +41,8 @@ public class ProcessorParam {
     }
 
     public void inputCellsToTheField() {
-        for (int i = 0; i < parameters.getIsland().getWidthField(); i++) {
-            for (int j = 0; j < parameters.getIsland().getHeightField(); j++) {
+        for (int i = 0; i < parameters.getIsland().getWidthOfField(); i++) {
+            for (int j = 0; j < parameters.getIsland().getHeightOfField(); j++) {
                 parameters.getFieldOfIsland()[i][j] = new Location(parameters);
             }
         }
@@ -77,8 +74,8 @@ public class ProcessorParam {
         for (Queue<? extends Nature> queue : listQueues) {
             int size = queue.size();
             for (int i = 0; i < size; i++) {
-                int randomLine = random.nextInt(0, parameters.getIsland().getWidthField());
-                int randomColumn = random.nextInt(0, parameters.getIsland().getHeightField());
+                int randomLine = random.nextInt(0, parameters.getIsland().getWidthOfField());
+                int randomColumn = random.nextInt(0, parameters.getIsland().getHeightOfField());
 
                 Nature object = queue.poll();
                 transferObjToNewLocation(randomLine, randomColumn, object);
