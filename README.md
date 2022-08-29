@@ -19,7 +19,7 @@ All animals and plants storage inside these locations.
 Each animal has four behaviors:
 * to eat
 
-    This behaviors assumes  
+    This behaviors assumes random search animals and plants from ration of animal.  
 
 * to multiply;
 * to change locations;
@@ -27,6 +27,14 @@ Each animal has four behaviors:
 
 
 
+Each animal is performs all actions in its own separate thread. 
+
+
+
 что-то характерное для проекта 
 (проблемы, с которыми пришлось столкнуться, 
 уникальные составляющие проекта);
+
+#### Detailed statistic are reflected in the log:
+
+<img src="src/main/resources/example_log.png" alt="Output to the log">
