@@ -9,7 +9,9 @@ import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
 import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 import ru.javarush.sergeyivanov.island.multithreading.Consumer;
 import ru.javarush.sergeyivanov.island.multithreading.Producer;
+import ru.javarush.sergeyivanov.island.user_comunication.Statistic;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.*;
@@ -18,7 +20,7 @@ public class Launch {
     private static final Logger rootLogger = LogManager.getRootLogger();
     private static final int AMOUNT_THREADS = 15;
 
-    private static final int AMOUNT = 15;
+    private static final int AMOUNT = 4;
     private final Island island;
     private final Parameters parameters;
 
@@ -55,13 +57,13 @@ public class Launch {
         }
     }
 
-    private void repeatAmountCycle(int amount)  {
+    private void repeatAmountCycle(int amount) {
         for (int i = 0; i < amount; i++) {
             rootLogger.debug("**************** Launched cycle № " + i + " *******************");
             launchThreads();
 
             try {
-                Thread.sleep(2000);
+                Thread.sleep(2500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -72,7 +74,7 @@ public class Launch {
         System.out.println("Detailed statistic are reflected in the log");
     }
 
-    public void updateCycle() {
+    private void updateCycle() {
         ExecutorService serviceOfPlantGrowth = Executors.newWorkStealingPool();
         for (int i = 0; i < island.getWidthOfField(); i++) {
             for (int j = 0; j < island.getHeightOfField(); j++) {
@@ -80,7 +82,8 @@ public class Launch {
                 serviceOfPlantGrowth.submit(currentLocation);
 
                 for (Map.Entry<Class<? extends Nature>, Queue<? extends Nature>> entry :
-                        currentLocation.getMapQueuesNatureObj().entrySet()) {
+                        currentLocation.getMapQueuesNatureObj().entrySet())
+                {
                     if (Animal.class.isAssignableFrom(entry.getKey())) {
                         for (Nature object : entry.getValue()) {
                             Animal animal = (Animal) object;
@@ -97,17 +100,18 @@ public class Launch {
         }
     }
 
-    public void calculateAmountAnimals(){
+    private void calculateAmountAnimals() {
         for (int i = 0; i < island.getWidthOfField(); i++) {
             for (int j = 0; j < island.getHeightOfField(); j++) {
                 Location currentLocation = island.getField()[i][j];
 
-                for (Map.Entry<Class<? extends Nature>, Integer> entry : parameters.getCacheNatureObj().entrySet()) {
-                    Class<? extends Nature> classObj = entry.getKey();
-                    Queue<? extends Nature> storage = currentLocation.getQueueOfNatureObjects(classObj);
-                    int amountAnimals = storage.size();
+                for (Map.Entry<Class<? extends Nature>, Queue<? extends Nature>> entry :
+                        currentLocation.getMapQueuesNatureObj().entrySet())
+                {
+                    Class<? extends Nature> aClass = entry.getKey();
+                    int amountAnimals = entry.getValue().size();
 
-                    if (Animal.class.isAssignableFrom(entry.getKey())) {
+                    if (Animal.class.isAssignableFrom(aClass)) {
                         Statistic.amountAnimalsInNewCycle += amountAnimals;
                     }
                 }

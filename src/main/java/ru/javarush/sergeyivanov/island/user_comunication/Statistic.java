@@ -1,13 +1,5 @@
-package ru.javarush.sergeyivanov.island.main;
+package ru.javarush.sergeyivanov.island.user_comunication;
 
-import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
-import ru.javarush.sergeyivanov.island.content_of_island.field.Island;
-import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
-import ru.javarush.sergeyivanov.island.content_of_island.Nature;
-import ru.javarush.sergeyivanov.island.inicialization.Parameters;
-
-import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Statistic {

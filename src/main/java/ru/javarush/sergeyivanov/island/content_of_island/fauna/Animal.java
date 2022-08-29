@@ -2,19 +2,20 @@ package ru.javarush.sergeyivanov.island.content_of_island.fauna;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.javarush.sergeyivanov.island.content_of_island.Fauna;
+import ru.javarush.sergeyivanov.island.content_of_island.Nature;
 import ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Caterpillar;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
 import ru.javarush.sergeyivanov.island.content_of_island.flora.Plant;
-import ru.javarush.sergeyivanov.island.content_of_island.Nature;
 import ru.javarush.sergeyivanov.island.inicialization.Parameters;
-import ru.javarush.sergeyivanov.island.main.Statistic;
+import ru.javarush.sergeyivanov.island.user_comunication.Statistic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class Animal extends Nature implements Runnable {
+public abstract class Animal extends Nature implements Runnable, Fauna {
     static final Logger log = LogManager.getRootLogger();
     private static final int ZERO = 0;
     private static final int BOUND = 100;
@@ -24,17 +25,32 @@ public abstract class Animal extends Nature implements Runnable {
     private static final int HALF = 2;
     protected boolean markerOfEndedCycle = false;
     protected boolean isNotMultiplied = true;
-    protected double satiety = amountNeedFood/HALF;
-    protected Map<Class<? extends Nature>, Integer> mapProbabilities;
-    protected boolean isMale;
     protected ThreadLocalRandom random = ThreadLocalRandom.current();
+    protected String nameAnimal = this.getClass().getSimpleName();
+    protected Map<Class<? extends Nature>, Integer> mapProbabilities;
     protected List<Class<? extends Nature>> listRation;
+    protected double amountNeedFood;
+    protected int amountChildren;
+    protected int amountCyclesLife;
+    protected double satiety;
+    protected int rangeMove;
+    protected boolean isMale;
+
 
     public Animal(Parameters parameters) {
-        super(parameters);
+        this.parameters = parameters;
         isMale = random.nextBoolean();
-        mapProbabilities = parameters.getMapProbabilities(nameAnimal);
-        listRation = parameters.getListRation(nameAnimal);
+        initFieldsClass();
+        this.satiety = amountNeedFood / HALF;
+    }
+
+    @Override
+    public void run() {
+        eat();
+        multiply();
+        changeLocation();
+
+        markerOfEndedCycle = true;
     }
 
     public void eat() {
@@ -65,9 +81,91 @@ public abstract class Animal extends Nature implements Runnable {
                 }
             } else {
                 if (!foodIsPresentInLocation()) {
+                    log.debug("Food for " + nameAnimal + " finished in current location");
                     break;
                 }
             }
+        }
+    }
+
+    public void multiply() {
+        if (!this.isNotMultiplied) {
+            log.debug(nameAnimal + getIndexes() + " has already multiplied during this cycle\n");
+        }
+
+        if (this.isNotMultiplied) {
+            Queue<Animal> storageAnimalsThisType =
+                    (Queue<Animal>) getLocation().getQueueOfNatureObjects(this.getClass());
+            log.debug("Animal - " + nameAnimal + getIndexes() + " wants MULTIPLY()");
+
+            Optional<Animal> pair = findPair(this, storageAnimalsThisType);
+            if (pair.isPresent()) {
+                Animal partner = pair.get();
+                int amountChildren = random.nextInt(ZERO, this.amountChildren + OUT_BOUND);
+                int result = createChildren(amountChildren, storageAnimalsThisType);
+
+                log.debug("Amount born animals - " + nameAnimal + getIndexes() + " consists " + result);
+                partner.isNotMultiplied = false;
+                this.isNotMultiplied = false;
+            }
+        }
+    }
+
+    public void changeLocation() {
+        if (rangeMove == 0) {
+            log.debug(nameAnimal + getIndexes() + " can't change location\n");
+            return;
+        }
+        log.debug("Animal - " + nameAnimal + getIndexes() + " can to CHANGE LOCATION()");
+
+        int widthOfField = parameters.getIsland().getWidthOfField();
+        int heightOfField = parameters.getIsland().getHeightOfField();
+
+        int movesCountInLine = random.nextInt(MIN_INDEX, rangeMove + MAKE_INCLUSIVE);
+        int movesCountInColumn = rangeMove - movesCountInLine;
+
+        int newIndexLine = calculateNewIndex(indexLineField, widthOfField, movesCountInLine);
+        int newIndexColumn;
+
+        if (movesCountInColumn > 0) {
+            newIndexColumn = calculateNewIndex(IndexColumnField, heightOfField, movesCountInColumn);
+        } else {
+            newIndexColumn = IndexColumnField;
+        }
+        Queue<? extends Animal> storageCurrentAnimal =
+                (Queue<? extends Animal>) getLocation().getQueueOfNatureObjects(this.getClass());
+        log.debug("\tCurrent location " + nameAnimal + " is " + getIndexes());
+
+        Location newLocation = parameters.getIsland().getField()[newIndexLine][newIndexColumn];
+        int sizeQueue = newLocation.getQueueOfNatureObjects(this.getClass()).size();
+
+        if (sizeQueue < maxObjInCell && storageCurrentAnimal.remove(this)) {
+            parameters.getProcessor().transferObjToNewLocation(newIndexLine, newIndexColumn, this);
+            log.debug("\tNew location[" + newIndexLine + "][" + newIndexColumn + "]\n");
+        }
+    }
+
+    public void die() {
+        Queue<? extends Nature> storageNatureObjs = getLocation().getQueueOfNatureObjects(this.getClass());
+        storageNatureObjs.remove(this);
+    }
+
+    public void updateParamForAnimal() {
+        isNotMultiplied = true;
+        markerOfEndedCycle = false;
+        satiety = parameters.getProcessor().reduceSatiety(satiety, amountNeedFood);
+        amountCyclesLife--;
+
+        if (satiety <= 0 && this.getClass() != Caterpillar.class) {
+            die();
+            log.debug(nameAnimal + getIndexes() + " has hungry death. Satiety = " + satiety);
+            Statistic.amountHungryDeath.incrementAndGet();
+        }
+
+        if (amountCyclesLife == 0) {
+            die();
+            log.debug(nameAnimal + getIndexes() + " died of old age");
+            Statistic.amountDeathsOfOldAge.incrementAndGet();
         }
     }
 
@@ -105,48 +203,25 @@ public abstract class Animal extends Nature implements Runnable {
         }
     }
 
-    public void multiply() {
-        if (!this.isNotMultiplied) {
-            log.debug(nameAnimal + getIndexes() + " has already multiplied during this cycle\n");
+    private int calculateNewIndex(int oldIndex, int length, int movesCount) {
+        boolean moveIsBack = random.nextBoolean();
+        int newIndex;
+
+        if (moveIsBack) {
+            newIndex = oldIndex - movesCount;
+            newIndex = Math.max(newIndex, MIN_INDEX);
+        } else {
+            newIndex = oldIndex + movesCount;
+            newIndex = (newIndex >= length) ? length - OUT_BOUND : newIndex;
         }
-
-        if (this.isNotMultiplied) {
-            Queue<Animal> storageAnimalsThisType =
-                    (Queue<Animal>) getLocation().getQueueOfNatureObjects(this.getClass());
-            log.debug("Animal - " + nameAnimal + getIndexes() +" wants MULTIPLY()");
-
-            Optional<Animal> pair = findPair(this, storageAnimalsThisType);
-            if (pair.isPresent()) {
-                Animal partner = pair.get();
-                int amountChildren = random.nextInt(ZERO, this.amountChildren + OUT_BOUND);
-                int result = createChildren(amountChildren, storageAnimalsThisType);
-
-                log.debug("Amount born animals - " + nameAnimal + getIndexes() +" consists " + result);
-                partner.isNotMultiplied = false;
-                this.isNotMultiplied = false;
-            }
-        }
-    }
-
-    private Optional<Animal> findPair(Animal animal, Queue<? extends Nature> storageAnimalsThisType) {
-        log.debug("\t" + nameAnimal + getIndexes() + " is looking for a pair");
-
-        for (Nature pair : storageAnimalsThisType) {
-            if (animal.isMale != ((Animal) pair).isMale && ((Animal) pair).isNotMultiplied) {
-                Animal result = (Animal) pair;
-                log.debug("\t" + nameAnimal + " found pair - another " + result.getClass().getSimpleName());
-                return Optional.of(result);
-            }
-        }
-        log.debug("\tThe pair is not found inside this location\n");
-        return Optional.empty();
+        return newIndex;
     }
 
     private int createChildren(int amountChildren, Queue<Animal> storageAnimalsThisType) {
         int amountBornAnimals = 0;
         for (int i = 0; i < amountChildren; i++) {
 
-            if (storageAnimalsThisType.size() >= maxObjInCell){
+            if (storageAnimalsThisType.size() >= maxObjInCell) {
                 break;
             } else {
                 try {
@@ -174,89 +249,44 @@ public abstract class Animal extends Nature implements Runnable {
         return amountBornAnimals;
     }
 
-    public void changeLocation() {
-        if (rangeMove == 0) {
-            log.debug(nameAnimal + getIndexes() + " can't change location\n");
-            return;
+    private Optional<Animal> findPair(Animal animal, Queue<? extends Nature> storageAnimalsThisType) {
+        log.debug("\t" + nameAnimal + getIndexes() + " is looking for a pair");
+
+        for (Nature pair : storageAnimalsThisType) {
+            if (animal.isMale != ((Animal) pair).isMale && ((Animal) pair).isNotMultiplied) {
+                Animal result = (Animal) pair;
+                log.debug("\t" + nameAnimal + " found pair - another " + result.getClass().getSimpleName());
+                return Optional.of(result);
+            }
         }
-        log.debug("Animal - " + nameAnimal + getIndexes() + " can to CHANGE LOCATION()");
-
-        int widthOfField = parameters.getIsland().getWidthOfField();
-        int heightOfField = parameters.getIsland().getHeightOfField();
-
-        int movesCountInLine = random.nextInt(MIN_INDEX, rangeMove + MAKE_INCLUSIVE);
-        int movesCountInColumn = rangeMove - movesCountInLine;
-
-        int newIndexLine = calculateNewIndex(indexLineField, widthOfField, movesCountInLine);
-        int newIndexColumn;
-
-        if (movesCountInColumn > 0) {
-            newIndexColumn = calculateNewIndex(IndexColumnField, heightOfField, movesCountInColumn);
-        } else {
-            newIndexColumn = IndexColumnField;
-        }
-        Queue<? extends Animal> storageCurrentAnimal =
-                (Queue<? extends Animal>) getLocation().getQueueOfNatureObjects(this.getClass());
-        log.debug("\tCurrent location " + nameAnimal + " is " + getIndexes());
-
-        Location newLocation = parameters.getIsland().getField()[newIndexLine][newIndexColumn];
-        int sizeQueue = newLocation.getQueueOfNatureObjects(this.getClass()).size();
-
-        if (sizeQueue < maxObjInCell && storageCurrentAnimal.remove(this)) {
-            parameters.getProcessor().transferObjToNewLocation(newIndexLine, newIndexColumn, this);
-            log.debug("\tNew location[" + newIndexLine + "][" + newIndexColumn + "]\n");
-        }
+        log.debug("\tThe pair is not found inside this location\n");
+        return Optional.empty();
     }
 
-    private int calculateNewIndex(int oldIndex, int length, int movesCount) {
-        boolean moveIsBack = random.nextBoolean();
-        int newIndex;
-
-        if (moveIsBack) {
-            newIndex = oldIndex - movesCount;
-            newIndex = Math.max(newIndex, MIN_INDEX);
-        } else {
-            newIndex = oldIndex + movesCount;
-            newIndex = (newIndex >= length) ? length - OUT_BOUND : newIndex;
-        }
-        return newIndex;
-    }
-
-    public void die() {
-        Queue<? extends Nature> storageNatureObjs = getLocation().getQueueOfNatureObjects(this.getClass());
-        storageNatureObjs.remove(this);
-    }
-
-    public void updateParamForAnimal() {
-        isNotMultiplied = true;
-        markerOfEndedCycle = false;
-        satiety = parameters.getProcessor().reduceSatiety(satiety, amountNeedFood);
-        amountCyclesLife--;
-
-        if (satiety <= 0 && this.getClass() != Caterpillar.class) {
-            die();
-            log.debug(nameAnimal + getIndexes() + " has hungry death. Satiety = " + satiety);
-            Statistic.amountHungryDeath.incrementAndGet();
-        }
-
-        if (amountCyclesLife == 0) {
-            die();
-            log.debug(nameAnimal + getIndexes() + " died of old age");
-            Statistic.amountDeathsOfOldAge.incrementAndGet();
-        }
-    }
-
-    private boolean foodIsPresentInLocation (){
+    private boolean foodIsPresentInLocation() {
         Map<Class<? extends Nature>, Queue<? extends Nature>> mapQueuesNatureObj = getLocation().getMapQueuesNatureObj();
-        for (Class<? extends Nature> classFood: listRation) {
-            if (!mapQueuesNatureObj.get(classFood).isEmpty()){
+        for (Class<? extends Nature> classFood : listRation) {
+            if (!mapQueuesNatureObj.get(classFood).isEmpty()) {
                 return true;
             }
         }
         return false;
     }
 
-    private String getIndexes(){
+    private String getIndexes() {
         return "[" + getIndexLineField() + "][" + getIndexColumnField() + "]";
+    }
+
+    private void initFieldsClass() {
+        mapProbabilities = parameters.getMapProbabilities(nameAnimal);
+        listRation = parameters.getListRation(nameAnimal);
+        Map<String, Number> cacheSettings = parameters.getCacheSettings().get(nameAnimal);
+
+        weight = (double) cacheSettings.get("weight");
+        maxObjInCell = (int) cacheSettings.get("maxObjInCell");
+        rangeMove = (int) cacheSettings.get("rangeMove");
+        amountNeedFood = (double) cacheSettings.get("amountNeedFood");
+        amountChildren = (int) cacheSettings.get("amountChildren");
+        amountCyclesLife = (int) cacheSettings.get("amountCycleLive");
     }
 }

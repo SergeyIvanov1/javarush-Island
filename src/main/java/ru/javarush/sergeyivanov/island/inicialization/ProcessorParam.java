@@ -1,7 +1,7 @@
 package ru.javarush.sergeyivanov.island.inicialization;
 
-import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
+import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -31,7 +31,7 @@ public class ProcessorParam {
 
     public void transferObjToNewLocation(int newIndexLine, int newIndexColumn, Nature object) {
         Location nextLocation = parameters.getFieldOfIsland()[newIndexLine][newIndexColumn];
-        Queue< Nature> nextStorageObj = (Queue<Nature>) nextLocation.getQueueOfNatureObjects(object.getClass());
+        Queue<Nature> nextStorageObj = (Queue<Nature>) nextLocation.getQueueOfNatureObjects(object.getClass());
 
         object.setLocation(nextLocation);
         object.setIndexLineField(newIndexLine);

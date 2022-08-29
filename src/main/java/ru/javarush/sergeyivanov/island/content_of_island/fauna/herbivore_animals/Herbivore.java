@@ -8,13 +8,4 @@ public abstract class Herbivore extends Animal {
     public Herbivore(Parameters parameters) {
         super(parameters);
     }
-
-    @Override
-    public void run() {
-        eat();
-        multiply();
-        changeLocation();
-
-        markerOfEndedCycle = true;
-    }
 }

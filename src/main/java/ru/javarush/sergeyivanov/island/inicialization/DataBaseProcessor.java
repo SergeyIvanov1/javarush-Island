@@ -1,7 +1,7 @@
 package ru.javarush.sergeyivanov.island.inicialization;
 
-import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
+import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 
 import java.io.FileInputStream;
 import java.io.IOException;

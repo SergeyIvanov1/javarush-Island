@@ -8,13 +8,4 @@ public abstract class Predator extends Animal {
     public Predator(Parameters parameters) {
         super(parameters);
     }
-
-    @Override
-    public void run() {
-        eat();
-        multiply();
-        changeLocation();
-
-        markerOfEndedCycle = true;
-    }
 }

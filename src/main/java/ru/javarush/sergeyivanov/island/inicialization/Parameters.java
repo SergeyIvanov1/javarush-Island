@@ -1,10 +1,10 @@
 package ru.javarush.sergeyivanov.island.inicialization;
 
-import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
+import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Island;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
-import ru.javarush.sergeyivanov.island.main.Statistic;
+import ru.javarush.sergeyivanov.island.user_comunication.Statistic;
 
 import java.util.*;
 

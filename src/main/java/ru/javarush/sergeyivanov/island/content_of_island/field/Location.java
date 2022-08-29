@@ -1,7 +1,7 @@
 package ru.javarush.sergeyivanov.island.content_of_island.field;
 
-import ru.javarush.sergeyivanov.island.content_of_island.flora.Grass;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
+import ru.javarush.sergeyivanov.island.content_of_island.flora.Grass;
 import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 
 import java.util.Map;
@@ -29,21 +29,25 @@ public class Location implements Runnable {
         return mapQueuesNatureObj.get(aClass);
     }
 
-    private void restoreGrass(int maxObjInCell) {
-        Queue<Grass> queueGrass = (Queue<Grass>)mapQueuesNatureObj.get(Grass.class);
-        int amountGrassInQueue = queueGrass.size();
-        int difference = maxObjInCell - amountGrassInQueue;
-        for (int i = 0; i < difference; i++) {
-            queueGrass.add(new Grass(parameters));
-        }
-    }
-
     @Override
     public void run() {
         Grass grass = new Grass(parameters);
         int maxObjInCell = grass.getMaxObjInCell();
         if (mapQueuesNatureObj.get(Grass.class).size() < maxObjInCell){
             restoreGrass(maxObjInCell);
+        }
+    }
+
+    public Parameters getParameters() {
+        return parameters;
+    }
+
+    private void restoreGrass(int maxObjInCell) {
+        Queue<Grass> queueGrass = (Queue<Grass>)mapQueuesNatureObj.get(Grass.class);
+        int amountGrassInQueue = queueGrass.size();
+        int difference = maxObjInCell - amountGrassInQueue;
+        for (int i = 0; i < difference; i++) {
+            queueGrass.add(new Grass(parameters));
         }
     }
 }
