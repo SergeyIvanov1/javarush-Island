@@ -9,6 +9,7 @@ import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
 import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 import ru.javarush.sergeyivanov.island.multithreading.Consumer;
 import ru.javarush.sergeyivanov.island.multithreading.Producer;
+import ru.javarush.sergeyivanov.island.user_comunication.Dialogue;
 import ru.javarush.sergeyivanov.island.user_comunication.Statistic;
 
 import java.util.Map;
@@ -22,16 +23,21 @@ public class Launch {
     private static final int AMOUNT = 4;
     private final Island island;
     private final Parameters parameters;
+    private final Dialogue dialogue;
 
     public Launch(Island island) {
         this.island = island;
         parameters = new Parameters(island);
+        dialogue = new Dialogue(parameters);
     }
 
     public void start() {
-        parameters.fillIsland();
-        parameters.printSettings();
-        parameters.printRations();
+        dialogue.initialise();
+//
+//        if (dialogue.isSettingsDefault()) {
+//            dialogue.requestSettings();
+//        } else {
+//        }
         parameters.printParametersOfField();
 
         repeatCycles(AMOUNT);

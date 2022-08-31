@@ -20,7 +20,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animal extends Nature implements Runnable, Fauna {
     static final Logger log = LogManager.getRootLogger();
-    private static final int ZERO = 0;
     private static final int BOUND = 100;
     private static final int MIN_INDEX = 0;
     private static final int MAKE_INCLUSIVE = 1;

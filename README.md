@@ -13,7 +13,17 @@ Tasks for this project you can see: [here](src/main/resources/tasks.html).
 * HTML
 * MarkDown
 
-This program is console application.  
+This program is a console application.  
+
+**Project launch:**
+```
+$ java -jar ./build/Island-.jar
+```
+
+Main logic formed in the follow classes:
+* [Animal](img src="src/main/java/ru/javarush/sergeyivanov/island/content_of_island/fauna/Animal.java)
+* [ProcessorParam](src/main/java/ru/javarush/sergeyivanov/island/inicialization/ProcessorParam.java)
+* [DataBaseProcessor](src/main/java/ru/javarush/sergeyivanov/island/inicialization/DataBaseProcessor.java)
 
 Settings(data for initialisation) storages in the local database. 
 Database MySQL used for targets of study, upgrade skills.
@@ -82,20 +92,12 @@ numbers animals:
 
 <img src="src/main/resources/output_settings.png" alt="output info to console">
 
-### Project launch:
-```
-$ java -jar ./Build/javarush-.jar
-```
+**Result of running program reflected to the console like statistic data.**
 
-#### Limitations:
-Amount animals can be from .
-
-Main logic formed at the:
-+ 
+<img src="src/main/resources/result-running.png">(output statistic data) 
 
 
-##### An example of using application:
 
-![](skrinshot.png)
+
 
   

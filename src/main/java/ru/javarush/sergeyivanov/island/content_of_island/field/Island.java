@@ -20,4 +20,12 @@ public class Island {
     public int getHeightOfField() {
         return heightSize;
     }
+
+    public void setWidthSize(int widthSize) {
+        this.widthSize = widthSize;
+    }
+
+    public void setHeightSize(int heightSize) {
+        this.heightSize = heightSize;
+    }
 }
