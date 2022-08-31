@@ -11,7 +11,6 @@ import ru.javarush.sergeyivanov.island.multithreading.Consumer;
 import ru.javarush.sergeyivanov.island.multithreading.Producer;
 import ru.javarush.sergeyivanov.island.user_comunication.Statistic;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.*;
@@ -35,10 +34,10 @@ public class Launch {
         parameters.printRations();
         parameters.printParametersOfField();
 
-        repeatAmountCycle(AMOUNT);
+        repeatCycles(AMOUNT);
     }
 
-    public void launchThreads() {
+    public void startThreads() {
         BlockingQueue<Queue<? extends Nature>> synchronousQueue = new SynchronousQueue<>();
 
         for (int i = 0; i < island.getWidthOfField(); i++) {
@@ -57,10 +56,10 @@ public class Launch {
         }
     }
 
-    private void repeatAmountCycle(int amount) {
+    private void repeatCycles(int amount) {
         for (int i = 0; i < amount; i++) {
             rootLogger.debug("**************** Launched cycle № " + i + " *******************");
-            launchThreads();
+            startThreads();
 
             try {
                 Thread.sleep(2500);

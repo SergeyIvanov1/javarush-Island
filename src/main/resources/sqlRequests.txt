@@ -162,140 +162,17 @@ DELETE FROM table_of_probability where ration_animal = 'ru.javarush.sergeyivanov
 select * from table_of_probability;
 
 
+#---------------------------------------------------------------------
+# Maximum file size (kilobytes) IDE should provide code assistance for.
+# The larger file is the slower its editor works and higher overall system memory
+requirements are
+# if code assistance is enabled. Remove this property or set to very large number
+if you need
+# code assistance for any files available regardless their size.
+#---------------------------------------------------------------------
+idea.max.intellisense.filesize=15000
 
 
 
-*******************
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Bear'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Bear';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Boa'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Boa';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Eagle'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Eagle';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Fox'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Fox';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Wolf'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Wolf';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Buffalo'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Buffalo';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Caterpillar'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Caterpillar';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Deer'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Deer';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Duck'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Duck';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Goat'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Goat';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Horse'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Horse';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Mouse'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Mouse';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Rabbit'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Rabbit';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Sheep'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Sheep';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.WildBoar'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.WildBoar';
-
-UPDATE table_of_probability SET ration_animal =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.flora.Grass'
-WHERE ration_animal = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Grass';
-
-select * from table_of_probability;
 
 
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Bear'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Bear';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Boa'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Boa';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Eagle'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Eagle';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Fox'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Fox';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Wolf'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.PredatoryAnimals.Wolf';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Buffalo'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Buffalo';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Caterpillar'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Caterpillar';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Deer'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Deer';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Duck'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Duck';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Goat'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Goat';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Horse'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Horse';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Mouse'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Mouse';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Rabbit'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Rabbit';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Sheep'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.Sheep';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.WildBoar'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Fauna.HerbivoreAnimals.WildBoar';
-
-UPDATE settings SET class_name =
-                                    'ru.javarush.sergeyivanov.island.content_of_island.flora.Grass'
-WHERE class_name = 'ru.javarush.sergeyivanov.island.ContentOfIsland.Flora.Plants.Grass';
-
-select * from settings;

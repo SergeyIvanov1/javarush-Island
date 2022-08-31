@@ -1,6 +1,7 @@
 # Study project "Island"
 
-Tasks for this project you can see: [here](src/main/resources/tasks.html). 
+Tasks for this project you can see: [here](src/main/resources/tasks.html).
+
 #### In this project used follow technologies:
 
 * Java core
@@ -12,12 +13,12 @@ Tasks for this project you can see: [here](src/main/resources/tasks.html).
 * HTML
 * MarkDown
 
-This application is console.  
+This program is console application.  
 
 Settings(data for initialisation) storages in the local database. 
 Database MySQL used for targets of study, upgrade skills.
 
-Inside, the database consists of two tables with settings:
+**Inside, the database consists of two tables with settings:**
 
 <img src="src/main/resources/skrin_database_settings.png" alt="table of settings">
 
@@ -28,6 +29,9 @@ User can change any settings from console API and affect to runtime app.
 
 
 Island represents class, what include two - dimensional array of locations.
+All animals and plants are objects, what inheritance from abstracted classes
+and implements interfaces.
+
 After initialisation of settings from database, animals and plants randomly 
 allocate to different locations.
 All animals and plants storage inside these locations.
@@ -67,14 +71,10 @@ Also this program use thread pool for restore amount plants in cycles.
 
 * to die.
 
->Animal can to die(to be removed from storage), if it's amount cycles life 
+>Animal can to die(to be removed from storage), if it's amount of cycles life 
 >or satiety will be zero. Also another animal can to eat it's.
 
-The specified behavior is described in the Animal class,  
-[by reference](src/main/java/ru/javarush/sergeyivanov/island/content_of_island/fauna/Animal.java).
-
-что-то характерное для проекта (проблемы, с которыми пришлось столкнуться, 
-уникальные составляющие проекта);
+The specified behavior is described in the Animal class - [by reference](src/main/java/ru/javarush/sergeyivanov/island/content_of_island/fauna/Animal.java).
 
 After request from user, statistic can to reflect to the console. 
 It may by data about: ration of animals, settings, results of launches cycles, 
@@ -82,8 +82,20 @@ numbers animals:
 
 <img src="src/main/resources/output_settings.png" alt="output info to console">
 
+### Project launch:
+```
+$ java -jar ./Build/javarush-.jar
+```
 
-In specified project reflected:
-- principles of object-oriented programming;
+#### Limitations:
+Amount animals can be from .
+
+Main logic formed at the:
++ 
+
+
+##### An example of using application:
+
+![](skrinshot.png)
 
   
