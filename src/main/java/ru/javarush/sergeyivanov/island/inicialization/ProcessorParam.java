@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
 import ru.javarush.sergeyivanov.island.content_of_island.exceptions.CreateOfNatureObjectException;
+import ru.javarush.sergeyivanov.island.content_of_island.exceptions.ValueInvalidException;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
 
 import java.lang.reflect.Constructor;
@@ -61,10 +62,8 @@ public class ProcessorParam {
             var classNatureObj = pair.getKey();
             Integer amountNatureObj = pair.getValue();
                 Queue<? extends Nature> natures = fillQueueObjsAndGet(queue, classNatureObj, amountNatureObj);
-                System.out.println("Queue of " + classNatureObj.getSimpleName() + " equals - " + natures.size());
                 listQueues.add(natures);
         }
-        System.out.println("Size listQueues of Natures = " + listQueues.size());
         return listQueues;
     }
 
@@ -74,14 +73,18 @@ public class ProcessorParam {
         for (Queue<? extends Nature> queue : listQueues) {
             int size = queue.size();
             for (int i = 0; i < size; i++) {
-                int randomLine = random.nextInt(parameters.getIsland().getWidthOfField());
-                int randomColumn = random.nextInt(parameters.getIsland().getHeightOfField());
+                try {
+                    int randomLine = random.nextInt(parameters.getIsland().getWidthOfField());
+                    int randomColumn = random.nextInt(parameters.getIsland().getHeightOfField());
 
-                Nature object = queue.poll();
-                if (object != null) {
-                    transferObjToNewLocation(randomLine, randomColumn, object);
-                } else {
-                    log.error("Object can't allocate into the field from queue. Queue is empty");
+                    Nature object = queue.poll();
+                    if (object != null) {
+                        transferObjToNewLocation(randomLine, randomColumn, object);
+                    } else {
+                        log.error("Object can't allocate into the field from queue. Queue is empty");
+                    }
+                }catch (IllegalArgumentException e) {
+                    throw new ValueInvalidException("Error calculating random indexes. Value can't be negative.", e);
                 }
             }
         }

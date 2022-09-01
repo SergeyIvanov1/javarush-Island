@@ -33,13 +33,6 @@ public class Launch {
 
     public void start() {
         dialogue.initialise();
-//
-//        if (dialogue.isSettingsDefault()) {
-//            dialogue.requestSettings();
-//        } else {
-//        }
-        parameters.printParametersOfField();
-
         repeatCycles(AMOUNT);
     }
 

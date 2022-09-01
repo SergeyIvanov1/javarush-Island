@@ -20,15 +20,19 @@ This program is a console application.
 $ java -jar ./build/Island-.jar
 ```
 
-Main logic formed in the follow classes:
-* [Animal](img src="src/main/java/ru/javarush/sergeyivanov/island/content_of_island/fauna/Animal.java)
+The basic logic was formed in the follow classes:   
+
+* [Animal](src/main/java/ru/javarush/sergeyivanov/island/content_of_island/fauna/Animal.java)
 * [ProcessorParam](src/main/java/ru/javarush/sergeyivanov/island/inicialization/ProcessorParam.java)
 * [DataBaseProcessor](src/main/java/ru/javarush/sergeyivanov/island/inicialization/DataBaseProcessor.java)
 
 Settings(data for initialisation) storages in the local database. 
 Database MySQL used for targets of study, upgrade skills.
 
-**Inside, the database consists of two tables with settings:**
+For demonstrations used screens from IDE Intellij IDEA.
+
+**Inside, the database consists from table with settings of objects and table probability of eating animals 
+and plants:**
 
 <img src="src/main/resources/skrin_database_settings.png" alt="table of settings">
 
@@ -94,10 +98,4 @@ numbers animals:
 
 **Result of running program reflected to the console like statistic data.**
 
-<img src="src/main/resources/result-running.png">(output statistic data) 
-
-
-
-
-
-  
+<img src="src/main/resources/result-running.png" alt="output statistic data"> 

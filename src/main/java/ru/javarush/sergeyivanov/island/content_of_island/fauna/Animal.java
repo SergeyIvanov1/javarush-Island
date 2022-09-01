@@ -38,7 +38,6 @@ public abstract class Animal extends Nature implements Runnable, Fauna {
     protected int rangeMove;
     protected boolean isMale;
 
-
     public Animal(Parameters parameters) {
         this.parameters = parameters;
         isMale = random.nextBoolean();

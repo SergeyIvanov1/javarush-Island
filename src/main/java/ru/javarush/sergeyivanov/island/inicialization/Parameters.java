@@ -46,13 +46,12 @@ public class Parameters {
 
     private void fillCachesFromDataBase() {
         cacheNatureObj = dataBaseProcessor.getCacheNatureObjectsFromDB();
-        System.out.println("Size of Map cacheNatureObj = " + cacheNatureObj.size());
         cacheSettings = dataBaseProcessor.getCacheSettingsFromDataBase();
         cacheRations = dataBaseProcessor.getCacheRationsFromDataBase();
     }
 
     public void printRations() {
-        System.out.println("\n*** RATIONS ***\n");
+        System.out.println("\n*** RATIONS and PROBABILITY EATING ***\n");
         for (Map.Entry<String, Map<Class<? extends Nature>, Integer>> entry: cacheRations.entrySet()) {
             System.out.println("===============");
             System.out.println(entry.getKey() + ":");
@@ -75,6 +74,7 @@ public class Parameters {
     }
 
     public void printParametersOfField(){
+        System.out.println("*** Allocating animals and plants to locations ***\n");
         for (int i = 0; i < island.getWidthOfField(); i++) {
             for (int j = 0; j < island.getHeightOfField(); j++) {
                 System.out.println("Location[" + i +"][" + j +"]");

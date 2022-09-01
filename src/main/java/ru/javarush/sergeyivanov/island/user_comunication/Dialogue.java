@@ -6,7 +6,7 @@ import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 import java.util.Scanner;
 
 public class Dialogue {
-    private boolean settingsIsDefault = true;
+    private static final String MESSAGE = "Invalid value: ";
     private final Scanner scanner = new Scanner(System.in);
     Parameters parameters;
 
@@ -15,10 +15,13 @@ public class Dialogue {
     }
 
     public void initialise() {
-        System.out.println("This is application for simulation processes of nature on an island.\n" +
-                "Choose menu item, write number to the console:\n" +
-                "1. use default settings\n" +
-                "2. input settings manually");
+        System.out.println("""
+                *** This is application for simulation processes ***
+                \t\t\t of nature on an island.
+
+                \tChoose menu item, write number to the console:
+                1. use default settings
+                2. input settings manually""");
 
         while (true) {
             String item = scanner.nextLine();
@@ -28,30 +31,43 @@ public class Dialogue {
                 requestSettings();
                 break;
             } else if ("2".equals(item)) {
-                settingsIsDefault = false;
                 requestChangeSizeIsland();
                 parameters.fillIsland();
                 requestSettings();
+                break;
+            } else {
+                System.out.println("Choose number and input to the console");
             }
         }
     }
 
     public void requestSettings() {
-        System.out.println("Do you want to get parameters (settings, ration)\n" +
-                " of animals and plants to the console?\n" +
-                "1. yes\n" +
-                "2. no");
-        String choice = scanner.nextLine();
-
         while (true) {
-            if ("1".equals(choice)) {
-                parameters.printSettings();
-                parameters.printRations();
-                break;
-            } else if ("2".equals(choice)) {
-                break;
-            } else {
-                System.out.println("Enter: \"1\" or \"2\"");
+
+            System.out.println("""
+
+                    \tWould you to get of parameters of animals and plants\nto the console?
+                    1. values of parameters
+                    2. rations and probability eating
+                    3. allocating animals and plants in locations
+                    4. exit menu
+                    """);
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    parameters.printSettings();
+                    break;
+                case "2":
+                    parameters.printRations();
+                    break;
+                case "3":
+                    parameters.printParametersOfField();
+                    break;
+                case "4":
+                    return;
+                default:
+                    System.out.println("Choose number and input to the console");
             }
         }
     }
@@ -70,28 +86,40 @@ public class Dialogue {
                 "10. To set probability of eating animals and plants by another animals\n");
     }
 
-    public boolean isSettingsDefault() {
-        return settingsIsDefault;
-    }
-
     private void requestChangeSizeIsland() {
-        System.out.println("Does the size of the island remain the default\n" +
+        System.out.println("\tDoes the size of the island remain the default?\n" +
                 "1. yes\n" +
                 "2. change");
         while (true) {
             String result = scanner.nextLine();
             if ("1".equals(result)) {
-                break;
+                return;
             } else if ("2".equals(result)) {
-                System.out.println("Input number - width and in the new line - height");
-                String line = scanner.nextLine();
-                int width = parseToInt(line);
-                String column = scanner.nextLine();
-                int height = parseToInt(column);
+                changingField();
+                return;
+            } else {
+                System.out.println("On the first string input amount of cells - width\n" +
+                        " and in the new string - height");
+            }
+        }
+    }
 
-                changeSizeOfIsland(width, height);
-            }else {
-                System.out.println("Enter: \"1\" or \"2\"");
+    private void changingField() {
+        System.out.println("\nInput amount of cells: width \nand in the new string - height");
+        while (true) {
+            String value = null;
+            try {
+                value = scanner.nextLine();
+                int width = checkValue(value);
+                value = scanner.nextLine();
+                int height = checkValue(value);
+                if (width > 0 && height > 0) {
+                    changeSizeOfIsland(width, height);
+                    break;
+                }
+                System.err.println("number can't be negative");
+            } catch (ValueInvalidException ex) {
+                messageToUserAboutError(ex, value);
             }
         }
     }
@@ -99,13 +127,19 @@ public class Dialogue {
     private void changeSizeOfIsland(int width, int height) {
         parameters.getIsland().setWidthSize(width);
         parameters.getIsland().setHeightSize(height);
+        parameters.getIsland().setField(width, height);
     }
 
-    private int parseToInt(String value) {
+    private int checkValue(String value) {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
             throw new ValueInvalidException("String does not contain a parsable integer", e);
         }
+    }
+
+    private void messageToUserAboutError(Exception exception, String value) {
+        System.out.println(MESSAGE + value);
+        System.err.println(exception.getMessage());
     }
 }
