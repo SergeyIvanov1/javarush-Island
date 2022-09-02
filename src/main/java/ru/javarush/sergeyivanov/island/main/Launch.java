@@ -20,7 +20,6 @@ public class Launch {
     private static final Logger rootLogger = LogManager.getRootLogger();
     private static final int AMOUNT_THREADS = 15;
 
-    private static final int AMOUNT = 4;
     private final Island island;
     private final Parameters parameters;
     private final Dialogue dialogue;
@@ -33,7 +32,7 @@ public class Launch {
 
     public void start() {
         dialogue.initialise();
-        repeatCycles(AMOUNT);
+        repeatCycles(parameters.getAmountCycles());
     }
 
     public void startThreads() {

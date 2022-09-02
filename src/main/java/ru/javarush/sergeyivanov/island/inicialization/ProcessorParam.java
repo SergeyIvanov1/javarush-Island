@@ -5,7 +5,9 @@ import org.apache.logging.log4j.Logger;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
 import ru.javarush.sergeyivanov.island.content_of_island.exceptions.CreateOfNatureObjectException;
 import ru.javarush.sergeyivanov.island.content_of_island.exceptions.ValueInvalidException;
+import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
+import ru.javarush.sergeyivanov.island.user_comunication.Statistic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -101,8 +103,12 @@ public class ProcessorParam {
                     queue.add(natureObj);
             } catch (NoSuchMethodException | InvocationTargetException |
                     InstantiationException | IllegalAccessException e) {
+//                e.printStackTrace();
                 throw new CreateOfNatureObjectException("Error by creating of nature objects (reflection)", e);
             }
+        }
+        if (Animal.class.isAssignableFrom(classNatureObj)) {
+            Statistic.amountAnimalsAfterInit += amountObj;
         }
         return queue;
     }

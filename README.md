@@ -29,7 +29,7 @@ The basic logic was formed in the follow classes:
 Settings(data for initialisation) storages in the local database. 
 Database MySQL used for targets of study, upgrade skills.
 
-For demonstrations used screens from IDE Intellij IDEA.
+For demonstrations used screenshots from IDE Intellij IDEA.
 
 **Inside, the database consists from table with settings of objects and table probability of eating animals 
 and plants:**
@@ -41,6 +41,7 @@ and plants:**
 In time launch application settings is assigning to fields.
 User can change any settings from console API and affect to runtime app.
 
+<img src="src/main/resources/communication_user.png" alt="user_communication">
 
 Island represents class, what include two - dimensional array of locations.
 All animals and plants are objects, what inheritance from abstracted classes
@@ -94,8 +95,9 @@ After request from user, statistic can to reflect to the console.
 It may by data about: ration of animals, settings, results of launches cycles, 
 numbers animals:  
 
-<img src="src/main/resources/output_settings.png" alt="output info to console">
+<img src="src/main/resources/output_result.jpg" alt="output info to console">
 
 **Result of running program reflected to the console like statistic data.**
 
-<img src="src/main/resources/result-running.png" alt="output statistic data"> 
+<img src="src/main/resources/result-running.png" alt="output statistic data">
+

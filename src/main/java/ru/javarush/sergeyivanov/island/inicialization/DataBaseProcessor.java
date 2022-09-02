@@ -2,6 +2,7 @@ package ru.javarush.sergeyivanov.island.inicialization;
 
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
 import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
+import ru.javarush.sergeyivanov.island.content_of_island.flora.Plant;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class DataBaseProcessor {
     private String URL;
     private final Parameters parameters;
 
-    public DataBaseProcessor(Parameters parameters){
+    public DataBaseProcessor(Parameters parameters) {
         this.parameters = parameters;
         Properties properties = new Properties();
         try {
@@ -62,8 +63,8 @@ public class DataBaseProcessor {
         return cacheRation;
     }
 
-    public Map <String, Map<String, Number>> getCacheSettingsFromDataBase() {
-        Map <String, Map<String, Number>> cacheSettingsFromDataBase = new HashMap<>();
+    public Map<String, Map<String, Number>> getCacheSettingsFromDataBase() {
+        Map<String, Map<String, Number>> cacheSettingsFromDataBase = new HashMap<>();
 
         try {
             Connection connection = DriverManager.getConnection(URL, userName, password);
@@ -76,13 +77,19 @@ public class DataBaseProcessor {
                 Class<? extends Nature> classObj = (Class<? extends Nature>) Class.forName(className);
                 String nameObj = classObj.getSimpleName();
 
-                settingsObj.put("weight", resultSet.getDouble("weight"));
-                settingsObj.put("maxObjInCell", resultSet.getInt("max_obj_in_cell"));
-                settingsObj.put("rangeMove", resultSet.getInt("range_move"));
-                settingsObj.put("amountNeedFood", resultSet.getDouble("amount_need_food"));
-                settingsObj.put("amountChildren", resultSet.getInt("amount_children"));
-                settingsObj.put("amountCycleLive", resultSet.getInt("amount_cycle_live"));
-                cacheSettingsFromDataBase.put(nameObj, settingsObj);
+                if (Plant.class.isAssignableFrom(classObj)) {
+                    settingsObj.put("weight", resultSet.getDouble("weight"));
+                    settingsObj.put("maxObjInCell", resultSet.getInt("max_obj_in_cell"));
+                    cacheSettingsFromDataBase.put(nameObj, settingsObj);
+                } else {
+                    settingsObj.put("weight", resultSet.getDouble("weight"));
+                    settingsObj.put("maxObjInCell", resultSet.getInt("max_obj_in_cell"));
+                    settingsObj.put("rangeMove", resultSet.getInt("range_move"));
+                    settingsObj.put("amountNeedFood", resultSet.getDouble("amount_need_food"));
+                    settingsObj.put("amountChildren", resultSet.getInt("amount_children"));
+                    settingsObj.put("amountCycleLive", resultSet.getInt("amount_cycle_live"));
+                    cacheSettingsFromDataBase.put(nameObj, settingsObj);
+                }
             }
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
@@ -90,7 +97,7 @@ public class DataBaseProcessor {
         return cacheSettingsFromDataBase;
     }
 
-    public Map<Class<? extends Nature>, Integer> getCacheNatureObjectsFromDB(){
+    public Map<Class<? extends Nature>, Integer> getCacheNatureObjectsFromDB() {
         Map<Class<? extends Nature>, Integer> cacheNatureObj = new HashMap<>();
 
         try {
@@ -98,7 +105,7 @@ public class DataBaseProcessor {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT class_name, amount_objects FROM settings");
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 String class_name = resultSet.getString("class_name");
                 Class<? extends Nature> classObj = (Class<? extends Nature>) Class.forName(class_name);
                 int amount_objects = resultSet.getInt("amount_objects");

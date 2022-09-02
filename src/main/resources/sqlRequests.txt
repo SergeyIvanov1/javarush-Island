@@ -104,12 +104,3 @@ select * from table_of_probability;
 
 DELETE FROM settings where class_name = 'ru.javarush.sergeyivanov.island.content_of_island.flora.Shrub';
 select * from settings;
-
-
-
-
-
-
-
-
-

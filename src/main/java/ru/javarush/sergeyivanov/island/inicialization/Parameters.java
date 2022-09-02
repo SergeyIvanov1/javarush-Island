@@ -10,6 +10,7 @@ import java.util.*;
 
 public class Parameters {
 
+    private int amount = 4;
     private Map<Class<? extends Nature>, Integer> cacheNatureObj;
     private Map<String, Map<Class<? extends Nature>, Integer>> cacheRations;
     private Map<String, Map<String, Number>> cacheSettings;
@@ -23,7 +24,7 @@ public class Parameters {
         this.processor = new ProcessorParam(this);
         this.dataBaseProcessor = new DataBaseProcessor(this);
         fillCachesFromDataBase();
-        fillMapOfListsRation(mapOfListsRation);
+//        fillMapOfListsRation(mapOfListsRation);
     }
 
     public Map<Class<? extends Nature>, Integer> getCacheNatureObj() {
@@ -39,6 +40,7 @@ public class Parameters {
     }
 
     public void fillIsland() {
+        fillMapOfListsRation(mapOfListsRation);
         processor.inputCellsToTheField();
         List<Queue<? extends Nature>> listQueuesByObjects = processor.createListQueuesByObjects(cacheNatureObj);
         processor.allocateObjsIntoField(listQueuesByObjects);
@@ -51,7 +53,7 @@ public class Parameters {
     }
 
     public void printRations() {
-        System.out.println("\n*** RATIONS and PROBABILITY EATING ***\n");
+        System.out.println("\n\t*** RATIONS ***\nand PROBABILITY OF EATING \n");
         for (Map.Entry<String, Map<Class<? extends Nature>, Integer>> entry: cacheRations.entrySet()) {
             System.out.println("===============");
             System.out.println(entry.getKey() + ":");
@@ -63,18 +65,18 @@ public class Parameters {
     }
 
     public void printSettings() {
-        System.out.println("\n*** SETTINGS ***\n");
+        System.out.println("\n*** SETTINGS AND VALUES ***\n");
         for (Map.Entry<String, Map<String, Number>> entry: cacheSettings.entrySet()) {
             System.out.println("+++++++++++++++");
             System.out.println(entry.getKey());
-            for (Map.Entry<String, Number> entry1: entry.getValue().entrySet()) {
-                System.out.println(entry1.getKey() + " : " + entry1.getValue());
+            for (Map.Entry<String, Number> mapOfValues: entry.getValue().entrySet()) {
+                System.out.println(mapOfValues.getKey() + " : " + mapOfValues.getValue());
             }
         }
     }
 
     public void printParametersOfField(){
-        System.out.println("*** Allocating animals and plants to locations ***\n");
+        System.out.println("\t*** ALLOCATION ANIMALS ***\n\tAND PLANTS TO LOCATIONS \n");
         for (int i = 0; i < island.getWidthOfField(); i++) {
             for (int j = 0; j < island.getHeightOfField(); j++) {
                 System.out.println("Location[" + i +"][" + j +"]");
@@ -86,10 +88,6 @@ public class Parameters {
                     Queue<? extends Nature> storage = currentLocation.getQueueOfNatureObjects(classObj);
                     int amountAnimals = storage.size();
                     System.out.println("Amount " + classObj.getSimpleName() + " in the queue = " + amountAnimals);
-
-                    if (Animal.class.isAssignableFrom(entry.getKey())) {
-                        Statistic.amountAnimalsAfterInit += amountAnimals;
-                    }
                 }
                 System.out.println("____________________");
             }
@@ -108,6 +106,14 @@ public class Parameters {
         return cacheRations.get(nameAnimal);
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public int getAmountCycles() {
+        return amount;
+    }
+
     private void fillMapOfListsRation(Map<String, List<Class<? extends Nature>>> mapOfListsRation){
         for (Map.Entry<String, Map<Class<? extends Nature>, Integer>> entry: cacheRations.entrySet()) {
             String nameAnimal = entry.getKey();
@@ -124,5 +130,9 @@ public class Parameters {
 
     public List<Class<? extends Nature>> getListRation(String nameAnimal){
         return mapOfListsRation.get(nameAnimal);
+    }
+
+    public Map<String, Map<Class<? extends Nature>, Integer>> getCacheRations() {
+        return cacheRations;
     }
 }

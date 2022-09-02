@@ -1,17 +1,23 @@
 package ru.javarush.sergeyivanov.island.user_comunication;
 
+import ru.javarush.sergeyivanov.island.content_of_island.Nature;
 import ru.javarush.sergeyivanov.island.content_of_island.exceptions.ValueInvalidException;
+import ru.javarush.sergeyivanov.island.content_of_island.flora.Plant;
 import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Dialogue {
-    private static final String MESSAGE = "Invalid value: ";
+    private static final int MAX_VALUE = 100;
     private final Scanner scanner = new Scanner(System.in);
-    Parameters parameters;
+    private final List<Class<? extends Nature>> listClasses = new ArrayList<>();
+    private final Parameters parameters;
+    private final DialogueService service;
 
     public Dialogue(Parameters parameters) {
         this.parameters = parameters;
+        this.service = new DialogueService(parameters, listClasses);
+        service.fillListOfClasses();
     }
 
     public void initialise() {
@@ -30,8 +36,11 @@ public class Dialogue {
                 parameters.fillIsland();
                 requestSettings();
                 break;
+
             } else if ("2".equals(item)) {
                 requestChangeSizeIsland();
+                requestChangeAmountRepeatOfCycles();
+                requestChangeSettings();
                 parameters.fillIsland();
                 requestSettings();
                 break;
@@ -41,49 +50,101 @@ public class Dialogue {
         }
     }
 
-    public void requestSettings() {
+    private void requestSettings() {
         while (true) {
 
             System.out.println("""
 
                     \tWould you to get of parameters of animals and plants\nto the console?
                     1. values of parameters
-                    2. rations and probability eating
+                    2. rations and probability of eating
                     3. allocating animals and plants in locations
                     4. exit menu
                     """);
             String choice = scanner.nextLine();
 
             switch (choice) {
-                case "1":
-                    parameters.printSettings();
-                    break;
-                case "2":
-                    parameters.printRations();
-                    break;
-                case "3":
-                    parameters.printParametersOfField();
-                    break;
-                case "4":
+                case "1" -> parameters.printSettings();
+                case "2" -> parameters.printRations();
+                case "3" -> parameters.printParametersOfField();
+                case "4" -> {
                     return;
-                default:
-                    System.out.println("Choose number and input to the console");
+                }
+                default -> System.out.println("Choose number and input to the console");
             }
         }
     }
 
-    public void changeSettings() {
-        System.out.println("What kind of setting objects (animals and plants) do you want change. Choose menu item.\n" +
-                "1. Size of island\n" +
-                "2. Amount of objects\n" +
-                "3. Weight of objects\n" +
-                "4. Maximal amount of objects in cells\n" +
-                "5. Range of move\n" +
-                "6. Amount of need food\n" +
-                "7. Amount of children\n" +
-                "8. Amount repeat of cycles\n" +
-                "9. Amount cycles of life\n" +
-                "10. To set probability of eating animals and plants by another animals\n");
+    private void requestChangeSettings() {
+
+        while (true) {
+            System.out.println("\nWhat object animals or plants do you want change?\n" +
+                    "Input number of list:");
+            service.printListClasses();
+
+            int resultOfRequest = service.getValueOfParameter(listClasses.size());
+            if (resultOfRequest == listClasses.size()) {
+                return;
+            }
+            requestChangeParameters(listClasses.get(resultOfRequest));
+        }
+    }
+
+    private void requestChangeParameters(Class<? extends Nature> aClass) {
+        while (true) {
+            System.out.println("\nYou selected: " + aClass.getSimpleName());
+            if (Plant.class.isAssignableFrom(aClass)) {
+                System.out.println("""
+                        What kind of setting object do you want change. Choose menu item.
+                        1. Amount of objects
+                        2. Weight of objects
+                        3. Maximal amount of objects in cells
+                        4. exit menu
+                        """);
+
+                String choice = scanner.nextLine();
+
+                switch (choice) {
+                    case "1" -> service.changeAmount(aClass);
+                    case "2" -> service.changeWeight(aClass);
+                    case "3" -> service.changeMaximalAmountInCells(aClass);
+                    case "4" -> {
+                        return;
+                    }
+                    default -> System.out.println("Choose number and input to the console");
+                }
+            } else {
+                System.out.println("""
+                        What kind of setting object do you want change. Choose menu item.
+                        1. Amount of objects
+                        2. Weight of objects
+                        3. Maximal amount of objects in cells
+                        4. Range of move
+                        5. Amount of need food
+                        6. Amount of children
+                        7. Amount cycles of life
+                        8. To set probability of eating another objects by selected object
+                        9. exit menu
+                        """);
+
+                String choice = scanner.nextLine();
+
+                switch (choice) {
+                    case "1" -> service.changeAmount(aClass);
+                    case "2" -> service.changeWeight(aClass);
+                    case "3" -> service.changeMaximalAmountInCells(aClass);
+                    case "4" -> service.changeRangeOfMove(aClass);
+                    case "5" -> service.changeAmountOfNeedFood(aClass);
+                    case "6" -> service.changeAmountOfChildren(aClass);
+                    case "7" -> service.changeAmountCyclesOfLife(aClass);
+                    case "8" -> service.changeRationAndProbability(aClass);
+                    case "9" -> {
+                        return;
+                    }
+                    default -> System.out.println("Choose number and input to the console");
+                }
+            }
+        }
     }
 
     private void requestChangeSizeIsland() {
@@ -95,7 +156,7 @@ public class Dialogue {
             if ("1".equals(result)) {
                 return;
             } else if ("2".equals(result)) {
-                changingField();
+                service.changingField();
                 return;
             } else {
                 System.out.println("On the first string input amount of cells - width\n" +
@@ -104,42 +165,24 @@ public class Dialogue {
         }
     }
 
-    private void changingField() {
-        System.out.println("\nInput amount of cells: width \nand in the new string - height");
+    private void requestChangeAmountRepeatOfCycles() {
+
+        System.out.println("\tDoes the amount repeat of cycles remain the default?\n" +
+                "1. yes\n" +
+                "2. change");
         while (true) {
-            String value = null;
-            try {
-                value = scanner.nextLine();
-                int width = checkValue(value);
-                value = scanner.nextLine();
-                int height = checkValue(value);
-                if (width > 0 && height > 0) {
-                    changeSizeOfIsland(width, height);
-                    break;
-                }
-                System.err.println("number can't be negative");
-            } catch (ValueInvalidException ex) {
-                messageToUserAboutError(ex, value);
+            String result = scanner.nextLine();
+
+            if ("1".equals(result)) {
+                return;
+            } else if ("2".equals(result)) {
+                System.out.println("Input new value of amount cycles");
+                int newValue = service.getValueOfParameter(MAX_VALUE);
+
+                parameters.setAmount(newValue);
+                System.out.println("Value of amount repeat cycles changed. New value " + newValue);
+                break;
             }
         }
-    }
-
-    private void changeSizeOfIsland(int width, int height) {
-        parameters.getIsland().setWidthSize(width);
-        parameters.getIsland().setHeightSize(height);
-        parameters.getIsland().setField(width, height);
-    }
-
-    private int checkValue(String value) {
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            throw new ValueInvalidException("String does not contain a parsable integer", e);
-        }
-    }
-
-    private void messageToUserAboutError(Exception exception, String value) {
-        System.out.println(MESSAGE + value);
-        System.err.println(exception.getMessage());
     }
 }
