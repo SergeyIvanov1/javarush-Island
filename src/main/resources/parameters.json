@@ -1,0 +1,126 @@
+{
+  "Rabbit" : {
+    "amountNeedFood" : 0.45,
+    "amountChildren" : 6,
+    "maxObjInCell" : 150,
+    "amountCycleLive" : 3,
+    "weight" : 2.0,
+    "rangeMove" : 2
+  },
+  "WildBoar" : {
+    "amountNeedFood" : 50.0,
+    "amountChildren" : 4,
+    "maxObjInCell" : 50,
+    "amountCycleLive" : 5,
+    "weight" : 400.0,
+    "rangeMove" : 2
+  },
+  "Caterpillar" : {
+    "amountNeedFood" : 0.0,
+    "amountChildren" : 3,
+    "maxObjInCell" : 1000,
+    "amountCycleLive" : 3,
+    "weight" : 0.01,
+    "rangeMove" : 0
+  },
+  "Bear" : {
+    "amountNeedFood" : 80.0,
+    "amountChildren" : 2,
+    "maxObjInCell" : 5,
+    "amountCycleLive" : 4,
+    "weight" : 500.0,
+    "rangeMove" : 2
+  },
+  "Grass" : {
+    "maxObjInCell" : 200,
+    "weight" : 1.0
+  },
+  "Fox" : {
+    "amountNeedFood" : 2.0,
+    "amountChildren" : 2,
+    "maxObjInCell" : 30,
+    "amountCycleLive" : 3,
+    "weight" : 8.0,
+    "rangeMove" : 2
+  },
+  "Deer" : {
+    "amountNeedFood" : 50.0,
+    "amountChildren" : 2,
+    "maxObjInCell" : 20,
+    "amountCycleLive" : 3,
+    "weight" : 300.0,
+    "rangeMove" : 4
+  },
+  "Mouse" : {
+    "amountNeedFood" : 0.01,
+    "amountChildren" : 3,
+    "maxObjInCell" : 500,
+    "amountCycleLive" : 3,
+    "weight" : 0.05,
+    "rangeMove" : 1
+  },
+  "Boa" : {
+    "amountNeedFood" : 3.0,
+    "amountChildren" : 3,
+    "maxObjInCell" : 30,
+    "amountCycleLive" : 6,
+    "weight" : 15.0,
+    "rangeMove" : 1
+  },
+  "Horse" : {
+    "amountNeedFood" : 60.0,
+    "amountChildren" : 1,
+    "maxObjInCell" : 20,
+    "amountCycleLive" : 5,
+    "weight" : 400.0,
+    "rangeMove" : 4
+  },
+  "Duck" : {
+    "amountNeedFood" : 0.15,
+    "amountChildren" : 4,
+    "maxObjInCell" : 200,
+    "amountCycleLive" : 3,
+    "weight" : 1.0,
+    "rangeMove" : 4
+  },
+  "Sheep" : {
+    "amountNeedFood" : 15.0,
+    "amountChildren" : 2,
+    "maxObjInCell" : 140,
+    "amountCycleLive" : 4,
+    "weight" : 70.0,
+    "rangeMove" : 3
+  },
+  "Goat" : {
+    "amountNeedFood" : 10.0,
+    "amountChildren" : 1,
+    "maxObjInCell" : 140,
+    "amountCycleLive" : 5,
+    "weight" : 60.0,
+    "rangeMove" : 3
+  },
+  "Wolf" : {
+    "amountNeedFood" : 8.0,
+    "amountChildren" : 2,
+    "maxObjInCell" : 30,
+    "amountCycleLive" : 3,
+    "weight" : 50.0,
+    "rangeMove" : 3
+  },
+  "Eagle" : {
+    "amountNeedFood" : 1.0,
+    "amountChildren" : 3,
+    "maxObjInCell" : 20,
+    "amountCycleLive" : 4,
+    "weight" : 6.0,
+    "rangeMove" : 3
+  },
+  "Buffalo" : {
+    "amountNeedFood" : 100.0,
+    "amountChildren" : 1,
+    "maxObjInCell" : 10,
+    "amountCycleLive" : 4,
+    "weight" : 700.0,
+    "rangeMove" : 3
+  }
+}

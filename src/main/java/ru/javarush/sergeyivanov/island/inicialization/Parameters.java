@@ -1,10 +1,8 @@
 package ru.javarush.sergeyivanov.island.inicialization;
 
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
-import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Island;
 import ru.javarush.sergeyivanov.island.content_of_island.field.Location;
-import ru.javarush.sergeyivanov.island.user_comunication.Statistic;
 
 import java.util.*;
 
@@ -17,14 +15,13 @@ public class Parameters {
     private final Map<String, List<Class<? extends Nature>>> mapOfListsRation = new HashMap<>();
     private final Island island;
     private final ProcessorParam processor;
-    private final DataBaseProcessor dataBaseProcessor;
+    private final SourceParamProcessor dataBaseProcessor;
+
 
     public Parameters(Island island) {
         this.island = island;
         this.processor = new ProcessorParam(this);
-        this.dataBaseProcessor = new DataBaseProcessor(this);
-        fillCachesFromDataBase();
-//        fillMapOfListsRation(mapOfListsRation);
+        this.dataBaseProcessor = new SourceParamProcessor(this);
     }
 
     public Map<Class<? extends Nature>, Integer> getCacheNatureObj() {
@@ -46,13 +43,19 @@ public class Parameters {
         processor.allocateObjsIntoField(listQueuesByObjects);
     }
 
-    private void fillCachesFromDataBase() {
+    public void fillCachesFromDataBase() {
         cacheNatureObj = dataBaseProcessor.getCacheNatureObjectsFromDB();
         cacheSettings = dataBaseProcessor.getCacheSettingsFromDataBase();
         cacheRations = dataBaseProcessor.getCacheRationsFromDataBase();
     }
 
-    public void printRations() {
+    public void fillCachesFromJSON() {
+        cacheNatureObj = dataBaseProcessor.getCacheNatureObjectsFromJSON();
+        cacheSettings = dataBaseProcessor.getCacheSettingsFromJSON();
+        cacheRations = dataBaseProcessor.getCacheRationsFromJSON();
+    }
+
+        public void printRations() {
         System.out.println("\n\t*** RATIONS ***\nand PROBABILITY OF EATING \n");
         for (Map.Entry<String, Map<Class<? extends Nature>, Integer>> entry: cacheRations.entrySet()) {
             System.out.println("===============");

@@ -50,7 +50,7 @@ public class DialogueService {
 
     protected void changeWeight(Class<? extends Nature> aClass) {
         String weight = "weight";
-        inputParameter(weight, aClass);
+        inputDoubleValue(weight, aClass);
     }
 
     protected void changeMaximalAmountInCells(Class<? extends Nature> aClass) {
@@ -65,7 +65,7 @@ public class DialogueService {
 
     protected void changeAmountOfNeedFood(Class<? extends Nature> aClass) {
         String amountNeedFood = "amountNeedFood";
-        inputParameter(amountNeedFood, aClass);
+        inputDoubleValue(amountNeedFood, aClass);
     }
 
     protected void changeAmountOfChildren(Class<? extends Nature> aClass) {
@@ -112,7 +112,7 @@ public class DialogueService {
             String value = null;
             try {
                 value = scanner.nextLine();
-                int number = getNumber(value);
+                int number = getInt(value);
                 if (number >= 0 && number <= maxValue) {
                     return number;
                 } else {
@@ -133,7 +133,7 @@ public class DialogueService {
             String value = null;
             try {
                 value = scanner.nextLine();
-                int number = getNumber(value);
+                int number = getInt(value);
                 if (number >= 0) {
                     mapOfParameters.put(parameter, number);
                     System.out.println("Value of " + parameter + " changed. New value " + number);
@@ -146,9 +146,39 @@ public class DialogueService {
         }
     }
 
-    protected int getNumber(String value) {
+    protected void inputDoubleValue(String parameter, Class<? extends Nature> aClass) {
+        System.out.println("You selected to change " + parameter + " " + aClass.getSimpleName() +
+                ". Input value");
+        Map<String, Map<String, Number>> cacheSettings = parameters.getCacheSettings();
+        Map<String, Number> mapOfParameters = cacheSettings.get(aClass.getSimpleName());
+        while (true) {
+            String value = null;
+            try {
+                value = scanner.nextLine();
+                Double number = getDouble(value);
+                if (number >= 0) {
+                    mapOfParameters.put(parameter, number);
+                    System.out.println("Value of " + parameter + " changed. New value " + number);
+                    break;
+                }
+                System.err.println("input positive number");
+            } catch (ValueInvalidException ex) {
+                messageToUserAboutError(ex, value);
+            }
+        }
+    }
+
+    protected int getInt(String value) {
         try {
             return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            throw new ValueInvalidException("String does not contain a parsable integer", e);
+        }
+    }
+
+    protected Double getDouble(String value) {
+        try {
+            return Double.parseDouble(value);
         } catch (NumberFormatException e) {
             throw new ValueInvalidException("String does not contain a parsable integer", e);
         }

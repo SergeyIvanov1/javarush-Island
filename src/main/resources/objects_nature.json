@@ -1,0 +1,18 @@
+{
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Bear" : 45,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Caterpillar" : 300,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Mouse" : 150,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Sheep" : 42,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Deer" : 6,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Duck" : 60,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.WildBoar" : 15,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Goat" : 42,
+  "ru.javarush.sergeyivanov.island.content_of_island.flora.Grass" : 1500,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Fox" : 45,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Wolf" : 45,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Rabbit" : 45,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Buffalo" : 3,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Boa" : 45,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Eagle" : 45,
+  "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Horse" : 6
+}

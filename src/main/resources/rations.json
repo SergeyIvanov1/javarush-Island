@@ -1,0 +1,77 @@
+{
+  "WildBoar" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Caterpillar" : 90,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Mouse" : 50,
+    "ru.javarush.sergeyivanov.island.content_of_island.flora.Grass" : 100
+  },
+  "Rabbit" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.flora.Grass" : 100
+  },
+  "Caterpillar" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.flora.Grass" : 100
+  },
+  "Bear" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Mouse" : 90,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Rabbit" : 80,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Sheep" : 70,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Buffalo" : 20,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Boa" : 80,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Deer" : 80,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Duck" : 10,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.WildBoar" : 50,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Goat" : 70,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Horse" : 40
+  },
+  "Deer" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.flora.Grass" : 100
+  },
+  "Fox" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Caterpillar" : 40,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Mouse" : 90,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Rabbit" : 70,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Duck" : 60
+  },
+  "Mouse" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Caterpillar" : 90,
+    "ru.javarush.sergeyivanov.island.content_of_island.flora.Grass" : 100
+  },
+  "Boa" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Fox" : 15,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Mouse" : 40,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Rabbit" : 20,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Duck" : 10
+  },
+  "Horse" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.flora.Grass" : 100
+  },
+  "Sheep" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.flora.Grass" : 100
+  },
+  "Duck" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Caterpillar" : 90,
+    "ru.javarush.sergeyivanov.island.content_of_island.flora.Grass" : 100
+  },
+  "Goat" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.flora.Grass" : 100
+  },
+  "Wolf" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Mouse" : 80,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Rabbit" : 60,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Sheep" : 70,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Buffalo" : 10,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Deer" : 15,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Duck" : 40,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.WildBoar" : 15,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Goat" : 60,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Horse" : 10
+  },
+  "Eagle" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Fox" : 10,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Mouse" : 90,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Rabbit" : 90,
+    "ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Duck" : 80
+  },
+  "Buffalo" : {
+    "ru.javarush.sergeyivanov.island.content_of_island.flora.Grass" : 100
+  }
+}

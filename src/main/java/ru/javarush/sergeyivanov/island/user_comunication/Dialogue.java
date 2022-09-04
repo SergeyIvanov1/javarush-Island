@@ -17,17 +17,18 @@ public class Dialogue {
     public Dialogue(Parameters parameters) {
         this.parameters = parameters;
         this.service = new DialogueService(parameters, listClasses);
-        service.fillListOfClasses();
     }
 
     public void initialise() {
-        System.out.println("""
-                *** This is application for simulation processes ***
-                \t\t\t of nature on an island.
+        System.out.println("*** This is application for simulation processes ***\n" +
+                "\t\t\t of nature on an island.");
 
-                \tChoose menu item, write number to the console:
-                1. use default settings
-                2. input settings manually""");
+        chooseSourceOfParameters();
+        service.fillListOfClasses();
+
+        System.out.println("\tChoose menu item, write number to the console:\n" +
+                "1. use default settings\n" +
+                "2. input settings manually");
 
         while (true) {
             String item = scanner.nextLine();
@@ -166,7 +167,6 @@ public class Dialogue {
     }
 
     private void requestChangeAmountRepeatOfCycles() {
-
         System.out.println("\tDoes the amount repeat of cycles remain the default?\n" +
                 "1. yes\n" +
                 "2. change");
@@ -182,6 +182,30 @@ public class Dialogue {
                 parameters.setAmount(newValue);
                 System.out.println("Value of amount repeat cycles changed. New value " + newValue);
                 break;
+            } else {
+                System.out.println("Choose number and input to the console");
+            }
+        }
+    }
+
+    private void chooseSourceOfParameters() {
+        System.out.println("""
+
+                \tYou can choose source getting of default parameter values:
+                1. Data base
+                2. JSON file\s""");
+        while (true) {
+            String result = scanner.nextLine();
+            switch (result){
+                case "1" -> {
+                    parameters.fillCachesFromDataBase();
+                    return;
+                }
+                case "2" -> {
+                    parameters.fillCachesFromJSON();
+                    return;
+                }
+                default -> System.out.println("Choose number and input to the console");
             }
         }
     }

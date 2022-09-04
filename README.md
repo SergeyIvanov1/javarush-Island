@@ -11,6 +11,8 @@ Tasks for this project you can see: [here](src/main/resources/tasks.html).
 * MySQL
 * GitHub
 * HTML
+* JSON
+* XML
 * MarkDown
 
 This program is a console application.  
@@ -26,8 +28,12 @@ The basic logic was formed in the follow classes:
 * [ProcessorParam](src/main/java/ru/javarush/sergeyivanov/island/inicialization/ProcessorParam.java)
 * [DataBaseProcessor](src/main/java/ru/javarush/sergeyivanov/island/inicialization/DataBaseProcessor.java)
 
-Settings(data for initialisation) storages in the local database. 
+Settings(data for default initialisation) can to storage in the:
+1. Local database
+2. JSON files
 Database MySQL used for targets of study, upgrade skills.
+
+In time starting program user choosing source getting data for default initialisation parameters. But runtime user can to change any parameter manually.
 
 For demonstrations used screenshots from IDE Intellij IDEA.
 

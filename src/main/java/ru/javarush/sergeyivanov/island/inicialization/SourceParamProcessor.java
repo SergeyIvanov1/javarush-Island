@@ -1,9 +1,12 @@
 package ru.javarush.sergeyivanov.island.inicialization;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
 import ru.javarush.sergeyivanov.island.content_of_island.fauna.Animal;
 import ru.javarush.sergeyivanov.island.content_of_island.flora.Plant;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
@@ -11,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class DataBaseProcessor {
+public class SourceParamProcessor {
 
     private final int ZERO = 0;
     private String userName;
@@ -19,7 +22,7 @@ public class DataBaseProcessor {
     private String URL;
     private final Parameters parameters;
 
-    public DataBaseProcessor(Parameters parameters) {
+    public SourceParamProcessor(Parameters parameters) {
         this.parameters = parameters;
         Properties properties = new Properties();
         try {
@@ -112,6 +115,54 @@ public class DataBaseProcessor {
                 cacheNatureObj.put(classObj, amount_objects);
             }
         } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return cacheNatureObj;
+    }
+
+    public Map<String, Map<Class<? extends Nature>, Integer>> getCacheRationsFromJSON() {
+        Map<String, Map<Class<? extends Nature>, Integer>> cacheRation = new HashMap<>();
+        String path = "src/main/resources/rations.json";
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            Map<String, Map<Class<? extends Nature>, Integer>> temporaryMap = objectMapper.readValue(new File(path),
+                    new TypeReference<>(){
+                    });
+            cacheRation.putAll(temporaryMap);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return cacheRation;
+    }
+
+    public Map<String, Map<String, Number>> getCacheSettingsFromJSON() {
+        Map<String, Map<String, Number>> cacheSettingsFromDataBase = new HashMap<>();
+        String path = "src/main/resources/parameters.json";
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Map<String, Number>> temporaryMap = objectMapper.readValue(
+                    new File(path), new TypeReference<>() {
+                    });
+
+            cacheSettingsFromDataBase.putAll(temporaryMap);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return cacheSettingsFromDataBase;
+    }
+
+    public Map<Class<? extends Nature>, Integer> getCacheNatureObjectsFromJSON() {
+        Map<Class<? extends Nature>, Integer> cacheNatureObj = new HashMap<>();
+        String path = "src/main/resources/objects_nature.json";
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<Class<? extends Nature>, Integer> temporaryMap = objectMapper.readValue(
+                    new File(path), new TypeReference<>() {
+                    });
+            cacheNatureObj.putAll(temporaryMap);
+
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return cacheNatureObj;
