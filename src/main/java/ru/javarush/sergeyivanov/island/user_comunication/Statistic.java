@@ -31,6 +31,4 @@ public class Statistic {
         amountEatenPlants.set(0);
         amountAnimalsInNewCycle = 0;
     }
-
-
 }

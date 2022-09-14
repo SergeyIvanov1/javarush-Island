@@ -22,9 +22,16 @@ public class DialogueService {
     protected void changingField() {
         System.out.println("\nInput amount of cells: width \nand in the new string - height");
 
-        int width = getValueOfParameter(MAX_VALUE);
-        int height = getValueOfParameter(MAX_VALUE);
-        changeSizeOfIsland(width, height);
+        while (true) {
+            int width = getValueFromUser(MAX_VALUE);
+            int height = getValueFromUser(MAX_VALUE);
+            if (width == 0 || height == 0){
+                System.err.println("Value of size field can't be zero");
+            } else {
+                changeSizeOfIsland(width, height);
+                return;
+            }
+        }
     }
 
     protected void changeSizeOfIsland(int width, int height) {
@@ -44,38 +51,62 @@ public class DialogueService {
         Map<Class<? extends Nature>, Integer> cacheNatureObj = parameters.getCacheNatureObj();
         int sizeIsland = parameters.getIsland().getHeightOfField() * parameters.getIsland().getWidthOfField();
         int maxObjInCell = (int) parameters.getCacheSettings().get(aClass.getSimpleName()).get("maxObjInCell");
-        int valueOfParameter = getValueOfParameter(sizeIsland * maxObjInCell);
+        int valueOfParameter = getValueFromUser(sizeIsland * maxObjInCell);
         cacheNatureObj.put(aClass, valueOfParameter);
     }
 
     protected void changeWeight(Class<? extends Nature> aClass) {
-        String weight = "weight";
-        inputDoubleValue(weight, aClass);
+        if (aClass != null) {
+            String weight = "weight";
+            inputDoubleValue(weight, aClass);
+        } else {
+            throw new NullPointerException("Error. Class can't equals null");
+        }
     }
 
     protected void changeMaximalAmountInCells(Class<? extends Nature> aClass) {
-        String maxObjInCell = "maxObjInCell";
-        inputParameter(maxObjInCell, aClass);
+        if (aClass != null) {
+            String maxObjInCell = "maxObjInCell";
+            inputParameter(maxObjInCell, aClass);
+        } else {
+            throw new NullPointerException("Error. Class can't equals null");
+        }
     }
 
     protected void changeRangeOfMove(Class<? extends Nature> aClass) {
-        String rangeMove = "rangeMove";
-        inputParameter(rangeMove, aClass);
+        if (aClass != null) {
+            String rangeMove = "rangeMove";
+            inputParameter(rangeMove, aClass);
+        } else {
+            throw new NullPointerException("Error. Class can't equals null");
+        }
     }
 
     protected void changeAmountOfNeedFood(Class<? extends Nature> aClass) {
-        String amountNeedFood = "amountNeedFood";
-        inputDoubleValue(amountNeedFood, aClass);
+        if (aClass != null) {
+            String amountNeedFood = "amountNeedFood";
+            inputDoubleValue(amountNeedFood, aClass);
+        } else {
+            throw new NullPointerException("Error. Class can't equals null");
+        }
     }
 
     protected void changeAmountOfChildren(Class<? extends Nature> aClass) {
-        String amountChildren = "amountChildren";
-        inputParameter(amountChildren, aClass);
+        if (aClass != null) {
+            String amountChildren = "amountChildren";
+            inputParameter(amountChildren, aClass);
+        } else {
+            throw new NullPointerException("Error. Class can't equals null");
+        }
     }
 
     protected void changeAmountCyclesOfLife(Class<? extends Nature> aClass) {
-        String amountCycleLive = "amountCycleLive";
-        inputParameter(amountCycleLive, aClass);
+        if (aClass != null) {
+            String amountCycleLive = "amountCycleLive";
+            inputParameter(amountCycleLive, aClass);
+        } else {
+            throw new NullPointerException("Error. Class can't equals null");
+        }
     }
 
     protected void changeRationAndProbability(Class<? extends Nature> aClass) {
@@ -90,12 +121,12 @@ public class DialogueService {
             printListClasses();
 
             int maxValue = listClasses.size();
-            int selectedRationObject = getValueOfParameter(maxValue);
+            int selectedRationObject = getValueFromUser(maxValue);
             if (selectedRationObject == maxValue) {
                 return;
             }
             System.out.println("Input probability of eating " + nameObject);
-            int probability = getValueOfParameter(MAX_VALUE);
+            int probability = getValueFromUser(MAX_VALUE);
             mapClassesAndProbability.put(listClasses.get(selectedRationObject), probability);
         }
     }
@@ -107,7 +138,7 @@ public class DialogueService {
         System.out.println(listClasses.size() + ". for exit");
     }
 
-    protected int getValueOfParameter(int maxValue) {
+    protected int getValueFromUser(int maxValue) {
         while (true) {
             String value = null;
             try {
@@ -140,7 +171,7 @@ public class DialogueService {
                     break;
                 }
                 System.err.println("input positive number");
-            } catch (ValueInvalidException ex) {
+            } catch (ValueInvalidException | NullPointerException ex) {
                 messageToUserAboutError(ex, value);
             }
         }
@@ -162,7 +193,7 @@ public class DialogueService {
                     break;
                 }
                 System.err.println("input positive number");
-            } catch (ValueInvalidException ex) {
+            } catch (ValueInvalidException | NullPointerException ex) {
                 messageToUserAboutError(ex, value);
             }
         }
@@ -179,8 +210,8 @@ public class DialogueService {
     protected Double getDouble(String value) {
         try {
             return Double.parseDouble(value);
-        } catch (NumberFormatException e) {
-            throw new ValueInvalidException("String does not contain a parsable integer", e);
+        } catch (NumberFormatException | NullPointerException e) {
+            throw new ValueInvalidException("String does not contain a parsable double", e);
         }
     }
 

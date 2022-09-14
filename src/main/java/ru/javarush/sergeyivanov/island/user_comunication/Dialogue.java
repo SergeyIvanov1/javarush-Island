@@ -1,7 +1,6 @@
 package ru.javarush.sergeyivanov.island.user_comunication;
 
 import ru.javarush.sergeyivanov.island.content_of_island.Nature;
-import ru.javarush.sergeyivanov.island.content_of_island.exceptions.ValueInvalidException;
 import ru.javarush.sergeyivanov.island.content_of_island.flora.Plant;
 import ru.javarush.sergeyivanov.island.inicialization.Parameters;
 
@@ -83,7 +82,7 @@ public class Dialogue {
                     "Input number of list:");
             service.printListClasses();
 
-            int resultOfRequest = service.getValueOfParameter(listClasses.size());
+            int resultOfRequest = service.getValueFromUser(listClasses.size());
             if (resultOfRequest == listClasses.size()) {
                 return;
             }
@@ -177,7 +176,7 @@ public class Dialogue {
                 return;
             } else if ("2".equals(result)) {
                 System.out.println("Input new value of amount cycles");
-                int newValue = service.getValueOfParameter(MAX_VALUE);
+                int newValue = service.getValueFromUser(MAX_VALUE);
 
                 parameters.setAmount(newValue);
                 System.out.println("Value of amount repeat cycles changed. New value " + newValue);
