@@ -1,0 +1,106 @@
+create database island_settings;
+
+CREATE TABLE settings(id INTEGER PRIMARY KEY AUTO_INCREMENT, animal VARCHAR(15), amount_objects INT, weight DECIMAL(8,3),
+max_obj_in_cell INT, range_move INT, amount_need_food DECIMAL(8,3), amount_children INT, amount_cycle_live INT);
+
+INSERT INTO settings(animal, amount_objects, weight,
+            max_obj_in_cell, range_move, amount_need_food, amount_children, amount_cycle_live) values
+            ('Bear', 45, 500, 5, 2, 80, 2, 4),
+            ('Boa', 45,15, 30, 1, 3, 3, 6),
+            ('Eagle', 45, 6, 20, 3, 1, 3, 4),
+            ('Fox', 45,8, 30, 2, 2, 2, 3),
+            ('Wolf', 45, 50, 30, 3, 8, 2, 3),
+            ('Buffalo', 3, 700, 10, 3, 100, 1, 4),
+            ('Caterpillar', 300, 0.01, 1000, 0, 0, 3, 3),
+            ('Deer', 6, 300, 20, 4, 50, 2, 3),
+            ('Duck', 60, 1, 200, 4, 0.15, 4,3),
+            ('Goat', 42, 60, 140, 3, 10, 1, 5),
+            ('Horse', 6, 400 ,20, 4, 60, 1, 5),
+            ('Mouse', 150, 0.05, 500, 1, 0.01, 3, 3),
+            ('Rabbit', 45, 2, 150, 2, 0.45, 6, 3),
+            ('Sheep', 42, 70, 140, 3, 15, 2, 4),
+            ('WildBoar', 15, 400, 50, 2, 50, 4, 5),
+            ('Grass', 1500, 1, 200, 0, 0, 0, null);
+
+CREATE TABLE table_of_probability(ration_animal VARCHAR(15), Wolf INT, Boa INT, Fox INT, Bear INT, Eagle INT, Horse INT, Deer INT,
+        Rabbit INT, Mouse INT, Goat INT, Sheep INT, WildBoar INT, Buffalo INT, Duck INT, Caterpillar INT);
+
+INSERT INTO table_of_probability(ration_animal, Wolf, Boa, Fox, Bear, Eagle, Horse, Deer,
+        Rabbit, Mouse, Goat, Sheep, WildBoar, Buffalo, Duck, Caterpillar) VALUES
+    ('Wolf', 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('Boa', 0,  0, 0, 80, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('Fox', 0, 15, 0, 0, 10, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('Bear', 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('Eagle', 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('Horse', 10, 0, 0, 40, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('Deer', 15, 0, 0, 80, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('Rabbit', 60, 20, 80, 90, 90, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('Mouse', 80, 40, 90, 90, 90, 0, 0,  0,  0,  0,  0,  50,  0,  0,  0),
+    ('Goat', 60, 0, 0, 70, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('Sheep', 70, 0, 0, 70, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('WildBoar', 15, 0, 0, 50, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('Buffalo', 10, 0, 0, 20, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('Duck', 40, 10, 60, 10, 80, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0),
+    ('Caterpillar', 0, 0, 40, 0, 0, 0, 0,  0,  90,  0,  0,  90,  0,  90,  0),
+    ('Grass', 0, 0, 0, 0, 0, 100, 100,  100,  100,  100,  100,  100,  100,  100,  100);
+
+
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Bear'
+    WHERE class_name = 'Bear';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Boa'
+    WHERE class_name = 'Boa';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Eagle'
+    WHERE class_name = 'Eagle';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Fox'
+    WHERE class_name = 'Fox';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.predatory_animals.Wolf'
+    WHERE class_name = 'Wolf';
+
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Buffalo'
+    WHERE class_name = 'Buffalo';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Caterpillar'
+    WHERE class_name = 'Caterpillar';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Deer'
+    WHERE class_name = 'Deer';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Duck'
+    WHERE class_name = 'Duck';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Goat'
+    WHERE class_name = 'Goat';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Horse'
+    WHERE class_name = 'Horse';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Mouse'
+    WHERE class_name = 'Mouse';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Rabbit'
+    WHERE class_name = 'Rabbit';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.Sheep'
+    WHERE class_name = 'Sheep';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.WildBoar'
+    WHERE class_name = 'WildBoar';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.fauna.herbivore_animals.WildBoar'
+    WHERE class_name = 'WildBoar';
+    UPDATE settings SET class_name =
+                            'ru.javarush.sergeyivanov.island.content_of_island.flora.plants.Grass'
+    WHERE class_name = 'Grass';
+
+ALTER TABLE table_of_probability MODIFY COLUMN ration_animal VARCHAR(100);
+
+select * from table_of_probability;
+
+DELETE FROM settings where class_name = 'ru.javarush.sergeyivanov.island.content_of_island.flora.Shrub';
+select * from settings;
